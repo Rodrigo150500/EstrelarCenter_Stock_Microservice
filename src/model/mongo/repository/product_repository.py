@@ -50,6 +50,7 @@ class ProductRepository(ProductRepositoryInterface):
             code:{"$exists": True}
         }
 
+
         response = self.__collection.delete_one(
         product_filter)
 
@@ -58,7 +59,7 @@ class ProductRepository(ProductRepositoryInterface):
 
     def insert_product_item(self, code: str, fields: dict) -> UpdateResult:
 
-        product_filter = {code: {"$exists": True}}
+        product_filter = {code: {"$exists": False}}
 
         update_query = {
             "$push": {
