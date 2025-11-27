@@ -59,7 +59,7 @@ class ProductRepository(ProductRepositoryInterface):
 
     def insert_product_item(self, code: str, fields: dict) -> UpdateResult:
 
-        product_filter = {code: {"$exists": False}}
+        product_filter = {code: {"$exists": True}}
 
         update_query = {
             "$push": {

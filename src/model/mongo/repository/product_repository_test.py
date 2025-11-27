@@ -53,8 +53,8 @@ def test_remove_item(setup_repository):
     
     response = repository.remove_item("1", 0)
 
-    assert response["matched_count"] == 1
-    assert response["modified_count"] == 1
+    assert response.matched_count == 1
+    assert response.modified_count == 1
 
     collection.update_one.assert_has_calls(call_list)
 
@@ -70,7 +70,7 @@ def test_delete_product_by_code(setup_repository):
 
     response = repository.delete_product_by_code("1")
 
-    assert response["deleted_count"] == 1
+    assert response.deleted_count == 1
 
     collection.delete_one.assert_called_once_with({"1":{"$exists": True}})
 
@@ -86,10 +86,10 @@ def test_insert_product_item(setup_repository):
 
     response = repository.insert_product_item("10", data["fields"])
 
-    assert response["matched_count"] == 1
-    assert response["modified_count"] == 1
+    assert response.matched_count == 1
+    assert response.modified_count == 1
 
-    collection.update_one.assert_called_once_with({"10": {"$exists": False}}, {"$push": {"10": data["fields"]}}, upsert=True)
+    collection.update_one.assert_called_once_with({"10": {"$exists": True}}, {"$push": {"10": data["fields"]}}, upsert=True)
 
 
 def test_update_product_item(setup_repository):
@@ -103,8 +103,8 @@ def test_update_product_item(setup_repository):
 
     response = repository.update_product_item("10", 0, data['fields'])
 
-    assert response["matched_count"] == 1
-    assert response["modified_count"] == 1
+    assert response.matched_count == 1
+    assert response.modified_count == 1
 
     collection.update_one.assert_called_once_with({"10.0":{"$exists":True}}, {"$set":{"10.0": data["fields"]}})
 

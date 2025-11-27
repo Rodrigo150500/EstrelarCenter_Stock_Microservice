@@ -25,31 +25,20 @@ def get_product_by_code_data():
 
 def remove_item_data():
 
-    remove_item : UpdateResult = {
-        "matched_count": 1,
-        "modified_count": 1,
-        "raw_result": {
-            "acknowledged": True,
-            "matchedCount": 1,
-            "modifiedCount": 1,
-            "upsertedId": None
-        },
-        "upserted_id": None
-    }
+    remove_item = UpdateResult({
+        "n": 1,               # matched_count
+        "nModified": 1,       # modified_count
+        "upserted": None,     # upserted_id
+        "ok": 1.0             # operação OK
+    },
+        acknowledged=True)
 
     return remove_item
 
 
 def delete_product_by_code_data():
 
-    delete_one : DeleteResult = {
-    "deleted_count": 1,
-    "acknowledged": True,
-    "raw_result": {
-        "acknowledged": True,
-        "deletedCount": 1
-    }
-    }
+    delete_one = DeleteResult({'n': 1, 'ok': 1.0}, acknowledged=True)
 
     return delete_one   
 
@@ -67,17 +56,13 @@ def insert_product_item_data():
             "measure":"Unidade"
             }
     
-    update_one = {
-        "matched_count": 1,
-        "modified_count": 1,
-        "raw_result": {
-            "acknowledged": True,
-            "matchedCount": 1,
-            "modifiedCount": 1,
-            "upsertedId": None
-        },
-        "upserted_id": None
-    }
+    update_one = UpdateResult({
+        "n": 1,               # matched_count
+        "nModified": 1,       # modified_count
+        "upserted": None,     # upserted_id
+        "ok": 1.0             # operação OK
+    },
+        acknowledged=True)
 
 
     data = {
@@ -101,18 +86,15 @@ def update_product_item_data():
             "measure":"Unidade"
             }
     
-    update_one = {
-        "matched_count": 1,
-        "modified_count": 1,
-        "raw_result": {
-            "acknowledged": True,
-            "matchedCount": 1,
-            "modifiedCount": 1,
-            "upsertedId": None
-        },
-        "upserted_id": None
-    }
+    update_one = UpdateResult({
+        "n": 1,               # matched_count
+        "nModified": 1,       # modified_count
+        "upserted": None,     # upserted_id
+        "ok": 1.0             # operação OK
+    },
+        acknowledged=True)
 
+   
 
     data = {
         "fields": fields,
