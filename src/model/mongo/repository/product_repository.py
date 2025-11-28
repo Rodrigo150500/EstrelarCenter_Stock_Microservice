@@ -8,7 +8,7 @@ from .interfaces.product_repository_interface import ProductRepositoryInterface
 
 COLLECTION_NAME = os.getenv("COLLECTION_NAME_MONGO_DB_PRODUCTS")
 
-class ProductRepository(ProductRepositoryInterface):
+class ProductRepositoryMongo(ProductRepositoryInterface):
 
     def __init__(self, connection):
         

@@ -3,7 +3,7 @@ load_dotenv("dev.env")
 
 import pytest
 from src.model.mongo.settings.mongo_db_connection import mongo_db_connection
-from .product_repository import ProductRepository
+from .product_repository import ProductRepositoryMongo
 
 from .data.product_repository_integration_data import insert_product_item_data, update_product_item_data
 
@@ -15,7 +15,7 @@ def setup_repository():
 
     connection = mongo_db_connection.get_db_connection()
     
-    repository = ProductRepository(connection)
+    repository = ProductRepositoryMongo(connection)
 
     return repository
 

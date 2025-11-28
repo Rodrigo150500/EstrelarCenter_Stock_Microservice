@@ -2,7 +2,7 @@ import pytest
 
 from unittest.mock import Mock, call
 
-from .product_repository import ProductRepository
+from .product_repository import ProductRepositoryMongo
 
 from .data.product_repository_data import get_product_by_code_data, remove_item_data, delete_product_by_code_data, insert_product_item_data, update_product_item_data, get_all_products_data
 
@@ -14,7 +14,7 @@ def setup_repository():
 
     connection.get_collection.return_value = collection
 
-    repository = ProductRepository(connection)
+    repository = ProductRepositoryMongo(connection)
 
     data = {
         "collection": collection,
