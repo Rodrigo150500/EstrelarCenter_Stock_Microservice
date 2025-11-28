@@ -1,6 +1,6 @@
 import os
 from src.model.firebase.repository.interface.product_repository_interface import ProductRepositoryFirebaseInterface
-from src.errors.types.http_unavailable_service_error import HttpUnavailableServiceError
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 COLLECTION_NAME = os.getenv("COLLECTION_NAME_FIREBASE_PRODUCTS")
 
@@ -25,7 +25,7 @@ class ProductRepositoryFirebase(ProductRepositoryFirebaseInterface):
       print(f"Error:[product_repository_firebase][get_product_by_code]: {str(exception)}")
 
 
-      raise HttpUnavailableServiceError("Banco de dados indisponível")
+      raise HttpUnavailableService("Banco de dados indisponível")
   
   
   def insert_or_update_product(self, code: str, fields: dict) -> bool:
@@ -42,7 +42,7 @@ class ProductRepositoryFirebase(ProductRepositoryFirebaseInterface):
 
       print(f"Error:[product_repository_firebase][insert_or_update_product]: {str(exception)}")
 
-      raise HttpUnavailableServiceError("Banco de dados indisponível")
+      raise HttpUnavailableService("Banco de dados indisponível")
 
   
   def delete_product_by_code(self, code: str) -> bool:
@@ -57,6 +57,6 @@ class ProductRepositoryFirebase(ProductRepositoryFirebaseInterface):
 
       print(f"Error:[product_repository_firebase][delete_product_by_code]: {str(exception)}")
 
-      raise HttpUnavailableServiceError("Banco de dados indisponível")
+      raise HttpUnavailableService("Banco de dados indisponível")
 
   

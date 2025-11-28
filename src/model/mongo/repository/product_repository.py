@@ -1,6 +1,6 @@
 import os
 
-from src.errors.types.http_unavailable_service_error import HttpUnavailableServiceError
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from pymongo.results import DeleteResult, UpdateResult
 
@@ -32,7 +32,7 @@ class ProductRepositoryMongo(ProductRepositoryInterface):
 
             print(f"Error:[product_repository_mongo][get_product_by_code]: {str(exception)}")
 
-            raise HttpUnavailableServiceError("Banco de dados indisponível")
+            raise HttpUnavailableService("Banco de dados indisponível")
 
 
     def remove_item(self, code: str, item: int) -> UpdateResult:
@@ -59,7 +59,7 @@ class ProductRepositoryMongo(ProductRepositoryInterface):
 
             print(f"Error:[product_repository_mongo][remove_item]: {str(exception)}")
 
-            raise HttpUnavailableServiceError("Banco de dados indisponível")
+            raise HttpUnavailableService("Banco de dados indisponível")
 
 
     def delete_product_by_code(self, code: str) -> DeleteResult:
@@ -78,7 +78,7 @@ class ProductRepositoryMongo(ProductRepositoryInterface):
 
             print(f"Error:[product_repository_mongo][delete_product_by_code]: {str(exception)}")
 
-            raise HttpUnavailableServiceError("Banco de dados indisponível")
+            raise HttpUnavailableService("Banco de dados indisponível")
 
     
 
@@ -106,7 +106,7 @@ class ProductRepositoryMongo(ProductRepositoryInterface):
 
             print(f"Error:[product_repository_mongo][insert_product_item]: {str(exception)}")
 
-            raise HttpUnavailableServiceError("Banco de dados indisponível")
+            raise HttpUnavailableService("Banco de dados indisponível")
 
 
     def update_product_item(self, code: str, item: int, fields: dict) -> UpdateResult:
@@ -128,7 +128,7 @@ class ProductRepositoryMongo(ProductRepositoryInterface):
 
             print(f"Error:[product_repository_mongo][update_product_item]: {str(exception)}")
 
-            raise HttpUnavailableServiceError("Banco de dados indisponível")
+            raise HttpUnavailableService("Banco de dados indisponível")
 
 
 
@@ -146,4 +146,4 @@ class ProductRepositoryMongo(ProductRepositoryInterface):
 
             print(f"Error:[product_repository_mongo][get_all_products]: {str(exception)}")
 
-            raise HttpUnavailableServiceError("Banco de dados indisponível")
+            raise HttpUnavailableService("Banco de dados indisponível")
