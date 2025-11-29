@@ -28,15 +28,13 @@ class ProductRepositoryFirebase(ProductRepositoryFirebaseInterface):
       raise HttpUnavailableService("Banco de dados indisponível")
   
   
-  def insert_or_update_product(self, code: str, fields: dict) -> bool:
+  def insert_or_update_product(self, code: str, fields: dict) -> None:
 
     try:
 
       self.__connection.reference(f"{self.__reference}/{code}").update(
         fields
       )
-
-      return True
     
     except Exception as exception:
 
@@ -45,13 +43,11 @@ class ProductRepositoryFirebase(ProductRepositoryFirebaseInterface):
       raise HttpUnavailableService("Banco de dados indisponível")
 
   
-  def delete_product_by_code(self, code: str) -> bool:
+  def delete_product_by_code(self, code: str) -> None:
 
     try:
 
       self.__connection.reference(f"{self.__reference}/{code}").delete()
-
-      return True
 
     except Exception as exception:
 

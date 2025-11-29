@@ -37,9 +37,7 @@ def test_insert_product_sucessfully(setup_repository):
 
     connection.reference.return_value = reference
 
-    response = repository.insert_or_update_product("10", data)
-
-    assert response == True
+    repository.insert_or_update_product("10", data)
 
     connection.reference.assert_called_once_with(f"{COLLECTION_NAME}/10")
 
@@ -56,9 +54,7 @@ def test_delete_product(setup_repository):
 
     connection.reference.return_value = reference
 
-    response = repository.delete_product_by_code("10")
-
-    assert response == True
+    repository.delete_product_by_code("10")
 
     connection.reference.assert_called_once_with(f"{COLLECTION_NAME}/10")
 

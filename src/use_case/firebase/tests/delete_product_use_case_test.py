@@ -42,7 +42,7 @@ def test_delete_product_use_case_sucessfully(setup_use_case):
 
     response = use_case.handle(http_request)
 
-    assert response.status_code == 204
+    assert response.status_code == 200
     assert response.body == data["response_body"]
 
     repository.get_product_by_code.assert_called_once_with("123456")
