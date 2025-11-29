@@ -1,10 +1,11 @@
-from .types.http_unavailable_service_error import HttpUnavailableServiceError
+from .types.http_unavailable_service import HttpUnavailableService
+from .types.http_unprocessable_entity import HttpUnprocessableEntity
 
 from src.main.http_types.http_response import HttpResponse
 
 def error_handler(error):
 
-    if(isinstance(error, (HttpUnavailableServiceError))):
+    if(isinstance(error, (HttpUnavailableService, HttpUnprocessableEntity))):
 
         return HttpResponse(
             body={
