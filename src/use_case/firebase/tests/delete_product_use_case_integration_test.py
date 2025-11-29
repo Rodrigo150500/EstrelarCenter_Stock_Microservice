@@ -10,6 +10,7 @@ from src.use_case.firebase.delete_product_use_case import DeleteProductFirebaseU
 from src.main.http_types.http_request import HttpRequest
 
 from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
 
 @pytest.fixture
@@ -64,3 +65,16 @@ def test_delete_product_not_found(setup_use_case):
         use_case.handle(http_request)
 
     assert str(exc_info.value) == "Product not found"
+
+
+@pytest.mark.skip()
+def test_delete_product_invalid_params(setup_use_case):
+    use_case = setup_use_case
+
+    http_request = HttpRequest(
+        params={
+            # "code": "1"
+        }
+    )
+    with pytest.raises(HttpUnprocessableEntity):
+        use_case.handle(http_request) 

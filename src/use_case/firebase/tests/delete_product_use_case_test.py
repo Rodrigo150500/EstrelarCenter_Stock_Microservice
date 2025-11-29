@@ -6,6 +6,7 @@ from ..delete_product_use_case import DeleteProductFirebaseUseCase
 from src.main.http_types.http_request import HttpRequest
 
 from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
 from .data.delete_product_use_case_integration_data import delete_product_sucessfully_data
 
@@ -67,4 +68,23 @@ def test_delete_product_use_case_product_not_found(setup_use_case):
     assert str(exc_info.value) == "Product not found"
 
     repository.get_product_by_code.assert_called_once_with("999999")
+    repository.delete_product_by_code.assert_not_called()
+
+
+def test_delete_product_use_case_invalid_params(setup_use_case):
+
+    repository = setup_use_case["repository"]
+    use_case = setup_use_case["use_case"]
+
+    http_request = HttpRequest(
+        params={
+            # "code" is missing
+        }
+    )
+
+    with pytest.raises(HttpUnprocessableEntity) as exc_info:
+        use_case.handle(http_request)
+
+
+    repository.get_product_by_code.assert_not_called()
     repository.delete_product_by_code.assert_not_called()
