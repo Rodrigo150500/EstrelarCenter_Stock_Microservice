@@ -2,7 +2,9 @@ from src.model.mongo.repository.interfaces.product_repository_interface import P
 
 from src.main.http_types.http_response import HttpResponse
 
-class GetAllProductsMongoUseCase:
+from .interfaces.get_all_products_use_case_interface import GetAllProductsUseCaseInterface
+
+class GetAllProductsMongoUseCase(GetAllProductsUseCaseInterface):
 
     def __init__(self, repository: ProductRepositoryInterface):
         
