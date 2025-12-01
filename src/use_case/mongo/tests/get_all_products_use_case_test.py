@@ -27,6 +27,7 @@ def test_get_all_products_sucessfully(setup_use_case):
 
     response = use_case.handle()
 
+    assert response.body == data["expected_body"]
     assert response.status_code == 200
 
     repository.get_all_products.assert_called_once()

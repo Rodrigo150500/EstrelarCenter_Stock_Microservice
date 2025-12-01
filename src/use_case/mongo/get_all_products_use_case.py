@@ -2,9 +2,9 @@ from src.model.mongo.repository.interfaces.product_repository_interface import P
 
 from src.main.http_types.http_response import HttpResponse
 
-from .interfaces.get_all_products_use_case_interface import GetAllProductsUseCaseInterface
+from .interfaces.get_all_products_use_case_interface import GetAllProductsMongoUseCaseInterface
 
-class GetAllProductsMongoUseCase(GetAllProductsUseCaseInterface):
+class GetAllProductsMongoUseCase(GetAllProductsMongoUseCaseInterface):
 
     def __init__(self, repository: ProductRepositoryInterface):
         
@@ -47,6 +47,12 @@ class GetAllProductsMongoUseCase(GetAllProductsUseCaseInterface):
     def __formatted_response(self, products: list) -> HttpResponse:
 
         return HttpResponse(
-            status_code=200,
-            body=products
+            body={
+                 "data":{
+                      "operation": "get",
+                      "count": len(products),
+                      "attributes": products
+                 }
+            },
+            status_code=200
         )
