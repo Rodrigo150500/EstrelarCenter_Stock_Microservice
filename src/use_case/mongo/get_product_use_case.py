@@ -11,9 +11,11 @@ from src.validators.get_product_validator_request import get_product_validator_r
 
 from src.errors.types.http_not_found import HttpNotFound
 
+from .interfaces.get_product_use_case_interface import GetProductMongoUseCaseInterface
+
 PORT = os.getenv("PORT")
 
-class GetProductMongoUseCase:
+class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
     def __init__(self, repository: ProductRepositoryInterface ) -> None:
         
