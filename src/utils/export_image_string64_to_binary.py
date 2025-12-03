@@ -6,7 +6,7 @@ from bson import Binary
 
 PORT = os.getenv("PORT")
 
-def export_image_string64_to_binary(image: str):
+def export_image_string64_to_binary(image: str) -> Binary | str:
 
     error_image = f"https://localhost:{PORT}/static/stock/src/assets/erro.jpg" 
 
