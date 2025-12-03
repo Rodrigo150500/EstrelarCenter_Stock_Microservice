@@ -14,7 +14,6 @@ def insert_product_validator_request(body: dict):
             'image': {'type': 'string', 'required': False},
             'location': {'type': 'string', 'required': False},
             'reference': {'type': 'string', 'required': False},
-            'item': {"type":"integer", "required": True}       
   })
 
   response = body_validate.validate(body)
