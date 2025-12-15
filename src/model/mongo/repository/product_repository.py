@@ -1,10 +1,13 @@
 import os
 
 from src.errors.types.http_unavailable_service import HttpUnavailableService
+from src.errors.types.http_not_found import HttpNotFound
 
 from pymongo.results import DeleteResult, UpdateResult
 
 from .interfaces.product_repository_interface import ProductRepositoryInterface
+
+from bson.objectid import ObjectId
 
 COLLECTION_NAME = os.getenv("COLLECTION_NAME_MONGO_DB_PRODUCTS")
 
@@ -19,131 +22,120 @@ class ProductRepositoryMongo(ProductRepositoryInterface):
         
         try:
 
-            product_filter = {
-                code:{"$exists": True}
-            }
+            response = self.__collection.find_one(
+                {"code": code}
+            )
 
-            #Se não houver encontrado retorno é none
-            product =  self.__collection.find_one(product_filter)
+            if not response: raise HttpNotFound("Error: Product not found")
+
+            return response
+        
+        except HttpNotFound:
             
-            return product
-
+            raise
+            
         except Exception as exception:
 
-            print(f"Error:[product_repository_mongo][get_product_by_code]: {str(exception)}")
+            print(f"Error:[ProductRepositoryMongo][GetProductByCode]: {str(exception)}")
 
-            raise HttpUnavailableService("Banco de dados indisponível")
+            raise HttpUnavailableService("Error: Database Unvailable")
 
 
-    def remove_item(self, code: str, item: int) -> UpdateResult:
-
+    def remove_variant_by_object_id(self, code: str, object_id: str) -> UpdateResult:
+        
         try:
 
-            product_filter = {code: {"$exists": True}}
-
-            # remove pelo índice
-            self.__collection.update_one(
-                product_filter,
-                {"$unset": {f"{code}.{item}": item}}
-            )
-            
-            # 2. depois remove os "null" do array
             response = self.__collection.update_one(
-                product_filter,
-                {"$pull": {code: None}}
+                {"code": code},
+                {"$pull": {"variants":{"_id": ObjectId(object_id)}}}
             )
 
             return response
         
         except Exception as exception:
 
-            print(f"Error:[product_repository_mongo][remove_item]: {str(exception)}")
+            print(f"Error: [ProductRepositoryMongo][RemoveVariantByObjectId]: {str(exception)}")
 
-            raise HttpUnavailableService("Banco de dados indisponível")
+            raise HttpUnavailableService("Error: Database unavailable")
 
 
     def delete_product_by_code(self, code: str) -> DeleteResult:
 
         try:
 
-            product_filter = {
-                code:{"$exists": True}
-            }
-
-            response = self.__collection.delete_one(product_filter)
-
-            return response
-        
-        except Exception as exception:
-
-            print(f"Error:[product_repository_mongo][delete_product_by_code]: {str(exception)}")
-
-            raise HttpUnavailableService("Banco de dados indisponível")
-
-    
-
-    def insert_product_item(self, code: str, fields: dict) -> UpdateResult:
-
-        try:
-
-            product_filter = {code: {"$exists": True}}
-
-            update_query = {
-                "$push": {
-                    code: fields
-                }
-            }
-
-            response = self.__collection.update_one(
-                product_filter,
-                update_query,
-                upsert=True
+            response = self.__collection.delete_one(
+                {"code": code}
             )
 
             return response
         
         except Exception as exception:
 
-            print(f"Error:[product_repository_mongo][insert_product_item]: {str(exception)}")
+            print(f"Error: [ProductRepositoryMongo][RemoveVariantByObjectId]: {str(exception)}")
 
-            raise HttpUnavailableService("Banco de dados indisponível")
+            raise HttpUnavailableService("Error: Database unavailable")
+    
 
-
-    def update_product_item(self, code: str, item: int, fields: dict) -> UpdateResult:
+    def insert_product(self, fields: dict) -> UpdateResult:
 
         try:
-            product_filter = {f"{code}.{item}": {"$exists": True}}
 
-            update_query = {
-                "$set": {
-                    f"{code}.{item}": fields
-                }
-            }
-
-            response = self.__collection.update_one(product_filter, update_query)
+            response = self.__collection.insert_one(fields)
 
             return response
-    
+        
         except Exception as exception:
 
-            print(f"Error:[product_repository_mongo][update_product_item]: {str(exception)}")
+            print(f"Error: [ProductRepositoryMongo][InsertProductVariant]: {str(exception)}")
 
-            raise HttpUnavailableService("Banco de dados indisponível")
+            raise HttpUnavailableService("Error: Database unavailable")
 
+
+    def insert_new_variant(self, code: str, fields: dict) -> UpdateResult:
+
+        try:
+
+            response = self.__collection.update_one(
+                {"code": code},
+                {"$push": {"variants": fields}}
+            )
+
+            return response
+        
+        except Exception as exception:
+
+            print(f"Error:[ProductRepositoryMongo][InsertNewVariant]:{str(exception)}")
+
+            raise HttpUnavailableService("Error: Database unvailable")
+
+
+    def update_product_variant_by_object_id(self, code: str, object_id: str, fields: dict) -> UpdateResult:
+
+        try:
+
+            response = self.__collection.update_one(
+                {"code": code, "variants._id": ObjectId(object_id)},
+                {"$set": fields}
+            )
+
+            return response
+
+        
+        except Exception as exception:
+
+            print(f"Error:[ProductRepositoryMongo][UpdateProductVariant]: {str(exception)}")
 
 
     def get_all_products(self) -> list:
 
         try:
+
+            response = self.__collection.find({})
+
+            return list(response)
         
-            products = self.__collection.find({})
-            
-            products = [document for document in products]
-
-            return products
-
         except Exception as exception:
 
-            print(f"Error:[product_repository_mongo][get_all_products]: {str(exception)}")
+            print(f"Error: [ProductRepositoryMongo][RemoveVariantByObjectId]: {str(exception)}")
 
-            raise HttpUnavailableService("Banco de dados indisponível")
+            raise HttpUnavailableService("Error: Database unavailable")
