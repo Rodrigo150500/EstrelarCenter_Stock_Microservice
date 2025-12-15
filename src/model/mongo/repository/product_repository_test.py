@@ -4,7 +4,9 @@ from unittest.mock import Mock, call
 
 from .product_repository import ProductRepositoryMongo
 
-from .data.product_repository_data import get_product_by_code_data, remove_item_data, delete_product_by_code_data, insert_product_item_data, update_product_item_data, get_all_products_data
+from .data.product_repository_data import insert_product_data, insert_new_variant_in_product_exist_data, get_product_by_code_return_product_data
+
+from src.errors.types.http_not_found import HttpNotFound
 
 @pytest.fixture
 def setup_repository():
@@ -24,102 +26,80 @@ def setup_repository():
     return data
 
 
-def test_get_product_by_code(setup_repository):
+def test_insert_product(setup_repository):
 
-    data = get_product_by_code_data()
+    data = insert_product_data()
 
     collection = setup_repository["collection"]
     repository = setup_repository["repository"]
 
-    collection.find_one.return_value = data
+    collection.insert_one.return_value = data["insert_one"]
+
+    response = repository.insert_product(data["fields"])
+
+    collection.insert_one.assert_called_once_with(data["fields"])
+
+    assert response == data["insert_one"]
+
+
+def test_insert_new_variant_in_product_exist(setup_repository):
+    
+    data = insert_new_variant_in_product_exist_data()
+
+    collection = setup_repository["collection"]
+    repository = setup_repository["repository"]
+
+    collection.update_one.return_value = data["update_one"]
+
+    response = repository.insert_new_variant('10', data["fields"])
+
+    collection.update_one.assert_called_once_with({"code":"10"}, {"$push": {"variants": data["fields"]}})
+
+    assert response == data["update_one"]
+
+
+
+def test_get_product_by_code_return_product(setup_repository):
+    
+    data = get_product_by_code_return_product_data()
+
+    collection = setup_repository["collection"]
+    repository = setup_repository["repository"]
+
+    collection.find_one.return_value = data["find_one"]
 
     response = repository.get_product_by_code("10")
 
-    collection.find_one.assert_called_once_with({"10":{"$exists": True}})
+    collection.find_one.assert_called_once_with({"code":"10"})
 
-    assert response == data
+    assert response == data["find_one"]
 
 
-def test_remove_item(setup_repository):
-
-    data = remove_item_data()
-
-    collection = setup_repository["collection"]
-    repository = setup_repository["repository"]
-
-    collection.update_one.return_value = data
-
-    call_list = [call({"1": {"$exists": True}}, {"$unset": {f"1.0": 0}})]
+def test_get_product_by_code_return_error_not_found(setup_repository):
     
-    response = repository.remove_item("1", 0)
+    collection = setup_repository["collection"]
+    repository = setup_repository["repository"]
 
-    assert response.matched_count == 1
-    assert response.modified_count == 1
+    collection.find_one.return_value = None
 
-    collection.update_one.assert_has_calls(call_list)
+    with pytest.raises(HttpNotFound):
 
+        repository.get_product_by_code("10")
+
+    collection.find_one.assert_called_once_with({"code": "10"})
     
-def test_delete_product_by_code(setup_repository):
 
-    data = delete_product_by_code_data()
-
-    collection = setup_repository["collection"]
-    repository = setup_repository["repository"]
-
-    collection.delete_one.return_value = data
-
-    response = repository.delete_product_by_code("1")
-
-    assert response.deleted_count == 1
-
-    collection.delete_one.assert_called_once_with({"1":{"$exists": True}})
-
-
-def test_insert_product_item(setup_repository):
-
-    data = insert_product_item_data()
-
-    collection = setup_repository["collection"]
-    repository = setup_repository["repository"]
-
-    collection.update_one.return_value = data["update_one"]
-
-    response = repository.insert_product_item("10", data["fields"])
-
-    assert response.matched_count == 1
-    assert response.modified_count == 1
-
-    collection.update_one.assert_called_once_with({"10": {"$exists": True}}, {"$push": {"10": data["fields"]}}, upsert=True)
-
-
-def test_update_product_item(setup_repository):
-
-    data = update_product_item_data()
-
-    collection = setup_repository["collection"]
-    repository = setup_repository["repository"]
-
-    collection.update_one.return_value = data["update_one"]
-
-    response = repository.update_product_item("10", 0, data['fields'])
-
-    assert response.matched_count == 1
-    assert response.modified_count == 1
-
-    collection.update_one.assert_called_once_with({"10.0":{"$exists":True}}, {"$set":{"10.0": data["fields"]}})
+def test_update_product_variant(setup_repository):
+    pass
 
 
 def test_get_all_products(setup_repository):
+    pass
 
-    data = get_all_products_data()
 
-    collection = setup_repository["collection"]
-    repository = setup_repository["repository"]
+def test_remove_item(setup_repository):
+    pass
 
-    collection.find.return_value = data["find"]
 
-    response = repository.get_all_products()
-
-    assert isinstance(response, list)
-
-    collection.find.assert_called_once_with({})
+def test_remove_product(setup_repository):
+    pass

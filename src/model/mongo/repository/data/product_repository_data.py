@@ -1,146 +1,115 @@
-from pymongo.results import UpdateResult, DeleteResult
+from datetime import datetime
 
 from bson.objectid import ObjectId
 
+imagem_bytes = bytes([
+    0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,
+    0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
+    0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
+    0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53,
+    0xDE, 0x00, 0x00, 0x00, 0x0A, 0x49, 0x44, 0x41,
+    0x54, 0x08, 0xD7, 0x63, 0x60, 0x00, 0x00, 0x00,
+    0x02, 0x00, 0x01, 0xE2, 0x26, 0x05, 0x9B, 0x00,
+    0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE,
+    0x42, 0x60, 0x82
+  ])
 
-def get_product_by_code_data():
+
+def insert_product_data():
+
+    fields = {
+            "code": "10",
+            "variants":[{
+                "_id": ObjectId(),
+                "description": "Product A",
+                "stock": 10,
+                "image": imagem_bytes,
+                "brand": "Kit-Kat",
+                "reference": "Kit1030",
+                "last_change": datetime.now(),
+                "location": "A10",
+                "measure": "Unidade",
+                "keepBuying": True
+            },{
+                "_id": ObjectId(),
+                "description": "Product B",
+                "stock": 15,
+                "image": imagem_bytes,
+                "brand": "Bis",
+                "reference": "Bis1515",
+                "last_change": datetime.now(),
+                "location": "CX20",
+                "measure": "Caixa",
+                "keepBuying": False
+            }]
+            }
+    
+    insert_one = {
+        "inserted_id": ObjectId(),
+        "acknowledged": True
+    }
+
+    data = {
+        "fields": fields,
+        "insert_one": insert_one
+    }
+
+    return data
+
+
+def insert_new_variant_in_product_exist_data():
+
+    fields = {
+        "description": "New Product B",
+        "stock": 50,
+        "brand": "Diamante Negro",
+    }
+
+    update_one = {
+        "acknowledged": True,
+        "matched_count": 1,
+        "modified_count": 1
+    }
+
+    data = {
+        "fields": fields,
+        "update_one": update_one
+    }
+
+    return data
+
+
+def get_product_by_code_return_product_data():
 
     find_one = {
-        "_id": ObjectId("68b70ef826423e500863c1c6"),
-        "10":[{
             "code": "10",
-            "description": "Product A",
-            "brand": "brand",
-            "reference": "IMA",
-            "location": "C06",
-            "last_change": "-3 23/09/2025 17:17:27",
-            "stock": 5,
-            "measure":"Unidade"
-
-        }]
-    }
-
-    return find_one
-
-
-def remove_item_data():
-
-    remove_item = UpdateResult({
-        "n": 1,               # matched_count
-        "nModified": 1,       # modified_count
-        "upserted": None,     # upserted_id
-        "ok": 1.0             # operação OK
-    },
-        acknowledged=True)
-
-    return remove_item
-
-
-def delete_product_by_code_data():
-
-    delete_one = DeleteResult({'n': 1, 'ok': 1.0}, acknowledged=True)
-
-    return delete_one   
-
-
-def insert_product_item_data():
-
-    fields = {
-            "code": "10",
-            "description": "Product A",
-            "brand": "brand",
-            "reference": "IMA",
-            "location": "C06",
-            "last_change": "-3 23/09/2025 17:17:27",
-            "stock": 5,
-            "measure":"Unidade"
+            "variants":[{
+                "_id": ObjectId(),
+                "description": "Product A",
+                "stock": 10,
+                "image": imagem_bytes,
+                "brand": "Kit-Kat",
+                "reference": "Kit1030",
+                "last_change": datetime.now(),
+                "location": "A10",
+                "measure": "Unidade",
+                "keepBuying": True
+            },{
+                "_id": ObjectId(),
+                "description": "Product B",
+                "stock": 15,
+                "image": imagem_bytes,
+                "brand": "Bis",
+                "reference": "Bis1515",
+                "last_change": datetime.now(),
+                "location": "CX20",
+                "measure": "Caixa",
+                "keepBuying": False
+            }]
             }
     
-    update_one = UpdateResult({
-        "n": 1,               # matched_count
-        "nModified": 1,       # modified_count
-        "upserted": None,     # upserted_id
-        "ok": 1.0             # operação OK
-    },
-        acknowledged=True)
-
-
     data = {
-        "fields": fields,
-        "update_one": update_one
-    }
-
-    return data
-
-
-def update_product_item_data():
-
-    fields = {
-            "code": "10",
-            "description": "Product A",
-            "brand": "brand",
-            "reference": "IMA",
-            "location": "C06",
-            "last_change": "-3 23/09/2025 17:17:27",
-            "stock": 5,
-            "measure":"Unidade"
-            }
-    
-    update_one = UpdateResult({
-        "n": 1,               # matched_count
-        "nModified": 1,       # modified_count
-        "upserted": None,     # upserted_id
-        "ok": 1.0             # operação OK
-    },
-        acknowledged=True)
-
-   
-
-    data = {
-        "fields": fields,
-        "update_one": update_one
-    }
-
-    return data
-
-
-def get_all_products_data():
-
-    find = [{
-        "10":[{
-            "code": "10",
-            "description": "Product A",
-            "brand": "brand",
-            "reference": "IMA",
-            "location": "C06",
-            "last_change": "-3 23/09/2025 17:17:27",
-            "stock": 5,
-            "measure":"Unidade"
-        }]
-    }, {
-        "11":[{
-            "code": "11",
-            "description": "Product B",
-            "brand": "brand",
-            "reference": "IMA",
-            "location": "C06",
-            "last_change": "-3 23/09/2025 17:17:27",
-            "stock": 5,
-            "measure":"Unidade"
-        },{
-            "code": "11",
-            "description": "Product B1",
-            "brand": "brand",
-            "reference": "IMA",
-            "location": "C06",
-            "last_change": "-3 23/09/2025 17:17:27",
-            "stock": 5,
-            "measure":"Unidade"
-        }]
-    }]
-
-    data = {
-        "find": find
+        "find_one": find_one
     }
 
     return data
