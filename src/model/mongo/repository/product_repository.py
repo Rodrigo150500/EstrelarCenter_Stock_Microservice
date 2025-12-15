@@ -6,6 +6,7 @@ from src.errors.types.http_not_found import HttpNotFound
 from pymongo.results import DeleteResult, UpdateResult
 
 from .interfaces.product_repository_interface import ProductRepositoryInterface
+from .interfaces.insert_product_interface import InsertProductInterface
 
 from bson.objectid import ObjectId
 
@@ -76,7 +77,7 @@ class ProductRepositoryMongo(ProductRepositoryInterface):
             raise HttpUnavailableService("Error: Database unavailable")
     
 
-    def insert_product(self, fields: dict) -> UpdateResult:
+    def insert_product(self, fields: dict) -> InsertProductInterface:
 
         try:
 

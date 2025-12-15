@@ -29,8 +29,9 @@ def test_insert_product(setup_repository):
     repository = setup_repository
 
     response = repository.insert_product(data)
-
+    
     assert response.inserted_id is not None
+    assert response.acknowledged == True
 
 
 @pytest.mark.skip()
@@ -42,6 +43,8 @@ def test_insert_new_variant_in_product_exist(setup_repository):
 
     response = repository.insert_new_variant("10", data)
 
+    assert response.acknowledged == True
+    assert response.matched_count == 1
     assert response.modified_count == 1
 
 
@@ -79,6 +82,8 @@ def test_update_product_variant(setup_repository):
 
     response = repository.update_product_variant_by_object_id(code, object_id, data)
 
+    assert response.acknowledged == True
+    assert response.matched_count == 1
     assert response.modified_count == 1
 
 
@@ -103,6 +108,8 @@ def test_remove_item(setup_repository):
 
     response = repository.remove_variant_by_object_id("10", object_id)
 
+    assert response.matched_count == 1
+    assert response.acknowledged ==  True
     assert response.modified_count == 1
 
 
@@ -113,5 +120,7 @@ def test_remove_product(setup_repository):
 
     response = repository.delete_product_by_code("10")
 
+
+    assert response.acknowledged == True
     assert response.deleted_count == 1
 
