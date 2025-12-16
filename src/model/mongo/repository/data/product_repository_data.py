@@ -113,3 +113,90 @@ def get_product_by_code_return_product_data():
     }
 
     return data
+
+
+def update_product_variant_data():
+
+    fields = {
+            "variants.$.description": "New Product D",
+            "variants.$.stock": 88,
+            "variants.$.last_change": datetime.now(),
+            "variants.$.keepBuying": False
+    }
+
+    update_one = {
+        "acknowledged": True,
+        "matched_count": 1,
+        "modified_count": 1
+    }
+
+    data = {
+        "fields": fields,
+        "update_one": update_one
+    }
+
+    return data
+
+
+def get_all_products_data():
+    
+    find_one = [{
+            "code": "10",
+            "variants":[{
+                "_id": ObjectId(),
+                "description": "Product A",
+                "stock": 10,
+                "image": imagem_bytes,
+                "brand": "Kit-Kat",
+                "reference": "Kit1030",
+                "last_change": datetime.now(),
+                "location": "A10",
+                "measure": "Unidade",
+                "keepBuying": True
+            },{
+                "_id": ObjectId(),
+                "description": "Product B",
+                "stock": 15,
+                "image": imagem_bytes,
+                "brand": "Bis",
+                "reference": "Bis1515",
+                "last_change": datetime.now(),
+                "location": "CX20",
+                "measure": "Caixa",
+                "keepBuying": False
+            }]
+            }]
+    
+    data = {
+        "find_one": find_one
+    }
+
+    return data
+
+def remove_item_data():
+
+    update_one = {
+        "acknowledged": True,
+        "matched_count": 1,
+        "modified_count": 1
+    }
+
+    data = {
+        "update_one": update_one
+    }
+
+    return data
+
+
+def remove_product_data():
+    
+    delete_one = {
+        "acknowledged":True,
+        "deleted_count":1
+    }
+
+    data = {
+        "delete_one": delete_one
+    }
+
+    return data
