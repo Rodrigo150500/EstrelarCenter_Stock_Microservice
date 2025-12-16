@@ -5,16 +5,25 @@ from cerberus import Validator
 def insert_product_validator_request(body: dict):
 
   body_validate = Validator({         
-            'code':{'type': 'string', 'required': True},
-            'description': {'type': 'string', 'required': True},
-            'measure': {'type': 'string', 'required': True},
-            'stock': {'type': 'integer', 'required': True},
-            'brand': {'type': 'string', 'required': False},
-            'last_change': {'type': 'string', 'required': False},
-            'image': {'type': 'string', 'required': False},
-            'location': {'type': 'string', 'required': False},
-            'reference': {'type': 'string', 'required': False},
-  })
+            'code':{'type': 'string', 'required': True, "empty": False},
+            'variants': {
+              "type": "list",
+              "required": True,
+              "schema": {
+                "type": "dict",
+                "schema":{
+                    "description": {"type": "string", "required": True},
+                    "stock": {"type": "integer", "required": True},
+                    "image": {"type": "string", "required": True},
+                    "brand": {"type": "string", "required": False},
+                    "reference": {"type": "string", "required": False},
+                    "last_change": {"type": "datetime", "required": True},
+                    "location": {"type": "string", "required": False},
+                    "measure": {"type": "string", "required": True},
+                    "keepBuying": {"type": "boolean", "required": True}
+                }
+              }
+            }})
 
   response = body_validate.validate(body)
 
