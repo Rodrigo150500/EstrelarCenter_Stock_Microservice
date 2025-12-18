@@ -1,16 +1,18 @@
 from abc import ABC, abstractmethod
-from pymongo.results import UpdateResult, DeleteResult
+
+from src.model.mongo.repository.interfaces.insert_product_interface import InsertProductInterface
+from pymongo.results import DeleteResult, UpdateResult
 
 
-class ProductRepositoryInterface(ABC):
+class ProductRepositoryMongoInterface(ABC):
 
     @abstractmethod
     def get_product_by_code(self, code: str) -> dict:
         pass
-
+     
 
     @abstractmethod
-    def remove_variant_by_object_id(self, code: str, item: int) -> UpdateResult:
+    def remove_variant_by_object_id(self, code: str, object_id: str) -> UpdateResult:
         pass
 
 
@@ -20,7 +22,7 @@ class ProductRepositoryInterface(ABC):
     
 
     @abstractmethod
-    def insert_product(self, fields: dict) -> UpdateResult:
+    def insert_product(self, fields: dict) -> InsertProductInterface:
         pass
 
 

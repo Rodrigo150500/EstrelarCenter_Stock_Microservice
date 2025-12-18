@@ -5,14 +5,14 @@ from src.errors.types.http_not_found import HttpNotFound
 
 from pymongo.results import DeleteResult, UpdateResult
 
-from .interfaces.product_repository_interface import ProductRepositoryInterface
+from .interfaces.product_repository_interface import ProductRepositoryMongoInterface
 from .interfaces.insert_product_interface import InsertProductInterface
 
 from bson.objectid import ObjectId
 
 COLLECTION_NAME = os.getenv("COLLECTION_NAME_MONGO_DB_PRODUCTS")
 
-class ProductRepositoryMongo(ProductRepositoryInterface):
+class ProductRepositoryMongo(ProductRepositoryMongoInterface):
 
     def __init__(self, connection):
         
