@@ -1,5 +1,8 @@
-from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryInterface
+from bson import Binary
+
+from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryMongoInterface
 from .interfaces.insert_product_use_case import InserProductMongoUseCaseInterface
+from src.model.mongo.repository.interfaces.insert_product_interface import InsertProductInterface
 
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
@@ -9,11 +12,13 @@ from src.validators.insert_product_validator_request import insert_product_valid
 from src.utils.export_image_string64_to_binary import export_image_string64_to_binary
 
 from src.errors.types.http_conflict import HttpConflict
+from src.errors.types.http_not_found import HttpNotFound
 
+from datetime import datetime
 
 class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
-    def __init__(self, repository: ProductRepositoryInterface):
+    def __init__(self, repository: ProductRepositoryMongoInterface):
         
         self.__repository = repository
     
@@ -26,9 +31,11 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
         self.__verify_if_product_exists(body)
 
-        body_formatted_request = self.__format_image(body)
+        image = self.__export_image_to_binary(body["image"])
+
+        body_formatted_request = self.__format_body(body, image)
     
-        self.__insert_in_database(body_formatted_request)
+        response = self.__insert_in_database(body_formatted_request) #Response available from database
 
         formatted_response = self.__format_response(body_formatted_request)
 
@@ -37,13 +44,18 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     
     def __verify_if_product_exists(self, body: dict) -> None:
 
-        product = self.__repository.get_product_by_code(body["code"])
+        try:
 
-        if product: raise HttpConflict("Error: Product already exists")
+            self.__repository.get_product_by_code(body["code"])
+        
+        except HttpNotFound:
 
-    def __format_image(self, body: dict) -> list:
+            return
+        
+        raise HttpConflict("Error: Product already exists")
+    
 
-        image = body["image"]
+    def __export_image_to_binary(self, image: str) -> Binary | str:
 
         if (isinstance(image, str) and "erro.jpg" not in image):
 
@@ -51,22 +63,41 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
                 image = image.split(",", 1)[1]  # remove o "data:image/png;base64,"
 
-            body["image"] = export_image_string64_to_binary(image)
+            image_exported = export_image_string64_to_binary(image)
     
+        return image_exported
+    
+    
+    def __format_body(self, body: dict, image: Binary) -> dict:
+
+        body = {
+            "code": body["code"],
+            "variants": [{
+                "description": body["description"],
+                "stock": body["stock"],
+                "image": image,
+                "brand": body["brand"],
+                "reference": body["reference"],
+                "location": body["location"],
+                "measure": body["measure"],
+                "keepBuying": body["keepBuying"],
+                "last_change": datetime.now()
+                }
+            ]
+        }
+
         return body
-    
 
-    def __insert_in_database(self, body:dict) -> dict:
 
-        code = body["code"]
-        
-        response = self.__repository.insert_product_item(code, body)
+    def __insert_in_database(self, body:dict) -> InsertProductInterface:
+
+        response = self.__repository.insert_product(body)
         
         return response
     
     
     def __format_response(self, body: dict) -> HttpResponse:
-
+        
         return HttpResponse(
             body={
                 "data":{

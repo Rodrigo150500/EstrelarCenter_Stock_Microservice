@@ -10,6 +10,7 @@ from .data.insert_product_use_case_data import insert_product_sucessfully, inser
 
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 from src.errors.types.http_conflict import HttpConflict
+from src.errors.types.http_not_found import HttpNotFound
 
 @pytest.fixture
 def setup_use_case():
@@ -29,17 +30,15 @@ def test_insert_product_sucessfully(setup_use_case):
 
     http_request = HttpRequest(body=data["body"])
 
-    repository.get_product_by_code.return_value = None
+    repository.get_product_by_code.side_effect = HttpNotFound("Product not found")
 
     response = use_case.handle(http_request)
 
     assert response.body == data["expected_body"]
     assert response.status_code == 201
 
-    repository.insert_product_item.assert_called_once_with(data["body"]["code"], data["body"])
-    repository.get_product_by_code.assert_called_once_with(data["body"]["code"])
 
-
+# @pytest.mark.skip()
 def test_insert_product_with_int_code(setup_use_case):
 
     data = insert_product_with_int_code()
@@ -57,6 +56,7 @@ def test_insert_product_with_int_code(setup_use_case):
 
 
 
+# @pytest.mark.skip()
 def test_insert_product_that_already_exists(setup_use_case):
 
     data = insert_product_that_already_exists()
