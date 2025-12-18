@@ -15,7 +15,6 @@ def test_validator_schema_insert_return_sucessfully():
         "image": "http://192.168.15.36:3000/src/image",
         "brand": "kit-kat",
         "reference": "kit-154",
-        "last_change": datetime.now(),
         "location": "CX15",
         "measure": "Caixa",
         "keepBuying": True
@@ -33,7 +32,6 @@ def test_if_not_fill_the_entire_body_return_error():
         "image": "",
         "brand": "",
         "reference": "",
-        "last_change": "",
         "location": "",
         "measure": "",
         "keepBuying": ""
@@ -55,7 +53,6 @@ def test_fill_just_the_required_fields():
         "image": "http://192.168.15.36:3000/src/image",
         "brand": "",
         "reference": "",
-        "last_change": datetime.now(),
         "location": "",
         "measure": "Caixa",
         "keepBuying": False
@@ -73,7 +70,6 @@ def test_fill_the_fields_with_wrong_type_return_error():
         "image": "http://192.168.15.36:3000/src/image",
         "brand": "",
         "reference": "",
-        "last_change": datetime.now(),
         "location": "",
         "measure": "Caixa",
         "keepBuying": "False" #Must be boolean

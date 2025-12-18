@@ -11,7 +11,6 @@ def insert_product_validator_request(body: dict):
             "image": {"type": "string", "required": True},
             "brand": {"type": "string", "required": False},
             "reference": {"type": "string", "required": False},
-            "last_change": {"type": "datetime", "required": True},
             "location": {"type": "string", "required": False},
             "measure": {"type": "string", "required": True},
             "keepBuying": {"type": "boolean", "required": True}
