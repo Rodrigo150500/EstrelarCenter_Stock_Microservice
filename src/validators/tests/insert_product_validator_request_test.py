@@ -17,7 +17,8 @@ def test_validator_schema_insert_return_sucessfully():
         "reference": "kit-154",
         "location": "CX15",
         "measure": "Caixa",
-        "keepBuying": True
+        "keepBuying": True,
+        "quantity_change": "+4"
     }
 
     insert_product_validator_request(body_request)
@@ -34,7 +35,9 @@ def test_if_not_fill_the_entire_body_return_error():
         "reference": "",
         "location": "",
         "measure": "",
-        "keepBuying": ""
+        "keepBuying": "",
+        "quantity_change":""
+
        
     }
 
@@ -55,7 +58,9 @@ def test_fill_just_the_required_fields():
         "reference": "",
         "location": "",
         "measure": "Caixa",
-        "keepBuying": False
+        "keepBuying": False,
+        "quantity_change": "-4"
+
     }
 
     insert_product_validator_request(body_request)
@@ -72,7 +77,9 @@ def test_fill_the_fields_with_wrong_type_return_error():
         "reference": "",
         "location": "",
         "measure": "Caixa",
-        "keepBuying": "False" #Must be boolean
+        "keepBuying": "False", #Must be boolean
+        "quantity_change": 0 #Must be string
+
     }
 
     with pytest.raises(HttpUnprocessableEntity):
