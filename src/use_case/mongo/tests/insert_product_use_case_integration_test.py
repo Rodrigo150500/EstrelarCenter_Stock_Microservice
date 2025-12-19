@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 load_dotenv("dev.env")
 
+import os
+
 import pytest
 
 from src.model.mongo.settings.mongo_db_connection import mongo_db_connection
@@ -13,6 +15,8 @@ from .data.insert_product_use_case_integration_data import insert_product_sucess
 
 from src.errors.types.http_conflict import HttpConflict
 
+COLLECTION_NAME = os.getenv("COLLECTION_NAME_MONGO_DB_PRODUCTS")
+
 @pytest.fixture
 def setup_use_case():
     
@@ -22,9 +26,11 @@ def setup_use_case():
     repository = ProductRepositoryMongo(connection)
     use_case = InsertProductMongoUseCase(repository)
 
+    connection.get_collection(COLLECTION_NAME).delete_many({})
+
     return use_case
 
-@pytest.mark.skip()
+
 def test_insert_product_sucessfully(setup_use_case):
 
     data = insert_product_sucessfully()
@@ -39,7 +45,6 @@ def test_insert_product_sucessfully(setup_use_case):
     assert response.status_code == 201
 
 
-@pytest.mark.skip()
 def test_insert_product_that_already_exists(setup_use_case):
 
     data = insert_product_that_already_exists()
@@ -47,6 +52,8 @@ def test_insert_product_that_already_exists(setup_use_case):
     use_case = setup_use_case
 
     http_request = HttpRequest(body=data["body"])
+
+    use_case.handle(http_request)
 
     with pytest.raises(HttpConflict):
 

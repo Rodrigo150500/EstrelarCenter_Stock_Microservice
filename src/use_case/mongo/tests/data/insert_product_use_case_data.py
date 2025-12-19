@@ -2,25 +2,9 @@ from unittest.mock import ANY
 
 from bson.objectid import ObjectId
 
-from src.utils.export_image_binary_to_string64 import export_image_binary_to_string64
 from src.utils.export_image_string64_to_binary import export_image_string64_to_binary
 
-from datetime import datetime
-
-imagem_bytes = bytes([
-    0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A,
-    0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
-    0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
-    0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53,
-    0xDE, 0x00, 0x00, 0x00, 0x0A, 0x49, 0x44, 0x41,
-    0x54, 0x08, 0xD7, 0x63, 0x60, 0x00, 0x00, 0x00,
-    0x02, 0x00, 0x01, 0xE2, 0x26, 0x05, 0x9B, 0x00,
-    0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE,
-    0x42, 0x60, 0x82
-])
-
-image_string = "'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACklEQVQI12NgAAAAAgAB4iYFmwAAAABJRU5ErkJggg=='"
-
+from src.utils.image_type import image_string
 
 def insert_product_sucessfully():
     
@@ -33,7 +17,9 @@ def insert_product_sucessfully():
         "reference": "kit-154",
         "location": "CX15",
         "measure": "Caixa",
-        "keepBuying": True
+        "keepBuying": True,
+        "quantity_change": 4
+
     }
 
 
@@ -48,7 +34,8 @@ def insert_product_sucessfully():
             "location": "CX15",
             "measure": "Caixa",
             "keepBuying": True,
-            "last_change": ANY
+            "last_change": ANY,
+            "quantity_change": 4
         }]
     }
 
@@ -79,7 +66,8 @@ def insert_product_with_int_code():
         "reference": "kit-154",
         "location": "CX15",
         "measure": "Caixa",
-        "keepBuying": True
+        "keepBuying": True,
+        "quantity_change": 3
     }
 
     data = {
@@ -101,6 +89,8 @@ def insert_product_that_already_exists():
             'location': "P9",
             'reference': "KIT104",
             "keepBuying": True,
+            "quantity_change": 3
+
     }
 
     get_product_by_code = {
@@ -114,7 +104,9 @@ def insert_product_that_already_exists():
             'last_change': ANY  ,
             'image': "imagem_bytes",
             'location': "P9",
-            'reference': "KIT104"
+            'reference': "KIT104",
+            "quantity_change": 3
+
         }]
     }
 

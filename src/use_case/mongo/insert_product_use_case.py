@@ -81,7 +81,8 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
                 "location": body["location"],
                 "measure": body["measure"],
                 "keepBuying": body["keepBuying"],
-                "last_change": datetime.now()
+                "last_change": datetime.now(),
+                "quantity_change": body["quantity_change"]
                 }
             ]
         }

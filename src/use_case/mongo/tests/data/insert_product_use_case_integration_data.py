@@ -15,7 +15,8 @@ def insert_product_sucessfully():
         "reference": "kit-154",
         "location": "CX15",
         "measure": "Caixa",
-        "keepBuying": True
+        "keepBuying": True,
+        "quantity_change": 5
     }
 
 
@@ -31,7 +32,9 @@ def insert_product_sucessfully():
             "location": "CX15",
             "measure": "Caixa",
             "keepBuying": True,
-            "last_change": ANY
+            "last_change": ANY,
+            "quantity_change": 5
+
         }]
     }
 
@@ -62,7 +65,9 @@ def insert_product_that_already_exists():
         "reference": "kit-154",
         "location": "CX15",
         "measure": "Caixa",
-        "keepBuying": True
+        "keepBuying": True,
+        "quantity_change": 5
+
     }
 
    
