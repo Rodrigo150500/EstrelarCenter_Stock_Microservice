@@ -18,7 +18,7 @@ def test_validator_schema_insert_return_sucessfully():
         "location": "CX15",
         "measure": "Caixa",
         "keepBuying": True,
-        "quantity_change": "+4"
+        "quantity_change": 4
     }
 
     insert_product_validator_request(body_request)
@@ -59,7 +59,7 @@ def test_fill_just_the_required_fields():
         "location": "",
         "measure": "Caixa",
         "keepBuying": False,
-        "quantity_change": "-4"
+        "quantity_change": -4
 
     }
 
@@ -78,7 +78,7 @@ def test_fill_the_fields_with_wrong_type_return_error():
         "location": "",
         "measure": "Caixa",
         "keepBuying": "False", #Must be boolean
-        "quantity_change": 0 #Must be string
+        "quantity_change": "0" #Must be integer
 
     }
 

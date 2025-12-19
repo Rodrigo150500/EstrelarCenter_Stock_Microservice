@@ -14,7 +14,7 @@ def insert_product_validator_request(body: dict):
             "location": {"type": "string", "required": False},
             "measure": {"type": "string", "required": True},
             "keepBuying": {"type": "boolean", "required": True},
-            "quantity_change":{"type": "string", "required": True}
+            "quantity_change":{"type": "integer", "required": True}
             })
 
   response = body_validate.validate(body)
