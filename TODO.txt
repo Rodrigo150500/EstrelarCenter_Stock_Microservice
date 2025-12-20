@@ -1,0 +1,6 @@
+Realizar
+ - DeleteProductUseCase
+ - GetAllProductsUseCase
+ - GetImageUseCase
+ - RemoveItemUseCase
+ - UpdateProductUseCase
