@@ -5,7 +5,7 @@ from cerberus import Validator
 def get_product_validator_request(params: dict):
   
   body_validator = Validator({  
-        "code":{"type": "string", "required":True}
+        "code":{"type": "string", "required":True, "minlength": 1}
             })
 
   response = body_validator(params)
