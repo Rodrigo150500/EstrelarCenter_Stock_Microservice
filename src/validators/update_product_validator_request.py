@@ -6,7 +6,7 @@ def update_product_validator_request(body: dict, params: dict):
 
   params_validate = Validator({
     "code": {"type": "string", "required": True, "empty": False},
-    "index": {"type": "string", "required": True, "minlength": 1}
+    "_id": {"type": "string", "required": True, "minlength": 1}
   })
 
   body_validate = Validator({         
