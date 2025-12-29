@@ -143,3 +143,22 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
             print(f"Error: [ProductRepositoryMongo][RemoveVariantByObjectId]: {str(exception)}")
 
             raise HttpUnavailableService("Error: Database unavailable")
+        
+    
+    def check_if_variant_exists(self, code: str, object_id: str) -> bool:
+
+        try:
+
+            response = self.__collection().find(
+                {"code": code, "variants._id": ObjectId(object_id)}
+            )
+
+            if response: return True
+
+            return False
+        
+        except Exception as exception:
+
+            print(f"Error: [ProductRepositoryMongo][CheckIfVariantExists]: {str(exception)}")
+
+            raise HttpUnavailableService("Error: Database unavailable")

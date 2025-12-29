@@ -1,6 +1,7 @@
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
 
+from src.use_case.mongo.interfaces.update_product_use_case_interface import UpdateProductMongoUseCaseInterface
 from src.model.mongo.repository.product_repository import ProductRepositoryMongoInterface
 
 from src.validators.update_product_validator_request import update_product_validator_request
@@ -11,13 +12,12 @@ from src.errors.types.http_internal_server_error import HttpInternalServerError
 
 from src.utils.export_image_string64_to_binary import export_image_string64_to_binary
 
-from bson import Binary
 
-class UpdateProductMongoUseCase:
+class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
     def __init__(self, repository: ProductRepositoryMongoInterface):
         
-        self.__repository = repository.
+        self.__repository = repository
 
     
     def handle(self, http_request: HttpRequest) -> HttpResponse:
@@ -28,12 +28,14 @@ class UpdateProductMongoUseCase:
         update_product_validator_request(body, params)
 
         self.__verify_if_exists_in_database(params)
+    
+        product_with_image_string = self.__transform_image_to_binary(body)
 
-        product_formatted_to_update = self.__format_product_update(body)
+        product_formatted_to_update = self.__format_product_to_update(product_with_image_string)
 
+        self.__update_product(product_formatted_to_update, params)
         
-        
-        response = self.__formatted_response(product_with_image_string)
+        response = self.__formatted_response()
 
         return response
 
@@ -61,7 +63,7 @@ class UpdateProductMongoUseCase:
             raise HttpInternalServerError("Error: Erro interno no servidor")
         
 
-    def __format_product_update(self, body: dict) -> dict:
+    def __format_product_to_update(self, body: dict) -> dict:
 
         body_formatted = {}
 
@@ -72,33 +74,45 @@ class UpdateProductMongoUseCase:
         return body_formatted
 
 
-    def __export_image_to_binary(self, image: str) -> Binary:
+    def __transform_image_to_binary(self, body: dict) -> dict:
 
-        binary_image = export_image_string64_to_binary(image)
+        if "image" in body:
 
-        return image
+            image_string = body["image"]
+
+            image_binary = export_image_string64_to_binary(image_string)
+
+            body["image"] = image_binary
+
+        return body
 
     
-    def __export_images_to_string(self, products: dict) -> dict:
-                       
-        for variant in products["variants"]:
+    def __update_product(self, product: dict, params: dict) -> None:
 
-            image_binary = variant["image"]
+        try:
 
-            image_string = export_image_binary_to_string64(image_binary)
+            code = params["code"]
+            object_id = params["_id"]
 
-            variant["image"] = image_string
+            self.__repository.update_product_variant_by_object_id(code, object_id, product)
 
-        return products
+        except HttpUnavailableService:
+            raise 
+
+        except Exception as exception:
+
+            print(f"Error: [UpdateProductMongoUseCase][UpdateProduct]: {str(exception)}")
+
+            raise HttpInternalServerError("Error: Erro interno no servidor")
         
 
-    def __formatted_response(self, product: dict) -> HttpResponse:
+    def __formatted_response(self) -> HttpResponse:
 
         return HttpResponse(
             body={
                 "data":{
                     "operation": "Update",
-                    "count": len(product[])
+                    "count": 1
                 }
             }
         )
