@@ -126,6 +126,9 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
 
             print(f"Error:[ProductRepositoryMongo][UpdateProductVariant]: {str(exception)}")
 
+            raise HttpUnavailableService("Error: Database unvailable")
+
+
 
     def get_all_products(self) -> list:
 
