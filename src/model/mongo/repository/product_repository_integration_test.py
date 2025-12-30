@@ -124,3 +124,15 @@ def test_remove_product(setup_repository):
     assert response.acknowledged == True
     assert response.deleted_count == 1
 
+
+@pytest.mark.skip()
+def test_check_if_variant_exists_data(setup_repository):
+
+    repository = setup_repository
+
+    code = "10"
+    object_id = "6953c87972d481a4b87b65d1"
+
+    response = repository.check_if_variant_exists(code, object_id)
+
+    assert response == True
