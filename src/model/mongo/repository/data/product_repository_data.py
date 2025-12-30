@@ -200,3 +200,18 @@ def remove_product_data():
     }
 
     return data
+
+
+def check_if_variant_exists_data():
+
+    find_one = {
+        "_id": "6953c87972d481a4b87b65d3"
+    }
+
+    
+
+    data = {
+        "find_one": find_one
+    }
+
+    return data

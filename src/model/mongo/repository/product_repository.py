@@ -149,8 +149,9 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
 
         try:
 
-            response = self.__collection().find(
-                {"code": code, "variants._id": ObjectId(object_id)}
+            response = self.__collection.find_one(
+                {"code": code, "variants._id": ObjectId(object_id)},
+                {"_id": 1}
             )
 
             if response: return True
@@ -162,3 +163,9 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
             print(f"Error: [ProductRepositoryMongo][CheckIfVariantExists]: {str(exception)}")
 
             raise HttpUnavailableService("Error: Database unavailable")
+        
+
+
+
+
+
