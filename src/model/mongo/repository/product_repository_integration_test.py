@@ -7,7 +7,7 @@ from .product_repository import ProductRepositoryMongo
 
 from src.errors.types.http_not_found import HttpNotFound
 
-from .data.product_repository_integration_data import insert_product_variant_data, insert_new_variant_in_product_exist_data, update_product_variant_data
+from .data.product_repository_integration_data import insert_product_variant_data, insert_new_variant_in_product_exist_data, update_product_variant_data, check_if_product_exists_data
 mongo_db_connection.connect()
 
 
@@ -136,3 +136,28 @@ def test_check_if_variant_exists_data(setup_repository):
     response = repository.check_if_variant_exists(code, object_id)
 
     assert response == True
+
+
+@pytest.mark.skip()
+def test_check_if_product_exists(setup_repository):
+
+    data = check_if_product_exists_data()
+
+    repository = setup_repository
+
+    repository.insert_product(data["fields"])
+
+    code = "10"
+
+    repository.check_if_product_exists(code)
+
+
+@pytest.mark.skip()
+def test_check_if_product_not_exists(setup_repository):
+
+    repository = setup_repository
+
+    code = "100"
+
+    with pytest.raises(HttpNotFound):
+        repository.check_if_product_exists(code)

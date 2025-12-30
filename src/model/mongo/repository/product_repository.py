@@ -166,6 +166,26 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
             raise HttpUnavailableService("Error: Database unavailable")
         
 
+    def check_if_product_exists(self, code: str) -> None:
+
+        try:
+
+            response = self.__collection.find_one(
+                {"code": code},
+                {"_id": 1}
+            )
+
+            if not response: raise HttpNotFound("Error: Product not found")
+
+        except HttpNotFound:
+            raise
+
+        except Exception as exception:
+
+            print(f"Error: [ProductRepositoryMongo][CheckIfVariantExists]: {str(exception)}")
+
+            raise HttpUnavailableService("Error: Database unavailable")
+        
 
 
 

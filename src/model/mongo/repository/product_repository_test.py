@@ -174,3 +174,17 @@ def test_check_if_variant_exists(setup_repository):
 
     collection.find_one.assert_called_once_with({"code": code, "variants._id": ObjectId(object_id)},
                 {"_id": 1})
+
+
+def test_check_if_product_exists(setup_repository):
+
+    collection = setup_repository["collection"]
+    repository = setup_repository["repository"]
+
+    code = "10"
+
+    collection.find_one.return_value = {"_id": ObjectId()}
+
+    repository.check_if_product_exists(code)
+
+    collection.find_one.assert_called_once_with({"code": code},{"_id": 1})
