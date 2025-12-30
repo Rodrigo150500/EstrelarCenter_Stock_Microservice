@@ -6,7 +6,7 @@ from src.use_case.mongo.insert_product_use_case import InsertProductMongoUseCase
 
 from src.main.http_types.http_request import HttpRequest
 
-from .data.insert_product_use_case_data import insert_product_sucessfully, insert_product_with_int_code, insert_product_that_already_exists
+from insert_product_use_case_test_data import insert_product_sucessfully, insert_product_with_int_code, insert_product_that_already_exists
 
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 from src.errors.types.http_conflict import HttpConflict
