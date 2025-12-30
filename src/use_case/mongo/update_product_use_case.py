@@ -39,7 +39,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         self.__update_product(product_formatted_to_update, params)
         
-        response = self.__formatted_response()
+        response = self.__formatted_response(body)
 
         return response
 
@@ -118,13 +118,17 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
             raise HttpInternalServerError("Error: Erro interno no servidor")
         
 
-    def __formatted_response(self) -> HttpResponse:
+    def __formatted_response(self, body: dict) -> HttpResponse:
+
+        if "image" in body:
+            del body["image"]
 
         return HttpResponse(
             body={
                 "data":{
                     "operation": "Update",
-                    "count": 1
+                    "count": 1,
+                    "attributes": body
                 }
             },
             status_code=200

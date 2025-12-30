@@ -25,7 +25,8 @@ def update_product_sucessfully_data():
     expected_response = {
         "data":{
             "operation": "Update",
-            "count": 1
+            "count": 1,
+            "attributes": body
         }
     }
 

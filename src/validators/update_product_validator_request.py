@@ -32,6 +32,8 @@ def update_product_validator_request(body: dict, params: dict):
 
     formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
 
+    print(f"Error:[UpdateProductValidator][Body]: {formatted_error_message}")
+
     raise HttpUnprocessableEntity(
       message=formatted_error_message
     )
@@ -42,6 +44,8 @@ def update_product_validator_request(body: dict, params: dict):
     error_message = error[error_key_message]
 
     formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
+
+    print(f"Error:[UpdateProductValidator][Params]: {formatted_error_message}")
 
     raise HttpUnprocessableEntity(
       message=formatted_error_message
