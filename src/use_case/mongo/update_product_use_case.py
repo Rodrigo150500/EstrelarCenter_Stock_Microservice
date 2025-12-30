@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
 
@@ -31,7 +33,9 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
     
         product_with_image_string = self.__transform_image_to_binary(body)
 
-        product_formatted_to_update = self.__format_product_to_update(product_with_image_string)
+        product_last_change_updated = self.__update_last_change_field(product_with_image_string)
+
+        product_formatted_to_update = self.__format_product_to_update(product_last_change_updated)
 
         self.__update_product(product_formatted_to_update, params)
         
@@ -43,10 +47,11 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
     def __verify_if_exists_in_database(self, params: dict) -> None:
 
         code = params["code"]
+        object_id = params["_id"]
 
         try:
 
-            self.__repository.get_product_by_code(code) #TODO Trocar por um modelo que verifica se o produto existe e se o _id da variante também exista
+            self.__repository.check_if_variant_exists(code, object_id) 
             
             return 
 
@@ -61,7 +66,14 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
             print(f"Error: [UpdateProductMongoUseCase][GetProductFromDatabase]: {str(exception  )}")
 
             raise HttpInternalServerError("Error: Erro interno no servidor")
-        
+    
+
+    def __update_last_change_field(self, product: dict) -> dict:
+
+        product["last_change"] = datetime.now()
+
+        return product
+
 
     def __format_product_to_update(self, body: dict) -> dict:
 
@@ -114,5 +126,6 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
                     "operation": "Update",
                     "count": 1
                 }
-            }
+            },
+            status_code=200
         )
