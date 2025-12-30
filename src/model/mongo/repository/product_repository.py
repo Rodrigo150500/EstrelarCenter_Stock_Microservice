@@ -156,6 +156,9 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
 
             if not response: raise HttpNotFound("Error: Product not found")
 
+        except HttpNotFound:
+            raise
+
         except Exception as exception:
 
             print(f"Error: [ProductRepositoryMongo][CheckIfVariantExists]: {str(exception)}")
