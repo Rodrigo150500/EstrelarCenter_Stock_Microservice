@@ -170,9 +170,7 @@ def test_check_if_variant_exists(setup_repository):
 
     collection.find.return_value = data["find_one"]
 
-    response = repository.check_if_variant_exists(code, object_id)
-
-    assert response == True
+    repository.check_if_variant_exists(code, object_id)
 
     collection.find_one.assert_called_once_with({"code": code, "variants._id": ObjectId(object_id)},
                 {"_id": 1})

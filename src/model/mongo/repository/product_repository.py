@@ -145,7 +145,7 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
             raise HttpUnavailableService("Error: Database unavailable")
         
     
-    def check_if_variant_exists(self, code: str, object_id: str) -> bool:
+    def check_if_variant_exists(self, code: str, object_id: str) -> None:
 
         try:
 
@@ -154,10 +154,8 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
                 {"_id": 1}
             )
 
-            if response: return True
+            if not response: raise HttpNotFound("Error: Product not found")
 
-            return False
-        
         except Exception as exception:
 
             print(f"Error: [ProductRepositoryMongo][CheckIfVariantExists]: {str(exception)}")
