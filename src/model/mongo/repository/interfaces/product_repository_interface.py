@@ -39,3 +39,8 @@ class ProductRepositoryMongoInterface(ABC):
     @abstractmethod
     def get_all_products(self) -> list:
         pass
+
+
+    @abstractmethod
+    def check_if_variant_exists(self, code: str, object_id: str) -> bool:
+        pass
