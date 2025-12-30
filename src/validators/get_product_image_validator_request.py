@@ -10,7 +10,17 @@ def get_image_product_validator_request(params: dict):
             })
 
   response = params_validator(params)
+
   if response is False:
+
+    error = params_validator.errors
+    error_key_message = list(error.keys())[0]
+    error_message = error[error_key_message]
+
+    formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
+
+    print(f"Error:[GetImageProductValidatorRequest][Params]: {formatted_error_message}")
+
     raise HttpUnprocessableEntity(
       message=params_validator.errors,
       expected_data={

@@ -12,6 +12,14 @@ def delete_product_validator_request(params: dict):
 
   if response is False:
 
+    error = body_validator.errors
+    error_key_message = list(error.keys())[0]
+    error_message = error[error_key_message]
+
+    formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
+
+    print(f"Error:[DeleteProductValidator][Params]: {formatted_error_message}")
+
     raise HttpUnprocessableEntity(
       message=body_validator.errors
     )

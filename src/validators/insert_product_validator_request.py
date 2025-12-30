@@ -27,6 +27,8 @@ def insert_product_validator_request(body: dict):
 
     formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
 
+    print(f"Error:[InsertProductValidatorRequest][Body]: {formatted_error_message}")
+
     raise HttpUnprocessableEntity(
       message=formatted_error_message
     )
