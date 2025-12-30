@@ -1,4 +1,4 @@
-from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryInterface
+from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryMongoInterface
 from .interfaces.delete_product_use_case_interface import DeleteProductUseCaseInterface
 
 from src.main.http_types.http_request import HttpRequest
@@ -10,11 +10,11 @@ from src.errors.types.http_not_found import HttpNotFound
 
 class DeleteProductMongoUseCase(DeleteProductUseCaseInterface):
 
-    def __init__(self, repository: ProductRepositoryInterface):
+    def __init__(self, repository: ProductRepositoryMongoInterface):
         
         self.__repository = repository
 
-
+        
     def handle(self, http_request: HttpRequest) -> HttpResponse:
 
         params = http_request.params
