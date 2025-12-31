@@ -7,6 +7,8 @@ from src.main.http_types.http_response import HttpResponse
 from src.validators.delete_product_validator_request import delete_product_validator_request
 
 from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unavailable_service import HttpUnavailableService
+from src.errors.types.http_internal_server_error import HttpInternalServerError
 
 class DeleteProductMongoUseCase(DeleteProductUseCaseInterface):
 
@@ -32,18 +34,40 @@ class DeleteProductMongoUseCase(DeleteProductUseCaseInterface):
 
     def __verify_if_exists_in_database(self, params: dict) -> None:
 
-        code = params["code"]
+        try:
+            code = params["code"]
 
-        product = self.__repository.get_product_by_code(code)
+            self.__repository.check_if_product_exists(code)
 
-        if not product: raise HttpNotFound("Error: Product not found")
+        except HttpNotFound:
+            raise
 
+        except HttpUnavailableService:
+            raise
+
+        except Exception as exception:
+
+            print(f"Error: [DeleteProductMongoUseCase][VerifyIfExistsInDatabase]: {str(exception  )}")
+
+            raise HttpInternalServerError("Error: Erro interno no servidor")
+        
 
     def __delete_product_in_database(self, params: dict) -> None:
 
-        code = params["code"]
+        try:
 
-        self.__repository.delete_product_by_code(code)
+            code = params["code"]
+
+            self.__repository.delete_product_by_code(code)
+
+        except HttpUnavailableService:
+            raise
+
+        except Exception as exception:
+
+            print(f"Error: [UpdateProductMongoUseCase][DeleteProductInDatabase]: {str(exception  )}")
+
+            raise HttpInternalServerError("Error: Erro interno no servidor")
 
     
     def __format_response(self, params: dict) -> HttpResponse:
