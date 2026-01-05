@@ -16,7 +16,7 @@ def get_image_sucessfully_data():
 
     params = {
         "code": '16',
-        "item": 0
+        "_id": "64a7f3f5f1c2e3b1a5d6e7f8"
     }
 
     get_product_by_code = {
@@ -58,7 +58,7 @@ def get_image_return_product_not_found_data():
 
     params = {
         "code": '16',
-        "item": 0
+        "_id": "64a7f3f5f1c2e3b1a5d6e7f8"
     }
 
     data = {
