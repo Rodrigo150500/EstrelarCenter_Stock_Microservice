@@ -10,7 +10,7 @@ def test_validate_update_sucessfully():
 
     params = {
         "code": "123",
-        "_id": "0"
+        "_id": "68b70ef826423e500863c1c7"
     }
 
     body = {
@@ -32,8 +32,8 @@ def test_validate_update_sucessfully():
 def test_validate_wrong_input_type_return_error():
 
     params = {
-        "code": "123",
-        "_id": 1 #must be string 
+        "code": 123,
+        "_id": "68b70ef826423e500863c1c7" #must be string 
     }
 
     body = {
@@ -58,7 +58,7 @@ def test_not_filling_body_return_sucessfully():
 
     params = {
         "code": "123",
-        "_id": "1" 
+        "_id": "68b70ef826423e500863c1c7" 
     }
 
     body = {

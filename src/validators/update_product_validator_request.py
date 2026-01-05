@@ -1,3 +1,7 @@
+from bson.objectid import ObjectId
+from bson.errors import InvalidId
+
+
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 from cerberus import Validator
 
@@ -21,6 +25,16 @@ def update_product_validator_request(body: dict, params: dict):
     "keepBuying": {"type": "boolean", "required": False},
     "quantity_change":{"type": "integer", "required": False}     
   })
+
+  try:
+
+    ObjectId(params["_id"])
+  
+  except (InvalidId) as exception:
+
+    print(f"Error:[GetImageProductValidatorRequest][_id]: {str(exception)}")
+    
+    raise HttpUnprocessableEntity(f"Error: {str(exception)}")
 
   response_body = body_validate.validate(body)
   response_params = params_validate.validate(params)
