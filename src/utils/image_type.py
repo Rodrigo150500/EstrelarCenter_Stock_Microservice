@@ -10,5 +10,5 @@ imagem_bytes = bytes([
         0x42, 0x60, 0x82
     ])
 
-image_string = "'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACklEQVQI12NgAAAAAgAB4iYFmwAAAABJRU5ErkJggg=='"
+image_string = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACklEQVQI12NgAAAAAgAB4iYFmwAAAABJRU5ErkJggg=="
 
