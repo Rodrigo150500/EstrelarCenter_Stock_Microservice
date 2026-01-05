@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 from src.model.mongo.repository.interfaces.insert_product_interface import InsertProductInterface
 from pymongo.results import DeleteResult, UpdateResult
 
+from bson.binary import Binary
+
 
 class ProductRepositoryMongoInterface(ABC):
 
@@ -47,4 +49,9 @@ class ProductRepositoryMongoInterface(ABC):
 
     @abstractmethod
     def check_if_product_exists(self, code: str) -> None:
+        pass
+
+
+    @abstractmethod
+    def get_variant_image_by_code(self, code: str, object_id: str) -> Binary:
         pass

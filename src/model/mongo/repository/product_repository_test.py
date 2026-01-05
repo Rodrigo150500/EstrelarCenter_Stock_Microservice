@@ -1,6 +1,8 @@
 import pytest
 
-from unittest.mock import Mock, call
+from src.utils.image_type import imagem_bytes
+
+from unittest.mock import Mock
 
 from .product_repository import ProductRepositoryMongo
 
@@ -9,6 +11,7 @@ from .data.product_repository_data import insert_product_data, insert_new_varian
 from src.errors.types.http_not_found import HttpNotFound
 
 from bson.objectid import ObjectId
+from bson.binary import Binary
 
 @pytest.fixture
 def setup_repository():
@@ -188,3 +191,18 @@ def test_check_if_product_exists(setup_repository):
     repository.check_if_product_exists(code)
 
     collection.find_one.assert_called_once_with({"code": code},{"_id": 1})
+
+
+def test_get_image_sucessfully(setup_repository):
+    
+    collection = setup_repository["collection"]
+    repository = setup_repository["repository"]
+
+    code = "10"
+    object_id = str(ObjectId())
+
+    collection.find_one.return_value = imagem_bytes
+
+    image = repository.get_variant_image_by_code(code, object_id)
+
+    assert isinstance(image, Binary)

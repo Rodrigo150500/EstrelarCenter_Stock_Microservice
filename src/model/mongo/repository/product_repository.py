@@ -1,5 +1,7 @@
 import os
 
+from bson.binary import Binary
+
 from src.errors.types.http_unavailable_service import HttpUnavailableService
 from src.errors.types.http_not_found import HttpNotFound
 
@@ -187,6 +189,27 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
             raise HttpUnavailableService("Error: Database unavailable")
         
 
+    def get_variant_image_by_code(self, code: str, object_id: str) -> Binary:
 
+        try:
 
+            product = self.__collection.find_one(
+                {"code": code, "variants._id": ObjectId(object_id) },
+                {   "_id":0,
+                    "variants.$": 1}
+            )
+            
+            if not product: raise HttpNotFound("Error: Product not found")
+            
+            image = product["variants"][0]["image"]
+            
+            return image
 
+        except HttpNotFound:
+            raise
+
+        except Exception as exception:
+
+            print(f"Error: [ProductRepositoryMongo][CheckIfVariantExists]: {str(exception)}")
+
+            raise HttpUnavailableService("Error: Database unavailable")

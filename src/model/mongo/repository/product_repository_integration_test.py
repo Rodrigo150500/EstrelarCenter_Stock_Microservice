@@ -161,3 +161,14 @@ def test_check_if_product_not_exists(setup_repository):
 
     with pytest.raises(HttpNotFound):
         repository.check_if_product_exists(code)
+
+from bson.binary import Binary
+def test_get_image_variant_sucessfully(setup_repository):
+    
+    repository = setup_repository
+
+    image = repository.get_variant_image_by_code("10", "6955894b90cd6b2cf5422628")    
+
+    print(image), Binary
+
+    assert isinstance(image, bytes)
