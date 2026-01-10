@@ -36,9 +36,6 @@ def get_image_product_validator_request(params: dict):
     print(f"Error:[GetImageProductValidatorRequest][Params]: {formatted_error_message}")
 
     raise HttpUnprocessableEntity(
-      message=params_validator.errors,
-      expected_data={
-        "code":"123"
-      }
+      message=params_validator.errors     
     )
   
