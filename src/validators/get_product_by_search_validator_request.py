@@ -8,7 +8,7 @@ from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 def get_product_by_search_validator_request(params: dict) -> None:
 
     params_validator = Validator({
-        "search": {"type": "string", "required": True},
+        "search": {"type": "string", "required": True, "empty": False},
         "fields": {"type": "list", "required": True, "schema": {"type": "string", "allowed": ["description", "reference", "brand"]}},
         "last_id": {"type": "string", "required": True},
         
