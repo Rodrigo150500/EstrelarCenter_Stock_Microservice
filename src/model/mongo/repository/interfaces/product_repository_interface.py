@@ -55,3 +55,8 @@ class ProductRepositoryMongoInterface(ABC):
     @abstractmethod
     def get_variant_image_by_code(self, code: str, object_id: str) -> Binary:
         pass
+
+    
+    @abstractmethod
+    def search_by_text(self, pipeline: list) -> list:
+        pass

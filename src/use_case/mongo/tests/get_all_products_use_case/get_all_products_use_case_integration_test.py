@@ -5,7 +5,7 @@ load_dotenv("dev.env")
 
 from src.model.mongo.settings.mongo_db_connection import mongo_db_connection
 from src.model.mongo.repository.product_repository import ProductRepositoryMongo
-from src.use_case.mongo.get_all_products_use_case import GetAllProductsMongoUseCase
+from src.use_case.mongo.get_product_by_search_use_case import GetAllProductsMongoUseCase
 
 
 @pytest.fixture

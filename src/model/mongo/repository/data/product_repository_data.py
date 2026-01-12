@@ -215,3 +215,8 @@ def check_if_variant_exists_data():
     }
 
     return data
+
+
+def search_by_text_data():
+
+    

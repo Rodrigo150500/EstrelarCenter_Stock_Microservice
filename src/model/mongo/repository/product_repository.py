@@ -213,3 +213,8 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
             print(f"Error: [ProductRepositoryMongo][CheckIfVariantExists]: {str(exception)}")
 
             raise HttpUnavailableService("Error: Database unavailable")
+
+
+    def search_by_text(self, pipeline: list) -> list:
+
+        return list(self.__collection.aggregate(pipeline))

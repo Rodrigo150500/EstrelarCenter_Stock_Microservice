@@ -1,6 +1,6 @@
 Realizar
- - DeleteProductUseCase
+ - DeleteProductUseCase OK
  - GetAllProductsUseCase
- - GetImageUseCase
+ - GetImageUseCase OK
  - RemoveItemUseCase
- - UpdateProductUseCase ok
+ - UpdateProductUseCase OK

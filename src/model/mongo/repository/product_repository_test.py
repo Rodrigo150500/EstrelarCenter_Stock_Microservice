@@ -6,7 +6,7 @@ from unittest.mock import Mock
 
 from .product_repository import ProductRepositoryMongo
 
-from .data.product_repository_data import insert_product_data, insert_new_variant_in_product_exist_data, get_product_by_code_return_product_data, update_product_variant_data, get_all_products_data, remove_item_data, remove_product_data, check_if_variant_exists_data
+from .data.product_repository_data import insert_product_data, insert_new_variant_in_product_exist_data, get_product_by_code_return_product_data, update_product_variant_data, get_all_products_data, remove_item_data, remove_product_data, check_if_variant_exists_data, search_by_text_data
 
 from src.errors.types.http_not_found import HttpNotFound
 
@@ -206,3 +206,13 @@ def test_get_image_sucessfully(setup_repository):
     image = repository.get_variant_image_by_code(code, object_id)
 
     assert isinstance(image, Binary)
+
+
+def test_search_by_text(setup_repository):
+
+    data = search_by_text_data()
+
+    collection = setup_repository["collection"]
+    repository = setup_repository["repository"]
+
+    collection.aggregate.return_value = list

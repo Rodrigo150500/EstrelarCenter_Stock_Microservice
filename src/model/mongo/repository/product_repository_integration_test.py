@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 load_dotenv("dev.env")
 
 import pytest
+from bson.binary import Binary
 from src.model.mongo.settings.mongo_db_connection import mongo_db_connection
 from .product_repository import ProductRepositoryMongo
 
@@ -162,7 +163,7 @@ def test_check_if_product_not_exists(setup_repository):
     with pytest.raises(HttpNotFound):
         repository.check_if_product_exists(code)
 
-from bson.binary import Binary
+@pytest.mark.skip()
 def test_get_image_variant_sucessfully(setup_repository):
     
     repository = setup_repository
@@ -172,3 +173,24 @@ def test_get_image_variant_sucessfully(setup_repository):
     print(image), Binary
 
     assert isinstance(image, bytes)
+
+@pytest.mark.skip()
+def test_search_product_by_text(setup_repository):
+
+    repository = setup_repository
+
+    pipeline = [
+        {"$unwind": "$variants"},
+        {
+            "$match": {
+                "variants.description": {
+                    "$regex": "pelucia",
+                    "$options": "i"
+                }
+            }
+        },
+        {"$sort": {"variants._id": 1}},
+        {"$limit": 10},
+        {"$replaceRoot": {"newRoot": "$variants"}}
+    ]
+

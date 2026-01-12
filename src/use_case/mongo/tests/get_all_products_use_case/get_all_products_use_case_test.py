@@ -2,7 +2,7 @@ import pytest
 
 from unittest.mock import Mock
 
-from src.use_case.mongo.get_all_products_use_case import GetAllProductsMongoUseCase
+from src.use_case.mongo.get_product_by_search_use_case import GetAllProductsMongoUseCase
 
 from .data.get_all_products_use_case_data import get_all_products_sucessfully_data
 
