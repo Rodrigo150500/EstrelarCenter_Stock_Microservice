@@ -173,6 +173,7 @@ def get_all_products_data():
 
     return data
 
+
 def remove_item_data():
 
     update_one = {
@@ -217,6 +218,59 @@ def check_if_variant_exists_data():
     return data
 
 
+def get_variant_image_by_code_data():
+
+    find_one = {'variants':[{
+             'description': 'Pelucia de brinquedo', 
+             'stock': 10, 
+             'image':b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\nIDAT\x08\xd7c`\x00\x00\x00\x02\x00\x01\xe2&\x05\x9b\x00\x00\x00\x00IEND\xaeB`\x82', 
+             'brand': 'Kit-Kat', 
+             'reference': 'Kit1030', 
+             'last_change': "", 
+             'location': 'A10', 
+             'measure': 'Unidade', 
+             'keepBuying': True}]}
+         
+    
+
+    data = {
+        "find_one": find_one
+    }
+
+    return data
+
 def search_by_text_data():
 
+    aggregate = [
+        {'_id': ObjectId('6962c5a825f1f5b37d821625'), 
+         'description': 'Pelucia de brinquedo', 
+         'stock': 10, 
+         'image':b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\nIDAT\x08\xd7c`\x00\x00\x00\x02\x00\x01\xe2&\x05\x9b\x00\x00\x00\x00IEND\xaeB`\x82', 
+         'brand': 'Kit-Kat', 
+         'reference': 'Kit1030', 
+         'last_change': "", 
+         'location': 'A10', 
+         'measure': 'Unidade', 
+         'keepBuying': True}]
     
+    pipeline = [
+        {"$unwind": "$variants"},
+        {
+            "$match": {
+                "variants.description": {
+                    "$regex": "pelucia",
+                    "$options": "i"
+                }
+            }
+        },
+        {"$sort": {"variants._id": 1}},
+        {"$limit": 10},
+        {"$replaceRoot": {"newRoot": "$variants"}}
+    ]
+
+    data = {
+        "pipeline": pipeline,
+        "aggregate": aggregate
+    }
+
+    return data
