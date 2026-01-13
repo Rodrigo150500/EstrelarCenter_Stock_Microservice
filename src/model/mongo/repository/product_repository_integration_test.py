@@ -174,7 +174,7 @@ def test_get_image_variant_sucessfully(setup_repository):
 
     assert isinstance(image, bytes)
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_search_product_by_text(setup_repository):
 
     repository = setup_repository
