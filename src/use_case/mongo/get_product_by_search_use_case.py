@@ -7,7 +7,9 @@ from src.model.mongo.repository.interfaces.product_repository_interface import P
 from src.main.http_types.http_response import HttpResponse
 from src.main.http_types.http_request import HttpRequest
 
-from .interfaces.get_all_products_use_case_interface import GetProductsBySearchMongoUseCaseInterface
+from src.errors.types.http_not_found import HttpNotFound
+
+from .interfaces.get_products_by_search_use_case_interface import GetProductsBySearchMongoUseCaseInterface
 
 from src.validators.get_product_by_search_validator_request import get_product_by_search_validator_request
 
@@ -95,6 +97,16 @@ class GetProductsBySearchMongoUseCase(GetProductsBySearchMongoUseCaseInterface):
         return pipeline
                 
 
-    def __search_in_database(self, schema: list) -> list:
+    def __search_in_database(self, pipeline: list) -> list:
 
-        products = self.__repository.
+        try:
+
+            products = self.__repository.search_by_text(pipeline)
+
+            return products
+        
+        except HttpNotFound: 
+            raise
+
+        except Exception:
+            raise 
