@@ -15,6 +15,16 @@ def test_validate_schema_sucessfully():
 
     get_product_by_search_validator_request(params)
 
+def test_validate_schema_without_last_id():
+
+    params = {
+        "search": "chocolate",
+        "fields": ["brand", "description"],
+        "last_id": ""
+    }
+
+    get_product_by_search_validator_request(params)
+
 
 def test_multiple_parameter_to_search_sucessfully():
         

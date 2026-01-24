@@ -71,7 +71,7 @@ class GetProductsBySearchMongoUseCase(GetProductsBySearchMongoUseCaseInterface):
         
         if or_conditions:
             pipeline.append({
-                "$match":{{"$or": or_conditions}}
+                "$match":{"$or": or_conditions}
             })
         
         if last_id:
@@ -110,3 +110,15 @@ class GetProductsBySearchMongoUseCase(GetProductsBySearchMongoUseCaseInterface):
 
         except Exception:
             raise 
+    
+
+    def __format_response(self, product: list) -> HttpResponse:
+        return HttpResponse(
+            body={
+                "data":{
+                    "operation": "Get",
+                    "count": len(product),
+                    "attributes": product
+                }
+            }, status_code= 200
+        )

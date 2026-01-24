@@ -10,13 +10,14 @@ def get_product_by_search_validator_request(params: dict) -> None:
     params_validator = Validator({
         "search": {"type": "string", "required": True, "empty": False},
         "fields": {"type": "list", "required": True, "schema": {"type": "string", "allowed": ["description", "reference", "brand"]}},
-        "last_id": {"type": "string", "required": True},
+        "last_id": {"type": "string", "required": False},
         
     })
 
     try:
 
-        ObjectId(params["last_id"])
+        if (params["last_id"]):
+            ObjectId(params["last_id"])
   
     except (InvalidId) as exception:
 
