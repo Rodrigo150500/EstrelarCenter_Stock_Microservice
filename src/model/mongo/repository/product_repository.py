@@ -217,4 +217,20 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
 
     def search_by_text(self, pipeline: list) -> list:
 
-        return list(self.__collection.aggregate(pipeline))
+        try:
+
+            products = list(self.__collection.aggregate(pipeline))
+
+            if not products:
+                raise HttpNotFound("Error: Product not found")
+        
+            return products
+
+        except HttpNotFound:
+            raise
+
+        except Exception as exception:
+
+            print(f"Error: [ProductRepositoryMongo][SearchByText]: {str(exception)}")
+
+            raise HttpUnavailableService("Error: Database unavailable")
