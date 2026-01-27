@@ -1,11 +1,11 @@
 import os
 from bson.objectid import ObjectId
 
-from src.utils.image_type import imagem_bytes
+from src.utils.image_type import imagem_bytes, image_string
 
 PORT = os.getenv("PORT")
 
-def get_product_sucessfully():
+def get_product_sucessfully_data():
 
     params = {
         "code": "16"
@@ -36,34 +36,44 @@ def get_product_sucessfully():
             "image": imagem_bytes
         }]}
     
-    expected_body_response = {
+    expected_response = {
         "data":{
             "operation": "Get",
             "count": 2,
-            "attributes": get_product_by_code
+            "attributes": [{
+            "description": "IMA BORBOLETA C/04",
+            "brand": "MAX PING",
+            "reference": "16",
+            "amount": 0,
+            "location": "",
+            "last_change": "+4  23/09/2025 17:06:12",
+            "stock": 4,
+            "measure": "Unidade",
+            "image": image_string
+        },{
+            "description": "IMA BORBOLETA C/04 A1",
+            "brand": "Ima brand",
+            "reference": "16",
+            "amount": 0,
+            "location": "",
+            "last_change": "+4  23/09/2025 17:06:12",
+            "stock": 4,
+            "measure": "Unidade",
+            "image": image_string
+        }]
         }
     }
-    {
-        'data': {
-            'operation': 'Get',
-            'count': 2,
-            'attributes': [{
-                'description': 'IMA BORBOLETA C/04', 
-                'brand': 'MAX PING', 
-                'reference': '16', 
-                'amount': 0, 
-                'location': '', 'last_change': '+4  23/09/2025 17:06:12', 'stock': 4, 'measure': 'Unidade', 'image': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACklEQVQI12NgAAAAAgAB4iYFmwAAAABJRU5ErkJggg=='}, {'description': 'IMA BORBOLETA C/04 A1', 'brand': 'Ima brand', 'reference': '16', 'amount': 0, 'location': '', 'last_change': '+4  23/09/2025 17:06:12', 'stock': 4, 'measure': 'Unidade', 'image': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACklEQVQI12NgAAAAAgAB4iYFmwAAAABJRU5ErkJggg=='}]}
-        }
+
     data = {
         "params": params,
         "get_product_by_code": get_product_by_code,
-        "expected_body_response": expected_body_response
+        "expected_response": expected_response
     }
 
     return data
 
 
-def get_product_not_found():
+def get_product_not_found_data():
 
     params = {
         "code": "16"
@@ -76,7 +86,7 @@ def get_product_not_found():
     return data
 
 
-def get_product_product_without_image():
+def get_product_product_without_image_data():
 
     params = {
         "code": "16"
@@ -84,7 +94,7 @@ def get_product_product_without_image():
 
     get_product_by_code = {
         "_id": ObjectId("64a7f3f5f1c2e3b1a5d6e7f8"),
-        "16":[{
+        "variants":[{
             "code": "16",
             "description": "IMA BORBOLETA C/04",
             "brand": "MAX PING",
@@ -111,7 +121,7 @@ def get_product_product_without_image():
 
     expected_body = {
         "data":{
-            "operation": "get",
+            "operation": "Get",
             "count": 2,
             "attributes": [{
                 "code": "16",
@@ -147,10 +157,10 @@ def get_product_product_without_image():
     return data
 
 
-def get_product_with_int_code():
+def get_product_with_int_code_data():
 
     params = {
-        "code": 16
+        "code": 16 #Must be string
     }
 
     data = {

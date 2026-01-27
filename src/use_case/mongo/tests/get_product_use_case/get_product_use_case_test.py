@@ -1,5 +1,8 @@
 import pytest
 
+from dotenv import load_dotenv
+load_dotenv("dev.env")
+
 from unittest.mock import Mock
 
 from src.use_case.mongo.get_product_use_case import GetProductMongoUseCase
@@ -7,7 +10,7 @@ from src.use_case.mongo.get_product_use_case import GetProductMongoUseCase
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
 
-from .data.get_product_use_case_data import get_product_sucessfully, get_product_not_found, get_product_product_without_image, get_product_with_int_code
+from get_product_use_case_test_data import get_product_sucessfully_data, get_product_not_found_data, get_product_product_without_image_data, get_product_with_int_code_data
 
 from src.errors.types.http_not_found import HttpNotFound
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
@@ -25,7 +28,7 @@ def setup_use_case():
 
 def test_get_product_sucessfully(setup_use_case):
 
-    data = get_product_sucessfully()
+    data = get_product_sucessfully_data()
 
     repository, use_case = setup_use_case
 
@@ -34,21 +37,21 @@ def test_get_product_sucessfully(setup_use_case):
     http_request = HttpRequest(params=data["params"])
 
     response = use_case.handle(http_request)
-    print(response.body)
-    # assert isinstance(response, HttpResponse)
-    # assert response.body == data["expected_body_response"]
-    # assert response.status_code == 200
+
+    assert isinstance(response, HttpResponse)
+    assert response.body == data["expected_response"]
+    assert response.status_code == 200
 
     repository.get_product_by_code.assert_called_once_with(data["params"]["code"])
 
-@pytest.mark.skip()
+
 def test_get_product_not_found(setup_use_case):
 
-    data = get_product_not_found()
+    data = get_product_not_found_data()
 
     repository, use_case = setup_use_case
 
-    repository.get_product_by_code.return_value = None
+    repository.get_product_by_code.side_effect = HttpNotFound("Error: Product not found")
 
     http_request = HttpRequest(params=data["params"])
 
@@ -59,10 +62,9 @@ def test_get_product_not_found(setup_use_case):
     repository.get_product_by_code.assert_called_once_with(data["params"]["code"])
 
 
-@pytest.mark.skip()
 def test_get_product_product_without_image(setup_use_case):
 
-    data = get_product_product_without_image()
+    data = get_product_product_without_image_data()
 
     repository, use_case = setup_use_case
 
@@ -78,10 +80,9 @@ def test_get_product_product_without_image(setup_use_case):
     repository.get_product_by_code.assert_called_once_with(data["params"]["code"])
 
 
-@pytest.mark.skip()
 def test_get_product_with_int_code(setup_use_case):
 
-    data = get_product_with_int_code()
+    data = get_product_with_int_code_data()
 
     repository, use_case = setup_use_case
 

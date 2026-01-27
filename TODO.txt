@@ -1,6 +1,4 @@
 Realizar
- - DeleteProductUseCase OK
- - GetAllProductsUseCase
- - GetImageUseCase OK
  - RemoveItemUseCase
- - UpdateProductUseCase OK
+ - Test image error when deploy server test
+ 

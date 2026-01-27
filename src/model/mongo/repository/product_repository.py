@@ -168,7 +168,7 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
             raise HttpUnavailableService("Error: Database unavailable")
         
 
-    def check_if_product_exists(self, code: str) -> None:
+    def check_if_product_exists(self, code: str) -> bool:
 
         try:
 
@@ -177,10 +177,9 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
                 {"_id": 1}
             )
 
-            if not response: raise HttpNotFound("Error: Product not found")
+            if not response: return False
 
-        except HttpNotFound:
-            raise
+            return True
 
         except Exception as exception:
 

@@ -16,6 +16,7 @@ from .interfaces.get_product_use_case_interface import GetProductMongoUseCaseInt
 from src.utils.export_image_binary_to_string64 import export_image_binary_to_string64
 
 PORT = os.getenv("PORT")
+HOST = os.getenv("HOST")
 
 class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
@@ -32,7 +33,7 @@ class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
         product = self.__get_product_from_database(params)
 
-        formatted_product = self.__format_product(product)
+        formatted_product = self.__format_image_to_string64(product)
         
         formatted_response = self.__format_response(formatted_product)
 
@@ -54,7 +55,7 @@ class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
         return product
 
 
-    def __format_product(self, product: dict) -> list:
+    def __format_image_to_string64(self, product: dict) -> list:
 
         products = product["variants"]
 
@@ -62,7 +63,13 @@ class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
         for item in products:
 
-            item["image"] = export_image_binary_to_string64(item["image"])
+            try:
+
+                item["image"] = export_image_binary_to_string64(item["image"])
+            
+            except:
+
+                item["image"] = f'{HOST}:{PORT}/static/erro.jpg'
 
             products_list.append(item)
 
