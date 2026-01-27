@@ -37,8 +37,10 @@ class DeleteProductMongoUseCase(DeleteProductUseCaseInterface):
         try:
             code = params["code"]
 
-            self.__repository.check_if_product_exists(code)
+            response = self.__repository.check_if_product_exists(code)
 
+            if response == False: raise HttpNotFound("Error: Product not found")
+            
         except HttpNotFound:
             raise
 

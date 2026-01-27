@@ -51,8 +51,9 @@ def test_delete_product_use_case_sucessfully(setup_use_case):
     assert response.status_code == 200
     assert response.body == data["expected_response"]
 
-    with pytest.raises(HttpNotFound):
-        repository.check_if_product_exists(code)
+    isInDatabase = repository.check_if_product_exists(code)
+
+    assert isInDatabase == False
 
 
 def test_delete_product_not_found(setup_use_case):

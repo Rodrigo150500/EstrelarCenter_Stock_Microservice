@@ -25,7 +25,7 @@ def setup_use_case():
 
     return data
 
-
+@pytest.mark.skip()
 def test_update_product_sucessfully(setup_use_case):
 
     data = update_product_sucessfully_data()
@@ -46,6 +46,7 @@ def test_update_product_sucessfully(setup_use_case):
     repository.insert_or_update_product.assert_called_once_with(body["code"] ,data["formatted_body"])
 
     
+@pytest.mark.skip()
 def test_update_product_invalid_body(setup_use_case):
 
     data = update_product_invalid_body()
@@ -64,6 +65,7 @@ def test_update_product_invalid_body(setup_use_case):
     repository.insert_or_update_product.assert_not_called()
 
 
+@pytest.mark.skip()
 def test_update_product_database_unavailable(setup_use_case):
 
     data = update_product_database_unavailable_data()

@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 
 from src.utils.export_image_string64_to_binary import export_image_string64_to_binary
 
-from src.utils.image_type import image_string
+from src.utils.image_type import image_string, image_string_splitted
 
 def insert_product_sucessfully():
     
@@ -28,7 +28,7 @@ def insert_product_sucessfully():
         "variants":[{
             "description": "Chocolate kit-kat 41g",
             "stock": 15,
-            "image": export_image_string64_to_binary(image_string),
+            "image": export_image_string64_to_binary(image_string_splitted),
             "brand": "kit-kat",
             "reference": "kit-154",
             "location": "CX15",

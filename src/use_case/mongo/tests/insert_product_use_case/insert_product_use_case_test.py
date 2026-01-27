@@ -38,7 +38,6 @@ def test_insert_product_sucessfully(setup_use_case):
     assert response.status_code == 201
 
 
-# @pytest.mark.skip()
 def test_insert_product_with_int_code(setup_use_case):
 
     data = insert_product_with_int_code()
@@ -56,7 +55,6 @@ def test_insert_product_with_int_code(setup_use_case):
 
 
 
-# @pytest.mark.skip()
 def test_insert_product_that_already_exists(setup_use_case):
 
     data = insert_product_that_already_exists()
