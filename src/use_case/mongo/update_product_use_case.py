@@ -51,9 +51,9 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         try:
 
-            self.__repository.check_if_variant_exists(code, object_id) 
+            response = self.__repository.check_if_variant_exists(code, object_id) 
             
-            return 
+            if response == False: raise HttpNotFound("Error: product not found") 
 
         except HttpNotFound:
             raise

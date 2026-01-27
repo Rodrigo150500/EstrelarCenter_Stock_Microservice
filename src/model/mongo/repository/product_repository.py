@@ -156,10 +156,10 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
                 {"_id": 1}
             )
 
-            if not response: raise HttpNotFound("Error: Product not found")
+            if not response: return False
 
-        except HttpNotFound:
-            raise
+            return True
+
 
         except Exception as exception:
 
