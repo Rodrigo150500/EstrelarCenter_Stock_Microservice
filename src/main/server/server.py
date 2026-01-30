@@ -1,6 +1,7 @@
 from flask_cors import CORS
 
 from flask import Flask
+from flasgger import Swagger
 
 from src.main.routes.product_routes import product_routes_bp
 
@@ -8,8 +9,14 @@ from src.model.mongo.settings.mongo_db_connection import mongo_db_connection
 
 mongo_db_connection.connect()
 
-app = Flask(__name__)
+def create_app() -> Flask:
 
-CORS(app)
+    app = Flask(__name__)
 
-app.register_blueprint(product_routes_bp)
+    CORS(app)
+
+    app.register_blueprint(product_routes_bp)
+
+    Swagger(app)
+
+    return app
