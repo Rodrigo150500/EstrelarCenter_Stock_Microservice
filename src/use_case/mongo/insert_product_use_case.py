@@ -14,6 +14,8 @@ from src.utils.export_image_string64_to_binary import export_image_string64_to_b
 from src.errors.types.http_conflict import HttpConflict
 from src.errors.types.http_not_found import HttpNotFound
 
+from bson.objectid import ObjectId
+
 from datetime import datetime
 
 class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
@@ -28,14 +30,14 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
         body = http_request.body
 
         insert_product_validator_request(body)
-
+    
         self.__verify_if_product_exists(body)
 
         image = self.__export_image_to_binary(body["image"])
 
         body_formatted_request = self.__format_body(body, image)
     
-        response = self.__insert_in_database(body_formatted_request) #Response available from database
+        self.__insert_in_database(body_formatted_request)
 
         formatted_response = self.__format_response(body_formatted_request)
 
@@ -44,15 +46,11 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     
     def __verify_if_product_exists(self, body: dict) -> None:
 
-        try:
+        response = self.__repository.check_if_product_exists(body["code"])
 
-            self.__repository.get_product_by_code(body["code"])
-        
-        except HttpNotFound:
+        if response == True: raise HttpConflict("Error: Product already exists")
 
-            return
-        
-        raise HttpConflict("Error: Product already exists")
+        return       
     
 
     def __export_image_to_binary(self, image: str) -> Binary | str:
@@ -73,6 +71,7 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
         body = {
             "code": body["code"],
             "variants": [{
+                "_id": ObjectId(),
                 "description": body["description"],
                 "stock": body["stock"],
                 "image": image,
@@ -98,7 +97,13 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     
     
     def __format_response(self, body: dict) -> HttpResponse:
+
+        body["_id"] = str(body["_id"])
         
+        body["variants"][0]["_id"] = str(body["variants"][0]["_id"])
+
+        del body["variants"][0]["image"]
+
         return HttpResponse(
             body={
                 "data":{
