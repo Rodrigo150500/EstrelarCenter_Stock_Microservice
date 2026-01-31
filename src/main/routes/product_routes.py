@@ -17,6 +17,23 @@ product_routes_bp = Blueprint("product_bp", __name__)
 @product_routes_bp.route("/product/<code>", methods=["GET"])
 def get_product_by_code(code: str):
 
+    """
+    Get product by code
+    ---
+    tags:
+      - Product
+    parameters:
+      - name: code
+        in: path
+        type: string
+        required: true
+    responses:
+      200:
+        description: Product found
+      404:
+        description: Product not found
+    """
+
     try:
 
         http_request = HttpRequest(params={"code": code})
@@ -45,7 +62,7 @@ def insert_product():
 
         response = use_case.handle(http_request)
 
-        return jsonify(response.body), response.status_code
+        return jsonify(response.body),response.status_code
 
     except Exception as exception:
 
@@ -80,7 +97,7 @@ def update_product_variant(code: str, variant_id: str):
     try:
 
         http_request = HttpRequest(params={"code": code, "_id": variant_id}, body=request.json)
-
+        
         use_case = update_product_composer()
 
         response = use_case.handle(http_request)
@@ -98,7 +115,8 @@ def update_product_variant(code: str, variant_id: str):
 def get_product_by_search():
     
     try:
-        search = request.args.get("search")
+        search = request.args.get("search") 
+
         last_id = request.args.get("last_id")
         
         fields_raw = request.args.get("fields")
@@ -111,7 +129,6 @@ def get_product_by_search():
         }
 
         http_request = HttpRequest(params=params)
-
         use_case = get_product_by_search_composer()
 
         response = use_case.handle(http_request)
