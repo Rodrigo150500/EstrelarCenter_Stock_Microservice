@@ -13,7 +13,6 @@ def test_remove_item_validator_succesfully():
     }
 
     body = {         
-        "code": "10",
         "description": "Product Test",
         "stock": 20,
         "image": image_string,
