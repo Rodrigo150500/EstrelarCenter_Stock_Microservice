@@ -1,7 +1,11 @@
+import os
+
 from unittest.mock import ANY
 
 from src.utils.image_type import image_string
 
+HOST = os.getenv("HOST")
+PORT = os.getenv("PORT")
 
 def update_product_sucessfully_data():
 
@@ -36,7 +40,7 @@ def update_product_sucessfully_data():
         'variants.$.measure': 'Unidade',
         'variants.$.stock': 25,
         'variants.$.brand': 'Kit-Kat',
-        'variants.$.image': 'https://localhost:6000/static/stock/src/assets/erro.jpg',
+        'variants.$.image': f'https://{HOST}:{PORT}/static/erro.jpg',
         'variants.$.location': 'P9',
         'variants.$.reference': 'KIT104',
         'variants.$.quantity_change': 3,
