@@ -18,7 +18,7 @@ def remove_item_validator_request(params: dict):
   
   except (InvalidId) as exception:
 
-    print(f"Error:[GetImageProductValidatorRequest][_id]: {str(exception)}")
+    print(f"Error:[RemoveItemValidatorRequest][_id]: {str(exception)}")
     
     raise HttpUnprocessableEntity(f"Error: {str(exception)}")
 
