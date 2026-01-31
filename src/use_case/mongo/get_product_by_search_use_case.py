@@ -21,7 +21,6 @@ class GetProductsBySearchMongoUseCase(GetProductsBySearchMongoUseCaseInterface):
 
 
     def handle(self, http_request: HttpRequest) -> HttpResponse:
-
         params = http_request.params
 
         get_product_by_search_validator_request(params)
@@ -30,7 +29,9 @@ class GetProductsBySearchMongoUseCase(GetProductsBySearchMongoUseCaseInterface):
 
         products = self.__search_in_database(products_to_search)
 
-        formatted_response = self.__format_response(products)
+        products_with_string_id = self.__transform_object_id_to_string(products)
+
+        formatted_response = self.__format_response(products_with_string_id)
 
         return formatted_response
     
@@ -110,6 +111,13 @@ class GetProductsBySearchMongoUseCase(GetProductsBySearchMongoUseCaseInterface):
 
         except Exception:
             raise 
+
+    def __transform_object_id_to_string(self, products: list) -> list:
+
+        for product in products:
+            product["_id"] = str(product["_id"])
+        
+        return products
     
 
     def __format_response(self, product: list) -> HttpResponse:
