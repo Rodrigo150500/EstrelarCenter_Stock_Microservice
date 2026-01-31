@@ -28,7 +28,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         body = http_request.body
 
         update_product_validator_request(body, params)
-
+        
         self.__verify_if_exists_in_database(params)
     
         product_with_image_string = self.__transform_image_to_binary(body)
@@ -52,9 +52,11 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         try:
 
             response = self.__repository.check_if_variant_exists(code, object_id) 
-            
+            print(response)
             if response == False: raise HttpNotFound("Error: product not found") 
 
+            return
+        
         except HttpNotFound:
             raise
 
