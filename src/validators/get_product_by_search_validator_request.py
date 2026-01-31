@@ -10,8 +10,7 @@ def get_product_by_search_validator_request(params: dict) -> None:
     params_validator = Validator({
         "search": {"type": "string", "required": True, "empty": False},
         "fields": {"type": "list", "required": True, "schema": {"type": "string", "allowed": ["description", "reference", "brand"]}},
-        "last_id": {"type": "string", "required": False},
-        
+        "last_id": {"type": "string", "required": False, "nullable": True}        
     })
 
     try:
@@ -21,7 +20,7 @@ def get_product_by_search_validator_request(params: dict) -> None:
   
     except (InvalidId) as exception:
 
-        print(f"Error:[GetImageProductValidatorRequest][last_id]: {str(exception)}")
+        print(f"Error:[GetProductBySearchValidatorRequest][last_id]: {str(exception)}")
         
         raise HttpUnprocessableEntity(f"Error: {str(exception)}")
     
@@ -36,7 +35,7 @@ def get_product_by_search_validator_request(params: dict) -> None:
 
         formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
 
-        print(f"Error:[GetImageProductValidatorRequest][Params]: {formatted_error_message}")
+        print(f"Error:[GetProductBySearchValidatorRequest][Params]: {formatted_error_message}")
 
         raise HttpUnprocessableEntity(
         message=params_validator.errors)
