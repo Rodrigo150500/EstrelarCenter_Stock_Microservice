@@ -32,7 +32,7 @@ def update_product_validator_request(body: dict, params: dict):
   
   except (InvalidId) as exception:
 
-    print(f"Error:[GetImageProductValidatorRequest][_id]: {str(exception)}")
+    print(f"Error:[UpdateProductValidatorRequest][_id]: {str(exception)}")
     
     raise HttpUnprocessableEntity(f"Error: {str(exception)}")
 
