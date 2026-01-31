@@ -13,6 +13,8 @@ from .interfaces.insert_new_variant_use_case_interface import InsertNewVariantMo
 
 from datetime import datetime
 
+from bson.objectid import ObjectId
+
 class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
 
     def __init__(self, repository: ProductRepositoryMongoInterface):
@@ -30,7 +32,7 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
 
         body_image_formatted = self.__export_image_in_binary(body)
 
-        body_last_change_formatted = self.__include_last_change_field(body_image_formatted)
+        body_last_change_formatted = self.__add_metadata_fields(body_image_formatted)
 
         self.__insert_in_database(params, body_last_change_formatted)
 
@@ -61,9 +63,10 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
         return body        
 
 
-    def __include_last_change_field(self, body: dict) -> dict:
+    def __add_metadata_fields(self, body: dict) -> dict:
 
         body["last_change"] = datetime.now()
+        body["_id"] = ObjectId()
 
         return body
 
@@ -80,6 +83,7 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
     def __format_response(self, body: dict) -> HttpResponse:
 
         del body["image"]
+        body["_id"] = str(body["_id"])
 
         return HttpResponse(
             body={
