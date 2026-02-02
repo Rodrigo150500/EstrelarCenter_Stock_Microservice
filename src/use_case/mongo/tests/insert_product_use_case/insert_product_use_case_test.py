@@ -30,7 +30,7 @@ def test_insert_product_sucessfully(setup_use_case):
 
     http_request = HttpRequest(body=data["body"])
 
-    repository.get_product_by_code.side_effect = HttpNotFound("Product not found")
+    repository.check_if_product_exists.return_value = False
 
     response = use_case.handle(http_request)
 
@@ -54,14 +54,13 @@ def test_insert_product_with_int_code(setup_use_case):
     repository.get_product_by_code.assert_not_called()
 
 
-
 def test_insert_product_that_already_exists(setup_use_case):
 
     data = insert_product_that_already_exists()
     
     repository, use_case = setup_use_case
 
-    repository.get_product_by_code.return_value = data["get_product_by_code"]
+    repository.check_if_product_exists.return_value = True
 
     http_request = HttpRequest(body=data["body"])
 
@@ -69,6 +68,6 @@ def test_insert_product_that_already_exists(setup_use_case):
 
         use_case.handle(http_request)
 
-    repository.get_product_by_code.assert_called_once_with(data["body"]["code"])
+    repository.check_if_product_exists.assert_called_once_with(data["body"]["code"])
     repository.insert_product_item.assert_not_called()
     

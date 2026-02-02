@@ -24,9 +24,9 @@ def insert_product_sucessfully():
         "_id": ANY,
         "code": "10",
         "variants":[{
+            "_id": ANY,
             "description": "Chocolate kit-kat 41g",
             "stock": 15,
-            "image": export_image_string64_to_binary(image_string_splitted),
             "brand": "kit-kat",
             "reference": "kit-154",
             "location": "CX15",

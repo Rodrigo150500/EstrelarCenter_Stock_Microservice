@@ -51,7 +51,6 @@ def test_insert_product_sucessfully(setup_use_case):
     assert product["code"] == code
     assert product["variants"][0]["description"] == data["body"]["description"]
 
-
 def test_insert_product_that_already_exists(setup_use_case):
 
     data = insert_product_that_already_exists()
