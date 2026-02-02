@@ -1,4 +1,45 @@
-Realizar
- - RemoveItemUseCase
- - Test image error when deploy server test
- 
+Realizar:
+    - Fazer revisão dos use case
+        - DeleteProductUseCase
+        - GetProductBySearchUseCase
+        - GetProductUseCase
+        - InsertNewVariantUseCase
+        - InserProductUseCase
+        - RemoveItemUseCase
+        - UpdateProductUseCase
+
+    - Fazer os testes esperados em caso de sucesso
+        - Testes Unitários
+            - DeleteProductUseCase
+            - GetProductBySearchUseCase
+            - GetProductUseCase
+            - InsertNewVariantUseCase
+            - InserProductUseCase
+            - RemoveItemUseCase
+            - UpdateProductUseCase
+        - Testes de Integração
+            - DeleteProductUseCase
+            - GetProductBySearchUseCase
+            - GetProductUseCase
+            - InsertNewVariantUseCase
+            - InserProductUseCase
+            - RemoveItemUseCase
+            - UpdateProductUseCase
+
+    - Documentar as rotas do swagger
+        - DeleteProductUseCase
+        - GetProductBySearchUseCase
+        - GetProductUseCase
+        - InsertNewVariantUseCase
+        - InserProductUseCase
+        - RemoveItemUseCase
+        - UpdateProductUseCase
+
+    - Testar cada rota individualmente
+        - DeleteProductUseCase
+        - GetProductBySearchUseCase
+        - GetProductUseCase
+        - InsertNewVariantUseCase
+        - InserProductUseCase
+        - RemoveItemUseCase
+        - UpdateProductUseCase
