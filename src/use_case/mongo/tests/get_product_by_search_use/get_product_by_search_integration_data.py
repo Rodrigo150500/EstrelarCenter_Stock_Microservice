@@ -321,7 +321,7 @@ def get_product_sucessfully_data(object_id_list: list):
             'operation': 'Get',
             'count': 1, 
             'attributes':[{
-                '_id': ObjectId(object_id_list[0]), 
+                '_id': object_id_list[0], 
                 'description': 'Product A', 
                 'stock': 10, 
                 'image': b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\nIDAT\x08\xd7c`\x00\x00\x00\x02\x00\x01\xe2&\x05\x9b\x00\x00\x00\x00IEND\xaeB`\x82', 
@@ -356,7 +356,7 @@ def adding_last_id_should_return_second_part_data(object_id_list: list):
             "operation": "Get",
             "count": 1,
             "attributes":[{
-                '_id': ObjectId(object_id_list[21]), 
+                '_id': object_id_list[21], 
                 'description': 'Product V', 
                 'stock': 62, 
                 'image': b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\nIDAT\x08\xd7c`\x00\x00\x00\x02\x00\x01\xe2&\x05\x9b\x00\x00\x00\x00IEND\xaeB`\x82', 
