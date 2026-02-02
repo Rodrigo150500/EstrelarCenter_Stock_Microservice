@@ -39,6 +39,7 @@ def test_insert_variant_successfully(setup_use_case):
     response = use_case.handle(http_request)
 
     assert isinstance(response, HttpResponse)
+
     assert response.body == data["expected_response"]
 
     code = params["code"]

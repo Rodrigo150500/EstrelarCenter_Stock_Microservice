@@ -20,15 +20,19 @@ def insert_variant_successfully_data():
         "quantity_change": 50,
     }
 
-    after_process = product.copy()
-    after_process["last_change"] = ANY
-    del after_process["image"]
+    response_attributes = {
+        "_id": ANY,
+        **product,
+        "last_change": ANY,
+    }
+
+    del response_attributes["image"]
 
     expected_response = {
         "data":{
             "operation": "Insert",
             "count": 1,
-            "attributes": after_process
+            "attributes": response_attributes
         }
     }
 
