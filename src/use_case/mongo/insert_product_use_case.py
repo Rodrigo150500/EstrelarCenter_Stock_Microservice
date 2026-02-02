@@ -69,6 +69,7 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     def __format_body(self, body: dict, image: Binary) -> dict:
 
         body = {
+            "_id": ObjectId(),
             "code": body["code"],
             "variants": [{
                 "_id": ObjectId(),
