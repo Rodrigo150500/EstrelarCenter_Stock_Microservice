@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify, request
 
+from flasgger import swag_from
+
 from src.main.http_types.http_request import HttpRequest
 
 from src.main.composer.mongo.get_product_composer import get_product_composer
@@ -16,23 +18,6 @@ product_routes_bp = Blueprint("product_bp", __name__)
 
 @product_routes_bp.route("/product/<code>", methods=["GET"])
 def get_product_by_code(code: str):
-
-    """
-    Get product by code
-    ---
-    tags:
-      - Product
-    parameters:
-      - name: code
-        in: path
-        type: string
-        required: true
-    responses:
-      200:
-        description: Product found
-      404:
-        description: Product not found
-    """
 
     try:
 
@@ -72,6 +57,7 @@ def insert_product():
 
 
 @product_routes_bp.route("/product/<code>", methods=["DELETE"])
+@swag_from("../../docs/delete_product_by_code_doc.yml")
 def delete_product_by_code(code: str):
 
     try:
