@@ -42,20 +42,3 @@ def setup_use_case_data():
 
     return data
 
-def delete_product_use_case_sucessfully_data(code: str):
-
-    expected_response = {
-        "data":{
-            "operation":"delete",
-            "count": 1,
-            "attributes": {
-                "code": code
-            }
-        }
-    }
-
-    data = {
-        "expected_response": expected_response
-    }
-
-    return data

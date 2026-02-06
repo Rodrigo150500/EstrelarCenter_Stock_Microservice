@@ -9,7 +9,7 @@ from src.use_case.mongo.delete_product_use_case import DeleteProductMongoUseCase
 
 from src.main.http_types.http_request import HttpRequest
 
-from delete_product_use_case_integration_data import setup_use_case_data,delete_product_use_case_sucessfully_data
+from delete_product_use_case_integration_data import setup_use_case_data
 
 from src.errors.types.http_not_found import HttpNotFound
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
@@ -42,14 +42,11 @@ def test_delete_product_use_case_sucessfully(setup_use_case):
 
     use_case, code, repository = setup_use_case
 
-    data = delete_product_use_case_sucessfully_data(code)
-
     http_request = HttpRequest(params={"code": code})
 
     response = use_case.handle(http_request)
 
-    assert response.status_code == 200
-    assert response.body == data["expected_response"]
+    assert response.status_code == 204
 
     isInDatabase = repository.check_if_product_exists(code)
 
@@ -60,7 +57,7 @@ def test_delete_product_not_found(setup_use_case):
 
     use_case, _, _ = setup_use_case
 
-    http_request = HttpRequest(params={"code": "AAAA"})
+    http_request = HttpRequest(params={"code": "AAAA"}) #Must be a existing code
 
     with pytest.raises(HttpNotFound):
 
@@ -71,7 +68,7 @@ def test_delete_product_invalid_params(setup_use_case):
     
     use_case, _, _ = setup_use_case
 
-    http_request = HttpRequest(params={"code": 123})
+    http_request = HttpRequest(params={"code": 123}) #Must be a string code
 
     with pytest.raises(HttpUnprocessableEntity):
 

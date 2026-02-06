@@ -8,7 +8,6 @@ from src.validators.delete_product_validator_request import delete_product_valid
 
 from src.errors.types.http_not_found import HttpNotFound
 from src.errors.types.http_unavailable_service import HttpUnavailableService
-from src.errors.types.http_internal_server_error import HttpInternalServerError
 
 class DeleteProductMongoUseCase(DeleteProductUseCaseInterface):
 
@@ -27,7 +26,7 @@ class DeleteProductMongoUseCase(DeleteProductUseCaseInterface):
 
         self.__delete_product_in_database(params)
 
-        formatted_response = self.__format_response(params)
+        formatted_response = self.__format_response()
         
         return formatted_response
     
@@ -41,18 +40,8 @@ class DeleteProductMongoUseCase(DeleteProductUseCaseInterface):
 
             if response == False: raise HttpNotFound("Error: Product not found")
             
-        except HttpNotFound:
-            raise
-
         except HttpUnavailableService:
             raise
-
-        except Exception as exception:
-
-            print(f"Error: [DeleteProductMongoUseCase][VerifyIfExistsInDatabase]: {str(exception  )}")
-
-            raise HttpInternalServerError("Error: Erro interno no servidor")
-        
 
     def __delete_product_in_database(self, params: dict) -> None:
 
@@ -64,23 +53,10 @@ class DeleteProductMongoUseCase(DeleteProductUseCaseInterface):
 
         except HttpUnavailableService:
             raise
-
-        except Exception as exception:
-
-            print(f"Error: [UpdateProductMongoUseCase][DeleteProductInDatabase]: {str(exception  )}")
-
-            raise HttpInternalServerError("Error: Erro interno no servidor")
-
     
-    def __format_response(self, params: dict) -> HttpResponse:
+    def __format_response(self) -> HttpResponse:
 
         return HttpResponse(
-                body={
-                    "data":{
-                        "operation":"delete",
-                        "count": 1,
-                        "attributes": params
-                    }
-                }, status_code=200
+                status_code=204
         )
             
