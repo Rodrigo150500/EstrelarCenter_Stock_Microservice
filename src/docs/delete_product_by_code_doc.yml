@@ -26,6 +26,21 @@ responses:
             message:
               type: string
               example: Product not found
+  422:
+    description: Unprocessable Entity
+    schema:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Unprocessable Entity
+            message:
+              type: string
+              example: Code must be string
+              
   500:
     description: Server error
     schema:
