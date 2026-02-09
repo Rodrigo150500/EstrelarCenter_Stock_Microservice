@@ -1,8 +1,8 @@
 Realizar:
     - Fazer revisão dos use case
-        - DeleteProductUseCase
-        - GetProductBySearchUseCase
-        - GetProductUseCase
+        OK DeleteProductUseCase
+        OK GetProductBySearchUseCase
+        -> GetProductUseCase
         - InsertNewVariantUseCase
         - InserProductUseCase
         - RemoveItemUseCase
@@ -10,16 +10,16 @@ Realizar:
 
     - Fazer os testes esperados em caso de sucesso
         - Testes Unitários
-            - DeleteProductUseCase
-            - GetProductBySearchUseCase
+            OK DeleteProductUseCase
+            OK GetProductBySearchUseCase
             - GetProductUseCase
             - InsertNewVariantUseCase
             - InserProductUseCase
             - RemoveItemUseCase
             - UpdateProductUseCase
         - Testes de Integração
-            - DeleteProductUseCase
-            - GetProductBySearchUseCase
+            OK DeleteProductUseCase
+            OK GetProductBySearchUseCase
             - GetProductUseCase
             - InsertNewVariantUseCase
             - InserProductUseCase
@@ -27,8 +27,8 @@ Realizar:
             - UpdateProductUseCase
 
     - Documentar as rotas do swagger
-        - DeleteProductUseCase
-        - GetProductBySearchUseCase
+        OK DeleteProductUseCase
+        OK GetProductBySearchUseCase
         - GetProductUseCase
         - InsertNewVariantUseCase
         - InserProductUseCase
@@ -36,8 +36,8 @@ Realizar:
         - UpdateProductUseCase
 
     - Testar cada rota individualmente
-        - DeleteProductUseCase
-        - GetProductBySearchUseCase
+        OK DeleteProductUseCase
+        OK GetProductBySearchUseCase
         - GetProductUseCase
         - InsertNewVariantUseCase
         - InserProductUseCase

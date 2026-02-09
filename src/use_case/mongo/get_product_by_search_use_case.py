@@ -8,6 +8,7 @@ from src.main.http_types.http_response import HttpResponse
 from src.main.http_types.http_request import HttpRequest
 
 from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from .interfaces.get_products_by_search_use_case_interface import GetProductsBySearchMongoUseCaseInterface
 
@@ -21,6 +22,7 @@ class GetProductsBySearchMongoUseCase(GetProductsBySearchMongoUseCaseInterface):
 
 
     def handle(self, http_request: HttpRequest) -> HttpResponse:
+
         params = http_request.params
 
         get_product_by_search_validator_request(params)
@@ -109,8 +111,8 @@ class GetProductsBySearchMongoUseCase(GetProductsBySearchMongoUseCaseInterface):
         except HttpNotFound: 
             raise
 
-        except Exception:
-            raise 
+        except HttpUnavailableService:
+            raise
 
     def __transform_object_id_to_string(self, products: list) -> list:
 

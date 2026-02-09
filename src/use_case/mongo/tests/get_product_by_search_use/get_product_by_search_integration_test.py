@@ -13,14 +13,14 @@ from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
 from src.errors.types.http_not_found import HttpNotFound
 
+mongo_db_connection.connect()
+
 @pytest.fixture
 def setup_use_case():
 
     data = setup_use_case_data()
 
     try:
-
-        mongo_db_connection.connect()
         
         connection = mongo_db_connection.get_db_connection()
         repository = ProductRepositoryMongo(connection)
