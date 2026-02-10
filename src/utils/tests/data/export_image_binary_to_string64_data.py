@@ -30,7 +30,7 @@ def export_image_with_error():
 
     image = "image"
 
-    expected_response = f"https://localhost:{PORT}/static/stock/src/assets/erro.jpg"
+    expected_response = f"https://localhost:{PORT}/static/erro.jpg"
 
     data = {
         "image": image,
