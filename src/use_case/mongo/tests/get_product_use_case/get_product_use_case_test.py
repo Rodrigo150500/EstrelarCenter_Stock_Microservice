@@ -80,6 +80,7 @@ def test_get_product_product_without_image(setup_use_case):
     repository.get_product_by_code.assert_called_once_with(data["params"]["code"])
 
 
+
 def test_get_product_with_int_code(setup_use_case):
 
     data = get_product_with_int_code_data()

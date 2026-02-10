@@ -2,7 +2,7 @@ Realizar:
     - Fazer revisão dos use case
         OK DeleteProductUseCase
         OK GetProductBySearchUseCase
-        -> GetProductUseCase
+        OK GetProductUseCase
         - InsertNewVariantUseCase
         - InserProductUseCase
         - RemoveItemUseCase
@@ -12,7 +12,7 @@ Realizar:
         - Testes Unitários
             OK DeleteProductUseCase
             OK GetProductBySearchUseCase
-            - GetProductUseCase
+            OK GetProductUseCase
             - InsertNewVariantUseCase
             - InserProductUseCase
             - RemoveItemUseCase
@@ -20,7 +20,7 @@ Realizar:
         - Testes de Integração
             OK DeleteProductUseCase
             OK GetProductBySearchUseCase
-            - GetProductUseCase
+            OK GetProductUseCase
             - InsertNewVariantUseCase
             - InserProductUseCase
             - RemoveItemUseCase

@@ -55,7 +55,7 @@ def get_product_sucessfully_data(object_id_1: str, object_id_2: str):
             "operation": "Get",
             "count": 2,
             "attributes":[{
-                "_id": ObjectId(object_id_1),
+                "_id": str(object_id_1),
                 "description": "Product A",
                 "stock": 25,
                 "image": image_string,
@@ -67,7 +67,7 @@ def get_product_sucessfully_data(object_id_1: str, object_id_2: str):
                 "last_change": ANY,
                 "quantity_change": 5
                 },{
-                    "_id": ObjectId(object_id_2),
+                    "_id": str(object_id_2),
                     "description": "Product B",
                     "stock": 50,
                     "image": image_string,

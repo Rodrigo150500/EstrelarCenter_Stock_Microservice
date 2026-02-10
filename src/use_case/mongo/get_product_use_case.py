@@ -1,7 +1,5 @@
 import os
 
-import base64
-
 from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryMongoInterface
 
 from src.main.http_types.http_request import HttpRequest
@@ -10,6 +8,7 @@ from src.main.http_types.http_response import HttpResponse
 from src.validators.get_product_validator_request import get_product_validator_request
 
 from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from .interfaces.get_product_use_case_interface import GetProductMongoUseCaseInterface
 
@@ -48,11 +47,16 @@ class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
             product = self.__repository.get_product_by_code(code)
 
+            return product
+        
         except HttpNotFound:
 
             raise
 
-        return product
+        except HttpUnavailableService:
+
+            raise
+
 
 
     def __format_image_to_string64(self, product: dict) -> list:
@@ -77,6 +81,10 @@ class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
             
     def __format_response(self, products: list) -> HttpResponse:
+
+        for product in products:
+            
+            product["_id"] = str(product["_id"])
 
         return HttpResponse(
             body={

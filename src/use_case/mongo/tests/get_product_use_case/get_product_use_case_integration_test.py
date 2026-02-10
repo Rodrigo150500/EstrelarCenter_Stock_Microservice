@@ -35,7 +35,7 @@ def setup_use_case():
         yield object_id_1, object_id_2,repository, use_case
     
     finally:
-
+        
         repository.delete_product_by_code(data['product']['code'])
 
 
