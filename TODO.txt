@@ -3,7 +3,7 @@ Realizar:
         OK DeleteProductUseCase
         OK GetProductBySearchUseCase
         OK GetProductUseCase
-        - InsertNewVariantUseCase
+        -> InsertNewVariantUseCase
         - InserProductUseCase
         - RemoveItemUseCase
         - UpdateProductUseCase
@@ -29,7 +29,7 @@ Realizar:
     - Documentar as rotas do swagger
         OK DeleteProductUseCase
         OK GetProductBySearchUseCase
-        - GetProductUseCase
+        OK GetProductUseCase
         - InsertNewVariantUseCase
         - InserProductUseCase
         - RemoveItemUseCase
@@ -38,7 +38,7 @@ Realizar:
     - Testar cada rota individualmente
         OK DeleteProductUseCase
         OK GetProductBySearchUseCase
-        - GetProductUseCase
+        OK GetProductUseCase
         - InsertNewVariantUseCase
         - InserProductUseCase
         - RemoveItemUseCase
