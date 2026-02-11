@@ -17,7 +17,6 @@ from src.errors.error_handler import error_handler
 product_routes_bp = Blueprint("product_bp", __name__)
 
 @product_routes_bp.route("/product/<code>", methods=["GET"])
-@swag_from("../../docs/get_product_by_search_doc.yml")
 def get_product_by_code(code: str):
 
     try:
@@ -99,6 +98,7 @@ def update_product_variant(code: str, variant_id: str):
 
 
 @product_routes_bp.route("/product/search", methods=["GET"])
+@swag_from("../../docs/get_product_by_search_doc.yml")
 def get_product_by_search():
     
     try:

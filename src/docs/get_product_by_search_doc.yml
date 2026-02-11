@@ -2,11 +2,18 @@ tags:
   - Product
 
 parameters:
-  - name: code
-    in: path
+  - name: search
+    in: query
     type: string
-    required: true
-    description: Product code
+    required: false
+    description: Text to search in product fields
+
+  - name: fields
+    in: query
+    type: string
+    required: false
+    description: Comma separated fields (description, reference, brand)
+
 
 responses:
   200:
