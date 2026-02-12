@@ -19,7 +19,6 @@ def insert_product_sucessfully():
         "measure": "Caixa",
         "keepBuying": True,
         "quantity_change": 4
-
     }
 
 
@@ -91,7 +90,6 @@ def insert_product_that_already_exists():
             'reference': "KIT104",
             "keepBuying": True,
             "quantity_change": 3
-
     }
 
     get_product_by_code = {
@@ -115,6 +113,28 @@ def insert_product_that_already_exists():
     data = {
         "body": body,
         "get_product_by_code": get_product_by_code
+    }
+
+    return data
+
+
+def error_unavailable_service_database_data():
+
+    body = {
+        "code": "10",
+        "description": "Chocolate kit-kat 41g",
+        "stock": 15,
+        "image": image_string,
+        "brand": "kit-kat",
+        "reference": "kit-154",
+        "location": "CX15",
+        "measure": "Caixa",
+        "keepBuying": True,
+        "quantity_change": 4
+    }
+
+    data = {
+        "body": body
     }
 
     return data

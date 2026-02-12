@@ -4,7 +4,7 @@ Realizar:
         OK GetProductBySearchUseCase
         OK GetProductUseCase
         OK InsertNewVariantUseCase
-        -> InserProductUseCase
+        OK InserProductUseCase
         - RemoveItemUseCase
         - UpdateProductUseCase
 
@@ -14,7 +14,7 @@ Realizar:
             OK GetProductBySearchUseCase
             OK GetProductUseCase
             OK InsertNewVariantUseCase
-            - InserProductUseCase
+            OK InserProductUseCase
             - RemoveItemUseCase
             - UpdateProductUseCase
         - Testes de Integração
@@ -22,7 +22,7 @@ Realizar:
             OK GetProductBySearchUseCase
             OK GetProductUseCase
             OK InsertNewVariantUseCase
-            - InserProductUseCase
+            OK InserProductUseCase
             - RemoveItemUseCase
             - UpdateProductUseCase
 
@@ -31,7 +31,7 @@ Realizar:
         OK GetProductBySearchUseCase
         OK GetProductUseCase
         OK InsertNewVariantUseCase
-        - InserProductUseCase
+        -> InserProductUseCase
         - RemoveItemUseCase
         - UpdateProductUseCase
 
@@ -40,6 +40,8 @@ Realizar:
         OK GetProductBySearchUseCase
         OK GetProductUseCase
         OK InsertNewVariantUseCase
-        - InserProductUseCase
+        OK InserProductUseCase
         - RemoveItemUseCase
         - UpdateProductUseCase
+
+- Inserir um exception 500

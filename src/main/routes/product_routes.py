@@ -38,6 +38,7 @@ def get_product_by_code(code: str):
 
 
 @product_routes_bp.route("/product", methods=["POST"])
+@swag_from("../../docs/insert_product_doc.yml")
 def insert_product():
 
     try:

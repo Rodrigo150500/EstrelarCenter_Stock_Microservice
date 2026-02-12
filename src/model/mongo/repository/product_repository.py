@@ -131,7 +131,6 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
             raise HttpUnavailableService("Error: Database unvailable")
 
 
-
     def get_all_products(self) -> list:
 
         try:

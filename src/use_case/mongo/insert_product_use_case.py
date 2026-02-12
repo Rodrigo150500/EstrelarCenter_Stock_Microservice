@@ -12,7 +12,7 @@ from src.validators.insert_product_validator_request import insert_product_valid
 from src.utils.export_image_string64_to_binary import export_image_string64_to_binary
 
 from src.errors.types.http_conflict import HttpConflict
-from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from bson.objectid import ObjectId
 
@@ -46,12 +46,20 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     
     def __verify_if_product_exists(self, body: dict) -> None:
 
-        response = self.__repository.check_if_product_exists(body["code"])
+        try:
 
-        if response == True: raise HttpConflict("Error: Product already exists")
+            response = self.__repository.check_if_product_exists(body["code"])
 
-        return       
-    
+            if response == True: raise HttpConflict("Error: Product already exists")
+
+            return       
+
+        except HttpConflict:
+            raise
+
+        except HttpUnavailableService:
+            raise
+
 
     def __export_image_to_binary(self, image: str) -> Binary | str:
 
@@ -92,9 +100,14 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
     def __insert_in_database(self, body:dict) -> InsertProductInterface:
 
-        response = self.__repository.insert_product(body)
-        
-        return response
+        try:
+
+            response = self.__repository.insert_product(body)
+            
+            return response
+
+        except HttpUnavailableService:
+            raise
     
     
     def __format_response(self, body: dict) -> HttpResponse:

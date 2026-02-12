@@ -6,11 +6,11 @@ from src.use_case.mongo.insert_product_use_case import InsertProductMongoUseCase
 
 from src.main.http_types.http_request import HttpRequest
 
-from insert_product_use_case_test_data import insert_product_sucessfully, insert_product_with_int_code, insert_product_that_already_exists
+from insert_product_use_case_test_data import insert_product_sucessfully, insert_product_with_int_code, insert_product_that_already_exists, error_unavailable_service_database_data
 
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 from src.errors.types.http_conflict import HttpConflict
-from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 @pytest.fixture
 def setup_use_case():
@@ -70,4 +70,17 @@ def test_insert_product_that_already_exists(setup_use_case):
 
     repository.check_if_product_exists.assert_called_once_with(data["body"]["code"])
     repository.insert_product_item.assert_not_called()
-    
+
+
+def test_error_unavailable_service_database(setup_use_case):
+
+    data = error_unavailable_service_database_data()
+
+    repository, use_case = setup_use_case
+
+    repository.check_if_product_exists.side_effect = HttpUnavailableService("Error: Database Unavailable")
+
+    http_request = HttpRequest(body=data["body"])
+
+    with pytest.raises(HttpUnavailableService):
+        use_case.handle(http_request)
