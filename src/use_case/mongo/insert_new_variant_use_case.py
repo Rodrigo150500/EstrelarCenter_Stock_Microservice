@@ -4,6 +4,7 @@ from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
 
 from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from src.validators.insert_new_variant_request import insert_new_variant_request
 
@@ -45,12 +46,20 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
 
         code = params["code"]
 
-        response = self.__repository.check_if_product_exists(code)
+        try:
 
-        if response == False: raise HttpNotFound("Erro: Product not found")
+            response = self.__repository.check_if_product_exists(code)
 
-        return
-    
+            if response == False: raise HttpNotFound("Erro: Product not found")
+
+            return
+        
+        except HttpNotFound:
+            raise
+
+        except HttpUnavailableService:
+            raise
+
 
     def __export_image_in_binary(self, body: dict) -> dict:
         
@@ -74,11 +83,16 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
     def __insert_in_database(self, params: dict, body: dict) -> None:
 
         code = params["code"]
-        
-        self.__repository.insert_new_variant(code, body)
 
-        return
-    
+        try:
+        
+            self.__repository.insert_new_variant(code, body)
+
+            return
+
+        except HttpUnavailableService:
+            raise
+        
 
     def __format_response(self, body: dict) -> HttpResponse:
 

@@ -70,11 +70,12 @@ def insert_variant_in_a_product_that_not_exists_data():
 
     return data
 
+
 def wrong_body_schema_data():
 
     params = {
-        "code": "10"
-    }
+       "code": "10"
+    } 
 
     product = {
         "description": "Product C",
@@ -85,6 +86,32 @@ def wrong_body_schema_data():
         "location": "C01",
         "measure": "Unidate",
         "keepBuying": "False", #Must be boolean
+        "quantity_change": 50,
+    }
+
+    data = {
+        "params": params,
+        "product": product
+    }
+
+    return data
+
+
+def error_unavailable_service_data():
+
+    params = {
+        "code": "10"
+    }
+
+    product = {
+        "description": "Product C",
+        "stock": 50,
+        "image": image_string,
+        "brand": "Lacta",
+        "reference": "Lac 500",
+        "location": "C01",
+        "measure": "Unidate",
+        "keepBuying": False,
         "quantity_change": 50,
     }
 

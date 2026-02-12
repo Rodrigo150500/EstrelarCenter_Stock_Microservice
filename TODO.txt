@@ -3,8 +3,8 @@ Realizar:
         OK DeleteProductUseCase
         OK GetProductBySearchUseCase
         OK GetProductUseCase
-        -> InsertNewVariantUseCase
-        - InserProductUseCase
+        OK InsertNewVariantUseCase
+        -> InserProductUseCase
         - RemoveItemUseCase
         - UpdateProductUseCase
 
@@ -13,7 +13,7 @@ Realizar:
             OK DeleteProductUseCase
             OK GetProductBySearchUseCase
             OK GetProductUseCase
-            - InsertNewVariantUseCase
+            OK InsertNewVariantUseCase
             - InserProductUseCase
             - RemoveItemUseCase
             - UpdateProductUseCase
@@ -21,7 +21,7 @@ Realizar:
             OK DeleteProductUseCase
             OK GetProductBySearchUseCase
             OK GetProductUseCase
-            - InsertNewVariantUseCase
+            OK InsertNewVariantUseCase
             - InserProductUseCase
             - RemoveItemUseCase
             - UpdateProductUseCase
@@ -30,7 +30,7 @@ Realizar:
         OK DeleteProductUseCase
         OK GetProductBySearchUseCase
         OK GetProductUseCase
-        - InsertNewVariantUseCase
+        OK InsertNewVariantUseCase
         - InserProductUseCase
         - RemoveItemUseCase
         - UpdateProductUseCase
@@ -39,7 +39,7 @@ Realizar:
         OK DeleteProductUseCase
         OK GetProductBySearchUseCase
         OK GetProductUseCase
-        - InsertNewVariantUseCase
+        OK InsertNewVariantUseCase
         - InserProductUseCase
         - RemoveItemUseCase
         - UpdateProductUseCase

@@ -34,7 +34,7 @@ def setup_use_case():
         yield repository, use_case
       
     finally:
-
+        
         repository.delete_product_by_code(data["product"]["code"])
 
 
@@ -63,7 +63,7 @@ def test_insert_variant_in_a_product_that_not_exists(setup_use_case):
 
     data = insert_variant_in_a_product_that_not_exists_data()
 
-    repository, use_case = setup_use_case
+    _, use_case = setup_use_case
 
     params = data["params"]
     body = data["product"]

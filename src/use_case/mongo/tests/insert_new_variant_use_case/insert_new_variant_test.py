@@ -7,9 +7,9 @@ from src.main.http_types.http_response import HttpResponse
 
 from src.errors.types.http_not_found import HttpNotFound
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
-
-from insert_new_variant_test_data import insert_variant_successfully_data, insert_variant_in_a_product_that_not_exists_data, wrong_body_schema_data
+from insert_new_variant_test_data import insert_variant_successfully_data, insert_variant_in_a_product_that_not_exists_data, wrong_body_schema_data, error_unavailable_service_data
 
 from src.use_case.mongo.insert_new_variant_use_case import InsertNewVariantMongoUseCase
 
@@ -86,3 +86,21 @@ def test_wrong_body_schema(setup_use_case):
 
     repository.check_if_product_exists.assert_not_called()
     repository.insert_new_variant.assert_not_called()
+
+
+def test_error_unavailable_service(setup_use_case):
+
+    data = error_unavailable_service_data()
+
+    repository, use_case = setup_use_case
+
+    http_request = HttpRequest(params=data["params"], body=data["product"])
+
+    repository.check_if_product_exists.side_effect = HttpUnavailableService("Error: Database Unavailable")
+
+    with pytest.raises(HttpUnavailableService):
+        use_case.handle(http_request)
+
+    
+    
+

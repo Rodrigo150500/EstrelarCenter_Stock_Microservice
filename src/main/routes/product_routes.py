@@ -151,6 +151,7 @@ def remove_item_variant(code: str, variant_id: str):
     
     
 @product_routes_bp.route("/product/<code>/variant", methods=["POST"])
+@swag_from("../../docs/insert_new_variant_by_code_doc.yml")
 def insert_product_variant(code: str):
     
     try:

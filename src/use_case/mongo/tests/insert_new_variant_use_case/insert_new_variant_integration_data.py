@@ -90,7 +90,7 @@ def insert_variant_succesfully_data():
 def insert_variant_in_a_product_that_not_exists_data():
 
     params={
-        "code": "ABC"
+        "code": "ABC" #Must be a existing code in database
     }
 
     product = {
