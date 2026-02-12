@@ -8,6 +8,49 @@ parameters:
     required: true
     description: Code of the product
 
+  - name: body
+    in: body
+    required: true
+    schema:
+      type: object
+      properties:
+        description:
+          type: string
+        stock:
+          type: integer
+        image:
+          type: string
+        brand:
+          type: string
+        reference:
+          type: string
+        location:
+          type: string
+        measure:
+          type: string
+        keepBuying:
+          type: boolean
+        quantity_change:
+          type: integer
+      example:
+        description: Kiti-cat uva
+        stock: 10
+        image: string image
+        brand: kiti-cat
+        reference: kit-150
+        location: CX10
+        measure: unidade
+        keepBuying: true
+        quantity_change: -5
+      required:
+        - description
+        - stock
+        - image
+        - measure
+        - keepBuying
+        - quantity_change
+
+
 responses:
   201:
     description: Product successfully inserted
