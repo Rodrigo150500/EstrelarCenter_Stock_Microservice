@@ -19,8 +19,10 @@ responses:
           properties:
             operation:
               type: string
+              example: Get
             count:
               type: integer
+              example: 1
             attributes:
               type: object
   
