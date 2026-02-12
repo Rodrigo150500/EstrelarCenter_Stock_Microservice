@@ -50,17 +50,9 @@ def remove_variant_succesfully_data(object_id_1: str):
         "_id": str(object_id_1)
     }
 
-    expected_response = {
-        "data":{
-            "operation": "Update",
-            "count": 1,
-            "attributes": params
-        }
-    }
 
     data = {
-        "params": params,
-        "expected_response": expected_response
+        "params": params
     }
 
     return data

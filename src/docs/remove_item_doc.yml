@@ -1,0 +1,77 @@
+tags:
+  - Product
+
+parameters:
+  - name: code
+    in: path
+    type: string
+    required: true
+    description: code of the product
+  
+  - name: variant_id
+    in: path
+    type: string
+    required: true
+    description: variant id from product variant
+
+responses:
+  204:
+    description: Product successfully deleted
+  
+  404:
+    description: Product not found
+    schema:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            title:
+              type: string
+              example: NotFound
+            message:
+              type: string
+              example: Product not found
+  422:
+    description: Unprocessable Entity
+    schema:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Unprocessable Entity
+            message:
+              type: string
+              example: Code must be string
+              
+  500:
+    description: Server error
+    schema:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Server Error
+            message:
+              type: string
+              example: Internal Server Error
+  503:
+    description: Unavilable Service
+    schema:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Unavilable Service
+            message:
+              type: string
+              example: Database unavilable

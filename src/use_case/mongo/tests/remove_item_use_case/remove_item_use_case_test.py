@@ -32,7 +32,6 @@ def test_remove_item_succesfully(setup_use_case):
     response = use_case.handle(http_request)
 
     assert isinstance(response, HttpResponse)
-    assert response.body == data["expected_response"]
 
     code = data["params"]["code"]
     object_id = data["params"]["_id"]

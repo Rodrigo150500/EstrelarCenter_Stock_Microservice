@@ -2,6 +2,7 @@ from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
 
 from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryMongoInterface
 
@@ -26,7 +27,7 @@ class RemoveItemMongoUseCase(RemoveItemMongoUseCaseInterface):
 
         self.__remove_in_database(params)
 
-        formatted_response = self.__formatted_response(params)
+        formatted_response = self.__format_response()
 
         return formatted_response
     
@@ -37,9 +38,17 @@ class RemoveItemMongoUseCase(RemoveItemMongoUseCaseInterface):
 
         object_id = params["_id"]
 
-        response = self.__repository.check_if_variant_exists(code, object_id)
+        try:
 
-        if response == False: raise HttpNotFound('Product not found')
+            response = self.__repository.check_if_variant_exists(code, object_id)
+
+            if response == False: raise HttpNotFound('Product not found')
+        
+        except HttpNotFound:
+            raise
+
+        except HttpUnavailableService:
+            raise
 
 
     def __remove_in_database(self, params: dict) -> None:
@@ -47,16 +56,15 @@ class RemoveItemMongoUseCase(RemoveItemMongoUseCaseInterface):
         code = params["code"]
         object_id = params["_id"]
 
-        self.__repository.remove_variant_by_object_id(code, object_id)
+        try:
+
+            self.__repository.remove_variant_by_object_id(code, object_id)
+
+        except HttpUnavailableService:
+            raise
 
 
-    def __formatted_response(self, params: dict) -> HttpResponse:
+    def __format_response(self) -> HttpResponse:
         return HttpResponse(
-            body={
-                "data":{
-                    "operation": "Update",
-                    "count": 1,
-                    "attributes": params
-                }
-            },status_code=200
+            status_code=204
         )

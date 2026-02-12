@@ -132,6 +132,7 @@ def get_product_by_search():
     
 
 @product_routes_bp.route("/product/<code>/variant/<variant_id>", methods=["DELETE"])
+@swag_from("../../docs/remove_item_doc.yml")
 def remove_item_variant(code: str, variant_id: str):
 
     try:

@@ -51,8 +51,6 @@ def test_remove_variant_succesfully(setup_use_case):
 
     assert isinstance(response, HttpResponse)
 
-    assert response.body == data["expected_response"]
-
     code = data["params"]["code"]
 
     obj_1_is_in_database = repository.check_if_variant_exists(code, object_id_1)
