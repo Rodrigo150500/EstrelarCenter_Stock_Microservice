@@ -80,6 +80,7 @@ def delete_product_by_code(code: str):
         
 
 @product_routes_bp.route("/product/<code>/variant/<variant_id>", methods=["PATCH"])
+@swag_from("../../docs/update_product_doc.yml")
 def update_product_variant(code: str, variant_id: str):
 
     try:

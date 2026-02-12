@@ -6,7 +6,7 @@ Realizar:
         OK InsertNewVariantUseCase
         OK InserProductUseCase
         OK RemoveItemUseCase
-        -> UpdateProductUseCase
+        OK UpdateProductUseCase
 
     - Fazer os testes esperados em caso de sucesso
         - Testes Unitários
@@ -15,8 +15,8 @@ Realizar:
             OK GetProductUseCase
             OK InsertNewVariantUseCase
             OK InserProductUseCase
-            - RemoveItemUseCase
-            - UpdateProductUseCase
+            OK RemoveItemUseCase
+            OK UpdateProductUseCase
         - Testes de Integração
             OK DeleteProductUseCase
             OK GetProductBySearchUseCase
@@ -24,7 +24,7 @@ Realizar:
             OK InsertNewVariantUseCase
             OK InserProductUseCase
             OK RemoveItemUseCase
-            - UpdateProductUseCase
+            OK UpdateProductUseCase
 
     - Documentar as rotas do swagger
         OK DeleteProductUseCase
@@ -33,7 +33,7 @@ Realizar:
         OK InsertNewVariantUseCase
         OK InserProductUseCase
         OK RemoveItemUseCase
-        - UpdateProductUseCase
+        OK UpdateProductUseCase
 
     - Testar cada rota individualmente
         OK DeleteProductUseCase
@@ -42,6 +42,6 @@ Realizar:
         OK InsertNewVariantUseCase
         OK InserProductUseCase
         OK RemoveItemUseCase
-        - UpdateProductUseCase
+        OK UpdateProductUseCase
 
 - Inserir um exception 500

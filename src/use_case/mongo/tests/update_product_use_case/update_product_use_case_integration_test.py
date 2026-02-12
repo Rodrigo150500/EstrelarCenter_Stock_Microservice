@@ -96,3 +96,7 @@ def test_update_product_not_found(setup_use_case):
 
     with pytest.raises(HttpNotFound):
         use_case.handle(http_request)
+    
+    productExistsInDatabase = repository.check_if_product_exists(data["params"]["code"])
+
+    assert productExistsInDatabase == False

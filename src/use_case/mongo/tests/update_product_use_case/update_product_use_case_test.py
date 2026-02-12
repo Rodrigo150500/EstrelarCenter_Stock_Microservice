@@ -127,7 +127,7 @@ def test_update_product_raise_HttpInternalServerError(setup_use_case):
 
     http_request = HttpRequest(body=body, params=params)
 
-    repository.update_product_variant_by_object_id.side_effect = Exception("Error: Unexpected")
+    repository.update_product_variant_by_object_id.side_effect = HttpInternalServerError("Error: Database Unavailable")
 
     with pytest.raises(HttpInternalServerError):
 

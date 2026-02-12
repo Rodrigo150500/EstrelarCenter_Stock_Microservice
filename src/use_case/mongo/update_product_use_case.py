@@ -52,7 +52,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         try:
 
             response = self.__repository.check_if_variant_exists(code, object_id) 
-            print(response)
+
             if response == False: raise HttpNotFound("Error: product not found") 
 
             return
@@ -61,15 +61,9 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
             raise
 
         except HttpUnavailableService:
-            raise
+            raise  
 
-        except Exception as exception:
-
-            print(f"Error: [UpdateProductMongoUseCase][GetProductFromDatabase]: {str(exception  )}")
-
-            raise HttpInternalServerError("Error: Erro interno no servidor")
-    
-
+        
     def __update_last_change_field(self, product: dict) -> dict:
 
         product["last_change"] = datetime.now()
@@ -112,13 +106,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         except HttpUnavailableService:
             raise 
-
-        except Exception as exception:
-
-            print(f"Error: [UpdateProductMongoUseCase][UpdateProduct]: {str(exception)}")
-
-            raise HttpInternalServerError("Error: Erro interno no servidor")
-        
+                
 
     def __formatted_response(self, body: dict) -> HttpResponse:
 
