@@ -142,7 +142,7 @@ def get_product_product_without_image_data():
                 "last_change": "+4  23/09/2025 17:06:12",
                 "stock": 4,
                 "measure": "Unidade",
-                "image": f"https://localhost:{PORT}/erro.jpg"
+                "image": f"https://localhost:{PORT}/static/erro.jpg"
             },{
                 "_id": ANY,
                 "code": "16",
