@@ -20,7 +20,7 @@ def update_product_validator_request(body: dict, params: dict):
     "image": {"type": "string", "required": False},
     "brand": {"type": "string", "required": False},
     "reference": {"type": "string", "required": False},
-    "location": {"type": "string", "required": False},
+    "location": {"type": "list", "required": False},
     "measure": {"type": "string", "required": False},
     "keepBuying": {"type": "boolean", "required": False},
     "quantity_change":{"type": "integer", "required": False}     

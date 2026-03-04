@@ -6,7 +6,7 @@ from src.utils.image_type import image_string
 
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
-def test_remove_item_validator_succesfully():
+def test_insert_new_variant_validator_succesfully():
 
     params = {
         "code": "10"
@@ -18,7 +18,7 @@ def test_remove_item_validator_succesfully():
         "image": image_string,
         "brand": "kit-kat",
         "reference": "kat15",
-        "location": "CX15",
+        "location": ["CX15", "A1"],
         "measure": "Caixa",
         "keepBuying": True,
         "quantity_change": 5

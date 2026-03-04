@@ -20,7 +20,7 @@ def test_validate_update_sucessfully():
         "image": image_string,
         "brand": "Kit-Kat",
         "reference": "Kit500",
-        "location": "CX15",
+        "location": ["CX15"],
         "measure": "Unidade",
         "keepBuying": False,
         "quantity_change": -10   
@@ -43,7 +43,7 @@ def test_validate_wrong_input_type_return_error():
         "image": image_string,
         "brand": "Kit-Kat",
         "reference": "Kit500",
-        "location": "CX15",
+        "location": "CX15", #Must be a list
         "measure": "Unidade",
         "keepBuying": "False", #Must be boolean
         "quantity_change": -10   
@@ -68,7 +68,7 @@ def test_not_filling_body_return_sucessfully():
         "image": "",
         "brand": "",
         "reference": "",
-        "location": "",
+        "location": [],
         "measure": "",
         "keepBuying": False, 
         "quantity_change": 0   

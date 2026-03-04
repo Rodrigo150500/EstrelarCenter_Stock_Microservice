@@ -14,7 +14,7 @@ def insert_new_variant_request(params: dict, body: dict) -> None:
             "image": {"type": "string", "required": True, "empty": False},
             "brand": {"type": "string", "required": False},
             "reference": {"type": "string", "required": False},
-            "location": {"type": "string", "required": False},
+            "location": {"type": "list", "required": False},
             "measure": {"type": "string", "required": True, "empty": False},
             "keepBuying": {"type": "boolean", "required": True, "empty": False},
             "quantity_change":{"type": "integer", "required": True, "empty": False}

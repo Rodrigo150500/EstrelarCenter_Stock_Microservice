@@ -15,7 +15,7 @@ def test_validator_schema_insert_return_sucessfully():
         "image": "http://192.168.15.36:3000/src/image",
         "brand": "kit-kat",
         "reference": "kit-154",
-        "location": "CX15",
+        "location": ["CX15"],
         "measure": "Caixa",
         "keepBuying": True,
         "quantity_change": 4
@@ -56,7 +56,7 @@ def test_fill_just_the_required_fields():
         "image": "http://192.168.15.36:3000/src/image",
         "brand": "",
         "reference": "",
-        "location": "",
+        "location": [],
         "measure": "Caixa",
         "keepBuying": False,
         "quantity_change": -4
