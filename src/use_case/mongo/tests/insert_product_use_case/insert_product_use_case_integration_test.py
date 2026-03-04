@@ -9,7 +9,7 @@ from src.use_case.mongo.insert_product_use_case import InsertProductMongoUseCase
 
 from src.main.http_types.http_request import HttpRequest
 
-from insert_product_use_case_integration_data import insert_product_sucessfully, insert_product_that_already_exists
+from insert_product_use_case_integration_data import insert_product_sucessfully_data, insert_product_that_already_exists
 
 from src.errors.types.http_conflict import HttpConflict
 
@@ -33,7 +33,7 @@ def setup_use_case():
 
 def test_insert_product_sucessfully(setup_use_case):
 
-    data = insert_product_sucessfully()
+    data = insert_product_sucessfully_data()
 
     use_case, repository = setup_use_case
 

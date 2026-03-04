@@ -21,7 +21,7 @@ def update_product_sucessfully_data():
             'stock': 25,
             'brand': "Kit-Kat",
             'image': image_string,
-            'location': "P9",
+            'location': ["P9"],
             'reference': "KIT104",
             "quantity_change": 3
     }
@@ -41,7 +41,7 @@ def update_product_sucessfully_data():
         'variants.$.stock': 25,
         'variants.$.brand': 'Kit-Kat',
         'variants.$.image': f'https://{HOST}:{PORT}/static/erro.jpg',
-        'variants.$.location': 'P9',
+        'variants.$.location': ['P9'],
         'variants.$.reference': 'KIT104',
         'variants.$.quantity_change': 3,
         'variants.$.last_change': ANY

@@ -4,7 +4,7 @@ from src.utils.export_image_string64_to_binary import export_image_string64_to_b
 
 from src.utils.image_type import image_string, image_string_splitted
 
-def insert_product_sucessfully():
+def insert_product_sucessfully_data():
 
     body = {
         "code": "10",
@@ -13,7 +13,7 @@ def insert_product_sucessfully():
         "image": image_string,
         "brand": "kit-kat",
         "reference": "kit-154",
-        "location": "CX15",
+        "location": ["CX15"],
         "measure": "Caixa",
         "keepBuying": True,
         "quantity_change": 5
@@ -29,7 +29,7 @@ def insert_product_sucessfully():
             "stock": 15,
             "brand": "kit-kat",
             "reference": "kit-154",
-            "location": "CX15",
+            "location": ["CX15"],
             "measure": "Caixa",
             "keepBuying": True,
             "last_change": ANY,
@@ -63,7 +63,7 @@ def insert_product_that_already_exists():
         "image": image_string,
         "brand": "kit-kat",
         "reference": "kit-154",
-        "location": "CX15",
+        "location": ["CX15"],
         "measure": "Caixa",
         "keepBuying": True,
         "quantity_change": 5

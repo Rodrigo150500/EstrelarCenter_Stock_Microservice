@@ -15,7 +15,7 @@ def insert_product_sucessfully():
         "image": image_string,
         "brand": "kit-kat",
         "reference": "kit-154",
-        "location": "CX15",
+        "location": ["CX15"],
         "measure": "Caixa",
         "keepBuying": True,
         "quantity_change": 4
@@ -31,7 +31,7 @@ def insert_product_sucessfully():
             "stock": 15,
             "brand": "kit-kat",
             "reference": "kit-154",
-            "location": "CX15",
+            "location": ["CX15"],
             "measure": "Caixa",
             "keepBuying": True,
             "last_change": ANY,
@@ -64,7 +64,7 @@ def insert_product_with_int_code():
         "image": image_string,
         "brand": "kit-kat",
         "reference": "kit-154",
-        "location": "CX15",
+        "location": ["CX15"],
         "measure": "Caixa",
         "keepBuying": True,
         "quantity_change": 3
@@ -86,7 +86,7 @@ def insert_product_that_already_exists():
             'stock': 25,
             'brand': "Kit-Kat",
             'image': "imagem_bytes",
-            'location': "P9",
+            'location': ["P9"],
             'reference': "KIT104",
             "keepBuying": True,
             "quantity_change": 3
@@ -102,7 +102,7 @@ def insert_product_that_already_exists():
             'brand': "Kit-Kat",
             'last_change': ANY  ,
             'image': "imagem_bytes",
-            'location': "P9",
+            'location': ["P9"],
             'reference': "KIT104",
             "quantity_change": 3
 
@@ -127,7 +127,7 @@ def error_unavailable_service_database_data():
         "image": image_string,
         "brand": "kit-kat",
         "reference": "kit-154",
-        "location": "CX15",
+        "location": ["CX15"],
         "measure": "Caixa",
         "keepBuying": True,
         "quantity_change": 4
