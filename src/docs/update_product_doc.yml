@@ -33,7 +33,7 @@ parameters:
         reference:
           type: string
         location:
-          type: string
+          type: list
         measure:
           type: string
         keepBuying:
@@ -47,7 +47,7 @@ parameters:
         image: image string
         brand: kiti-cat
         reference: kit-152
-        location: CX55
+        location: [CX55]
         measure: unidade
         keepBuying: true
         quantity_change: -9
