@@ -1,6 +1,7 @@
 import os
 
 PORT = os.getenv("PORT")
+HOST = os.getenv("HOST")
 
 def export_image_to_string_sucessfully():
 
@@ -30,7 +31,7 @@ def export_image_with_error():
 
     image = "image"
 
-    expected_response = f"https://localhost:{PORT}/static/erro.jpg"
+    expected_response = f"https://{HOST}:{PORT}/static/erro.jpg"
 
     data = {
         "image": image,

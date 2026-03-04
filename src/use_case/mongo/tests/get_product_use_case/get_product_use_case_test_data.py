@@ -6,6 +6,7 @@ from src.utils.image_type import imagem_bytes, image_string
 from unittest.mock import ANY
 
 PORT = os.getenv("PORT")
+HOST = os.getenv("HOST")
 
 def get_product_sucessfully_data():
 
@@ -142,7 +143,7 @@ def get_product_product_without_image_data():
                 "last_change": "+4  23/09/2025 17:06:12",
                 "stock": 4,
                 "measure": "Unidade",
-                "image": f"https://localhost:{PORT}/static/erro.jpg"
+                "image": f"https://{HOST}:{PORT}/static/erro.jpg"
             },{
                 "_id": ANY,
                 "code": "16",
@@ -154,7 +155,7 @@ def get_product_product_without_image_data():
                 "last_change": "+4  23/09/2025 17:06:12",
                 "stock": 4,
                 "measure": "Unidade",
-                "image": f"https://localhost:{PORT}/static/erro.jpg"
+                "image": f"https://{HOST}:{PORT}/static/erro.jpg"
             }]
         }
     }

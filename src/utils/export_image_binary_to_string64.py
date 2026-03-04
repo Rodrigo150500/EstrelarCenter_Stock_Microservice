@@ -1,6 +1,7 @@
 import os
 
 PORT = os.getenv("PORT")
+HOST = os.getenv("HOST")
 
 import base64
 
@@ -8,7 +9,7 @@ def export_image_binary_to_string64(image: bytes) -> str:
 
     try:
         
-        error_image = f"https://localhost:{PORT}/static/erro.jpg"
+        error_image = f"https://{HOST}:{PORT}/static/erro.jpg"
 
         if not image:
 
