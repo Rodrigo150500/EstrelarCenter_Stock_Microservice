@@ -22,7 +22,7 @@ def get_product_by_code(code: str):
 
     try:
 
-        http_request = HttpRequest(params={"code": code})
+        http_request = HttpRequest(params={"code": code}, header=request.host)
 
         use_case = get_product_composer()
 
@@ -43,7 +43,7 @@ def insert_product():
 
     try:
 
-        http_request = HttpRequest(body=request.json)
+        http_request = HttpRequest(body=request.json, header=request.host)
 
         use_case = insert_product_composer()
 
@@ -85,7 +85,7 @@ def update_product_variant(code: str, variant_id: str):
 
     try:
 
-        http_request = HttpRequest(params={"code": code, "_id": variant_id}, body=request.json)
+        http_request = HttpRequest(params={"code": code, "_id": variant_id}, body=request.json, header=request.host)
         
         use_case = update_product_composer()
 
@@ -161,7 +161,7 @@ def insert_product_variant(code: str):
         params = {"code": code}
         body = request.json
 
-        http_request = HttpRequest(body=body, params=params)
+        http_request = HttpRequest(body=body, params=params, header=request.host)
 
         use_case = insert_new_variant_composer()
 
