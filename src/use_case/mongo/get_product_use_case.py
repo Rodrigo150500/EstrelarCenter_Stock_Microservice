@@ -14,8 +14,6 @@ from .interfaces.get_product_use_case_interface import GetProductMongoUseCaseInt
 
 from src.utils.export_image_binary_to_string64 import export_image_binary_to_string64
 
-PORT = os.getenv("PORT")
-HOST = os.getenv("HOST")
 
 class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
@@ -27,12 +25,13 @@ class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
     def handle(self, http_request: HttpRequest) -> HttpResponse:
 
         params = http_request.params
+        host = http_request.header
 
         get_product_validator_request(params)
 
         product = self.__get_product_from_database(params)
 
-        formatted_product = self.__format_image_to_string64(product)
+        formatted_product = self.__format_image_to_string64(product, host)
         
         formatted_response = self.__format_response(formatted_product)
 
@@ -59,7 +58,7 @@ class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
 
 
-    def __format_image_to_string64(self, product: dict) -> list:
+    def __format_image_to_string64(self, product: dict, host: str) -> list:
 
         products = product["variants"]
 
@@ -69,11 +68,11 @@ class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
             try:
 
-                item["image"] = export_image_binary_to_string64(item["image"])
+                item["image"] = export_image_binary_to_string64(item["image"], host)
             
             except:
 
-                item["image"] = f'{HOST}:{PORT}/static/erro.jpg'
+                item["image"] = f'{host}/static/erro.jpg'
 
             products_list.append(item)
 

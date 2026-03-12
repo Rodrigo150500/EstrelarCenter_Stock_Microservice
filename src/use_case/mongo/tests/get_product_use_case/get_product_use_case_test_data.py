@@ -1,4 +1,8 @@
 import os
+
+from dotenv import load_dotenv
+
+load_dotenv("dev.env")
 from bson.objectid import ObjectId
 
 from src.utils.image_type import imagem_bytes, image_string

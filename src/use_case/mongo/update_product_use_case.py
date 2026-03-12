@@ -10,7 +10,6 @@ from src.validators.update_product_validator_request import update_product_valid
 
 from src.errors.types.http_not_found import HttpNotFound
 from src.errors.types.http_unavailable_service import HttpUnavailableService
-from src.errors.types.http_internal_server_error import HttpInternalServerError
 
 from src.utils.export_image_string64_to_binary import export_image_string64_to_binary
 
@@ -26,12 +25,13 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         
         params = http_request.params
         body = http_request.body
+        host = http_request.header
 
         update_product_validator_request(body, params)
         
         self.__verify_if_exists_in_database(params)
     
-        product_with_image_string = self.__transform_image_to_binary(body)
+        product_with_image_string = self.__transform_image_to_binary(body, host)
 
         product_last_change_updated = self.__update_last_change_field(product_with_image_string)
 
@@ -82,13 +82,13 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         return body_formatted
 
 
-    def __transform_image_to_binary(self, body: dict) -> dict:
+    def __transform_image_to_binary(self, body: dict, host: str) -> dict:
 
         if "image" in body:
 
             image_string = body["image"]
 
-            image_binary = export_image_string64_to_binary(image_string)
+            image_binary = export_image_string64_to_binary(image_string, host)
 
             body["image"] = image_binary
 

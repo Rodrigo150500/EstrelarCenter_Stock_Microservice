@@ -28,12 +28,13 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     def handle(self, http_request: HttpRequest) -> HttpResponse:
 
         body = http_request.body
+        host = http_request.header
 
         insert_product_validator_request(body)
     
         self.__verify_if_product_exists(body)
 
-        image = self.__export_image_to_binary(body["image"])
+        image = self.__export_image_to_binary(body["image"], host)
 
         body_formatted_request = self.__format_body(body, image)
     
@@ -61,7 +62,7 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
             raise
 
 
-    def __export_image_to_binary(self, image: str) -> Binary | str:
+    def __export_image_to_binary(self, image: str, host: str) -> Binary | str:
 
         if (isinstance(image, str) and "erro.jpg" not in image):
 
@@ -69,7 +70,7 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
                 image = image.split(",", 1)[1]  # remove o "data:image/png;base64,"
 
-            image_exported = export_image_string64_to_binary(image)
+            image_exported = export_image_string64_to_binary(image, host)
     
         return image_exported
     

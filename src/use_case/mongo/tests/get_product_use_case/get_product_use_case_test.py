@@ -1,3 +1,4 @@
+import os
 import pytest
 
 from dotenv import load_dotenv
@@ -15,6 +16,8 @@ from get_product_use_case_test_data import get_product_sucessfully_data, get_pro
 from src.errors.types.http_not_found import HttpNotFound
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
+PORT = os.getenv("PORT")
+HOST = os.getenv("HOST")
 
 @pytest.fixture
 def setup_use_case():
@@ -70,7 +73,7 @@ def test_get_product_product_without_image(setup_use_case):
 
     repository.get_product_by_code.return_value = data["get_product_by_code"]
 
-    http_request = HttpRequest(params=data["params"])
+    http_request = HttpRequest(params=data["params"], header=f"{HOST}:{PORT}")
 
     response = use_case.handle(http_request)
 
@@ -78,7 +81,6 @@ def test_get_product_product_without_image(setup_use_case):
     assert response.status_code == 200
 
     repository.get_product_by_code.assert_called_once_with(data["params"]["code"])
-
 
 
 def test_get_product_with_int_code(setup_use_case):

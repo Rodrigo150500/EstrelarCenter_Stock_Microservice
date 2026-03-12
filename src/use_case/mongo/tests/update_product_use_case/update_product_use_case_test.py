@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 load_dotenv("dev.env")
 
@@ -16,6 +17,8 @@ from src.use_case.mongo.update_product_use_case import UpdateProductMongoUseCase
 
 from update_product_use_case_test_data import update_product_sucessfully_data, missing_required_fields_for_body_return_HttpUnprocessableEntity_data, product_not_in_database_return_HttpNotFound_data, database_unavailable_return_HttpUnavailableService_data, update_product_raise_HttpInternalServerError_data
 
+PORT = os.getenv("PORT")
+HOST = os.getenv("HOST")
 
 @pytest.fixture
 def setup_use_case():
@@ -36,7 +39,7 @@ def test_update_product_sucessfully(setup_use_case):
     params = data["params"]
     body = data["body"]
 
-    http_request = HttpRequest(params=params, body=body)
+    http_request = HttpRequest(params=params, body=body, header=f"{HOST}:{PORT}")
 
     response = use_case.handle(http_request)
 

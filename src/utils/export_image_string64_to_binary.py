@@ -1,15 +1,11 @@
-import os
-
 import base64
 
 from bson import Binary
 
-PORT = os.getenv("PORT")
-HOST = os.getenv("HOST")
 
-def export_image_string64_to_binary(image: str) -> Binary | str:
+def export_image_string64_to_binary(image: str, host: str) -> Binary | str:
 
-    error_image = f"https://{HOST}:{PORT}/static/erro.jpg" 
+    error_image = f"https://{host}/static/erro.jpg" 
 
     try:
 

@@ -1,8 +1,6 @@
 from unittest.mock import ANY
 
-from src.utils.export_image_string64_to_binary import export_image_string64_to_binary
-
-from src.utils.image_type import image_string, image_string_splitted
+from src.utils.image_type import image_string
 
 def insert_product_sucessfully_data():
 

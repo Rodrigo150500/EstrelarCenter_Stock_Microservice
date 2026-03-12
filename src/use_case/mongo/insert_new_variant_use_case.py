@@ -26,12 +26,13 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
         
         params = http_request.params
         body = http_request.body
+        host = http_request.header
 
         insert_new_variant_request(params, body)
         
         self.__verify_if_product_exists(params)
 
-        body_image_formatted = self.__export_image_in_binary(body)
+        body_image_formatted = self.__export_image_in_binary(body, host)
 
         body_last_change_formatted = self.__add_metadata_fields(body_image_formatted)
 
@@ -61,11 +62,11 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
             raise
 
 
-    def __export_image_in_binary(self, body: dict) -> dict:
+    def __export_image_in_binary(self, body: dict, host: str) -> dict:
         
         image_string = body["image"]
 
-        image = export_image_string64_to_binary(image_string)
+        image = export_image_string64_to_binary(image_string, host)
 
         body["image"] = image
 
