@@ -14,7 +14,6 @@ def update_product_validator_request(body: dict, params: dict):
   })
 
   body_validate = Validator({         
-    "code":{'type': 'string', 'required': True, "empty": False},
     "description": {"type": "string", "required": False},
     "stock": {"type": "integer", "required": False},
     "image": {"type": "string", "required": False},
