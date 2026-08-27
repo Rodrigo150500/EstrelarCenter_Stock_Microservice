@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+
+  database:
+    image: mongo:7
+    container_name: estrelar_mongo
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: stock
+    ports:
+      - "10000:10000"
+
+    depends_on:
+      database:
+        condition: service_healthy
+
+    environment:
+      MONGO_URL: mongodb://database:27017

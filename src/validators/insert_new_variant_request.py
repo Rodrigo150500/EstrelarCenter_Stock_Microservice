@@ -11,7 +11,7 @@ def insert_new_variant_request(params: dict, body: dict) -> None:
     body_validate = Validator({         
             "description": {"type": "string", "required": True, "empty": False},
             "stock": {"type": "integer", "required": True, "empty": False},
-            "image": {"type": "string", "required": True, "empty": False},
+            "image": {"type": "string", "required": True},
             "brand": {"type": "string", "required": False},
             "reference": {"type": "string", "required": False},
             "location": {"type": "list", "required": False},
