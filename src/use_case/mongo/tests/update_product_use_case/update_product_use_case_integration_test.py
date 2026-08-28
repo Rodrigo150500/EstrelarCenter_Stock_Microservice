@@ -85,9 +85,9 @@ def test_update_second_variant_sucessfully(setup_use_case):
 
 def test_update_product_not_found(setup_use_case):
 
-    use_case, _, _, repository = setup_use_case
+    use_case, _, object_id, repository = setup_use_case
 
-    data = update_product_not_found_data()
+    data = update_product_not_found_data(object_id)
 
     params = data["params"]
     body = data["body"]

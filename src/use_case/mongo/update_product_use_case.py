@@ -39,7 +39,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         self.__update_product(product_formatted_to_update, params)
         
-        response = self.__formatted_response(body)
+        response = self.__formatted_response(body, params)
 
         return response
 
@@ -108,10 +108,12 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
             raise 
                 
 
-    def __formatted_response(self, body: dict) -> HttpResponse:
+    def __formatted_response(self, body: dict, params: dict) -> HttpResponse:
 
         if "image" in body:
             del body["image"]
+
+        body["_id"] = params["_id"]
 
         return HttpResponse(
             body={

@@ -48,7 +48,6 @@ def update_product_sucessfully_data(object_id: str):
     }
 
     body = {
-        "code": "10",
         "description": "New Description for Update",
         "stock":1000
     }
@@ -57,7 +56,7 @@ def update_product_sucessfully_data(object_id: str):
         "data":{
             "operation":"Update",
             "count": 1,
-            "attributes": body
+            "attributes": {**body, "_id": object_id}
         }
     }
 
@@ -78,7 +77,6 @@ def update_second_variant_sucessfully_data(object_id: str):
     }
 
     body = {
-        "code": "10",
         "description": "New product for B",
         "stock":1500,
         "reference": "Lacta"
@@ -88,7 +86,7 @@ def update_second_variant_sucessfully_data(object_id: str):
         "data":{
             "operation":"Update",
             "count": 1,
-            "attributes": body
+            "attributes": {**body, "_id": object_id}
         }
     }
 
@@ -101,7 +99,7 @@ def update_second_variant_sucessfully_data(object_id: str):
     return data
 
 
-def update_product_not_found_data():
+def update_product_not_found_data(object_id: str):
 
     params = {
         "code": "1500",
@@ -109,7 +107,6 @@ def update_product_not_found_data():
     }
 
     body = {
-        "code": "1500",
         "description": "New product for B",
         "stock":1500,
         "reference": "Lacta"
@@ -119,7 +116,7 @@ def update_product_not_found_data():
         "data":{
             "operation":"Update",
             "count": 1,
-            "attributes": body
+            "attributes": {**body, "_id": object_id}
         }
     }
 

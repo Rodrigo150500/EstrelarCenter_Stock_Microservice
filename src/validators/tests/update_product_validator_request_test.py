@@ -14,7 +14,6 @@ def test_validate_update_sucessfully():
     }
 
     body = {
-        "code": "123",
         "description": "Product A",
         "stock": 15,
         "image": image_string,
@@ -37,7 +36,6 @@ def test_validate_wrong_input_type_return_error():
     }
 
     body = {
-        "code": 123, #Must be string
         "description": "Product A",
         "stock": 15,
         "image": image_string,
@@ -62,7 +60,6 @@ def test_not_filling_body_return_sucessfully():
     }
 
     body = {
-        "code": "123",
         "description": "",
         "stock": 0,
         "image": "",
