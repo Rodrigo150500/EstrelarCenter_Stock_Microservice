@@ -15,7 +15,6 @@ def update_product_sucessfully_data():
     }
 
     body = {
-            "code": "10",
             'description': "New Product A" ,
             'measure': "Unidade",
             'stock': 25,
@@ -35,7 +34,6 @@ def update_product_sucessfully_data():
     }
 
     body_to_update = {
-        'variants.$.code': '10',
         'variants.$.description': 'New Product A',
         'variants.$.measure': 'Unidade',
         'variants.$.stock': 25,
@@ -66,7 +64,6 @@ def missing_required_fields_for_body_return_HttpUnprocessableEntity_data():
     }
 
     body = {
-            # "code": "10", Must be in request
             'description': "New Product A"
     }
 
@@ -86,7 +83,6 @@ def product_not_in_database_return_HttpNotFound_data():
     }
 
     body = {
-        "code": "10",
         'description': "New Product A" ,
     }
 
@@ -106,7 +102,6 @@ def database_unavailable_return_HttpUnavailableService_data():
     }
 
     body = {
-        "code": "10",
         'description': "New Product A" ,
     }
 
@@ -134,7 +129,6 @@ def update_product_raise_HttpInternalServerError_data():
     }
 
     body = {
-        "code": "10",
         'description': "New Product A" ,
     }
 

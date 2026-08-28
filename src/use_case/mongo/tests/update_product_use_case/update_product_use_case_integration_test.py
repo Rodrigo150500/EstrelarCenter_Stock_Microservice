@@ -53,7 +53,7 @@ def test_update_product_sucessfully(setup_use_case):
     http_request = HttpRequest(body=body, params=params)
 
     response = use_case.handle(http_request)
-
+   
     assert response.body == data["expected_response"]
     assert response.status_code == 200
 

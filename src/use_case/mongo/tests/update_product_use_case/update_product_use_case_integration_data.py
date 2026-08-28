@@ -1,6 +1,7 @@
 from bson.objectid import ObjectId
 from datetime import datetime
 from src.utils.image_type import imagem_bytes
+from unittest.mock import ANY
 
 def setup_use_case_data():
 
@@ -52,11 +53,17 @@ def update_product_sucessfully_data(object_id: str):
         "stock":1000
     }
 
+    body_response = {
+        **body,
+        "_id": object_id,
+        "last_change": ANY
+    }
+
     expected_response = {
         "data":{
             "operation":"Update",
             "count": 1,
-            "attributes": {**body, "_id": object_id}
+            "attributes": body_response
         }
     }
 
@@ -82,11 +89,17 @@ def update_second_variant_sucessfully_data(object_id: str):
         "reference": "Lacta"
     }
 
+    body_response = {
+        **body,
+        "_id": object_id,
+        "last_change": ANY
+    }
+
     expected_response = {
         "data":{
             "operation":"Update",
             "count": 1,
-            "attributes": {**body, "_id": object_id}
+            "attributes": body_response
         }
     }
 

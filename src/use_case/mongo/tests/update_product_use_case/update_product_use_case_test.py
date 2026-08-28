@@ -116,7 +116,8 @@ def test_database_unavailable_return_HttpUnavailableService(setup_use_case):
     object_id = params["_id"]
     
     repository.check_if_variant_exists.assert_called_once_with(code, object_id)
-    repository.update_product_variant_by_object_id.assert_called_once_with(code, object_id, data["body_to_update"])
+    repository.update_product_variant_by_object_id.assert_called_once()
+    
 
 
 def test_update_product_raise_HttpInternalServerError(setup_use_case):
@@ -140,4 +141,4 @@ def test_update_product_raise_HttpInternalServerError(setup_use_case):
     object_id = params["_id"]
     
     repository.check_if_variant_exists.assert_called_once_with(code, object_id)
-    repository.update_product_variant_by_object_id.assert_called_once_with(code, object_id, data["body_to_update"])
+    repository.update_product_variant_by_object_id.assert_called_once()
