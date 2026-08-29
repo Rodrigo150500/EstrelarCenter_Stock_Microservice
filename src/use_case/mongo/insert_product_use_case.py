@@ -35,7 +35,7 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
         self.__verify_if_product_exists(body)
 
         image = self.__export_image_to_binary(body["image"], host)
-
+        
         body_formatted_request = self.__format_body(body, image)
     
         self.__insert_in_database(body_formatted_request)
@@ -78,9 +78,6 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     def __format_body(self, body: dict, image: Binary) -> dict:
 
         body = {
-            "_id": ObjectId(),
-            "code": body["code"],
-            "variants": [{
                 "_id": ObjectId(),
                 "description": body["description"],
                 "stock": body["stock"],
@@ -91,9 +88,7 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
                 "measure": body["measure"],
                 "keepBuying": body["keepBuying"],
                 "last_change": datetime.now(),
-                "quantity_change": body["quantity_change"]
-                }
-            ]
+                "quantity_change": body["quantity_change"]          
         }
 
         return body
@@ -115,9 +110,9 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
         body["_id"] = str(body["_id"])
         
-        body["variants"][0]["_id"] = str(body["variants"][0]["_id"])
+        body["_id"] = str(body["_id"])
 
-        del body["variants"][0]["image"]
+        del body["image"]
 
         return HttpResponse(
             body={
