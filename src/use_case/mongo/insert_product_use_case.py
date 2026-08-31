@@ -78,6 +78,9 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     def __format_body(self, body: dict, image: Binary) -> dict:
 
         body = {
+            "_id": ObjectId(),
+            "code": body["code"],
+            "variants":[{
                 "_id": ObjectId(),
                 "description": body["description"],
                 "stock": body["stock"],
@@ -89,8 +92,8 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
                 "keepBuying": body["keepBuying"],
                 "last_change": datetime.now(),
                 "quantity_change": body["quantity_change"]          
+            }]
         }
-
         return body
 
 
@@ -108,18 +111,19 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     
     def __format_response(self, body: dict) -> HttpResponse:
 
+
         body["_id"] = str(body["_id"])
         
-        body["_id"] = str(body["_id"])
+        body["variants"][0]["_id"] = str(body["variants"][0]["_id"])
 
-        del body["image"]
+        del body["variants"][0]["image"]
 
         return HttpResponse(
             body={
                 "data":{
                     "operation": "Insert",
                     "count": 1,
-                    "attributes": body
+                    "attributes": body["variants"][0]
                 }
             }, status_code= 201
         )

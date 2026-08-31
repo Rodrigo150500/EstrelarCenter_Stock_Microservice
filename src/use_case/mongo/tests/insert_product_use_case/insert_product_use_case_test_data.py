@@ -22,10 +22,7 @@ def insert_product_sucessfully():
     }
 
 
-    body_response = {
-        "_id": ANY,
-        "code": "10",
-        "variants":[{
+    body_response ={
             "_id": ANY,
             "description": "Chocolate kit-kat 41g",
             "stock": 15,
@@ -36,7 +33,6 @@ def insert_product_sucessfully():
             "keepBuying": True,
             "last_change": ANY,
             "quantity_change": 4
-        }]
     }
 
     expected_body = {

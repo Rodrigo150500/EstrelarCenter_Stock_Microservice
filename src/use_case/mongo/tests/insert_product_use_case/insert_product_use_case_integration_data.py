@@ -40,7 +40,7 @@ def insert_product_sucessfully_data():
         "data":{
             "operation": "Insert",
             "count": 1,
-            "attributes": body_response
+            "attributes": body_response["variants"][0]
         }
     }
     

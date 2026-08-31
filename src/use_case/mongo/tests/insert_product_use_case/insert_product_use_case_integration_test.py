@@ -47,10 +47,8 @@ def test_insert_product_sucessfully(setup_use_case):
     code = data["body"]["code"]
 
     product = repository.get_product_by_code(code)
-
     assert product["code"] == code
     assert product["variants"][0]["description"] == data["body"]["description"]
-
 
 def test_insert_product_that_already_exists(setup_use_case):
 
