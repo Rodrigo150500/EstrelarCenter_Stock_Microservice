@@ -20,8 +20,6 @@ parameters:
     schema:
       type: object
       properties:
-        code:
-          type: string
         description:
           type: string
         stock:
@@ -41,7 +39,6 @@ parameters:
         quantity_change:
           type: integer
       example:
-        code: "10"
         description: chocolate kiti-cat 50g
         stock: 25
         image: image string
@@ -70,6 +67,29 @@ responses:
               example: 1
             attributes:
               type: object
+              properties:
+                _id: 
+                  type: string
+                brand:
+                  type: string
+                description: 
+                  type: string
+                keepBuying:
+                  type: boolean
+                last_change:
+                  type: string
+                location:
+                  type: array
+                  items:
+                    type: string
+                measure:
+                  type: string
+                quantity_change:
+                  type: integer
+                reference:
+                  type: string
+                stock:
+                  type: integer
 
   422:
     description: Unprocessable Entity

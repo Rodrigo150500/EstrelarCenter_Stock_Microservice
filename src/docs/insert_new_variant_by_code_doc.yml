@@ -68,7 +68,29 @@ responses:
               example: 1
             attributes:
               type: object
-    
+              properties:
+                _id: 
+                  type: string
+                brand:
+                  type: string
+                description: 
+                  type: string
+                keepBuying:
+                  type: boolean
+                last_change:
+                  type: string
+                location:
+                  type: array
+                  items:
+                    type: string
+                measure:
+                  type: string
+                quantity_change:
+                  type: integer
+                reference:
+                  type: string
+                stock:
+                  type: integer    
   404:
     description: Product not found
     schema:
