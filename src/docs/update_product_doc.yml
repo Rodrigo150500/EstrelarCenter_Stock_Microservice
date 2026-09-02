@@ -45,7 +45,7 @@ parameters:
         brand: kiti-cat
         reference: kit-152
         location: [CX55]
-        measure: unidade
+        measure: Unidade
         keepBuying: true
         quantity_change: -9
 

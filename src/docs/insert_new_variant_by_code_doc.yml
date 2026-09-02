@@ -39,7 +39,7 @@ parameters:
         brand: kiti-cat
         reference: kit-150
         location: [CX10]
-        measure: unidade
+        measure: Unidade
         keepBuying: true
         quantity_change: -5
       required:

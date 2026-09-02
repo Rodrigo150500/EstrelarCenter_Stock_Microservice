@@ -36,7 +36,7 @@ parameters:
         brand: kiti-cat
         reference: kit-200
         location: [CX11]
-        measure: unidade
+        measure: Unidade
         keepBuying: true
         quantity_change: 10
       required:
