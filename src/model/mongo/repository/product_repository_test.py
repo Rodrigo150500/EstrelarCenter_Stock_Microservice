@@ -6,7 +6,7 @@ from unittest.mock import Mock
 
 from .product_repository import ProductRepositoryMongo
 
-from .data.product_repository_data import insert_product_data, insert_new_variant_in_product_exist_data, get_product_by_code_return_product_data, update_product_variant_data, get_all_products_data, remove_item_data, remove_product_data, check_if_variant_exists_data, search_by_text_data, get_variant_image_by_code_data
+from .data.product_repository_data import insert_product_data, insert_new_variant_in_product_exist_data, get_product_by_code_return_product_data, update_product_variant_data, get_all_products_data, remove_item_data, remove_product_data, check_if_variant_exists_data, search_by_text_data, get_variant_image_by_code_data, get_variants_count_data
 
 from src.errors.types.http_not_found import HttpNotFound
 
@@ -230,4 +230,13 @@ def test_search_by_text(setup_repository):
 
 def test_get_variants_count(setup_repository):
 
-    pass
+    data = get_variants_count_data()
+
+    collection = setup_repository["collection"]
+    repository = setup_repository["repository"]
+
+    collection.find_one.return_value = data["find_one"]
+    
+    response = repository.get_variant_count("10")
+
+    assert response == 2

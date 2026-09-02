@@ -204,6 +204,6 @@ def test_get_variant_count(setup_repository):
 
     repository = setup_repository
 
-    response = repository.get_variant_count(code="15")
+    response = repository.get_variant_count(code="10")
 
-    assert response == 2
+    assert response == 1

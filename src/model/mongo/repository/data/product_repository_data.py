@@ -274,3 +274,36 @@ def search_by_text_data():
     }
 
     return data
+
+def get_variants_count_data():
+
+    find_one = {
+                "code": "10",
+                "variants":[{
+                    "_id": ObjectId(),
+                    "description": "Product A",
+                    "stock": 10,
+                    "image": imagem_bytes,
+                    "brand": "Kit-Kat",
+                    "reference": "Kit1030",
+                    "last_change": datetime.now(),
+                    "location": "A10",
+                    "measure": "Unidade",
+                    "keepBuying": True
+                },{
+                    "_id": ObjectId(),
+                    "description": "Product B",
+                    "stock": 15,
+                    "image": imagem_bytes,
+                    "brand": "Bis",
+                    "reference": "Bis1515",
+                    "last_change": datetime.now(),
+                    "location": "CX20",
+                    "measure": "Caixa",
+                    "keepBuying": False
+                }]
+                }
+
+    return {
+        "find_one": find_one
+    }
