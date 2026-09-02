@@ -42,6 +42,22 @@ def setup_use_case_data():
 
     return data
 
+def delete_product_with_one_variant_data(object_id_1: str, object_id_2: str):
+
+    params1 = {
+        "code": "10",
+        "_id": str(object_id_1)
+    }
+
+    params2 = {
+        "code": "10",
+        "_id": str(object_id_2)
+    }
+
+    return {
+        "params_1": params1,
+        "params_2": params2
+    }
 
 def remove_variant_succesfully_data(object_id_1: str):
 

@@ -12,7 +12,7 @@ from src.main.http_types.http_response import HttpResponse
 
 from src.errors.types.http_not_found import HttpNotFound
 
-from remove_item_use_case_integration_data import setup_use_case_data, remove_variant_succesfully_data
+from remove_item_use_case_integration_data import setup_use_case_data, remove_variant_succesfully_data, delete_product_with_one_variant_data
 
 mongo_db_connection.connect()
 
@@ -58,6 +58,34 @@ def test_remove_variant_succesfully(setup_use_case):
 
     assert obj_1_is_in_database == False
     assert obj_2_is_in_database == True
+
+
+def test_delete_product_with_one_variant(setup_use_case):
+
+    object_id_1, object_id_2, repository, use_case = setup_use_case
+
+    data = delete_product_with_one_variant_data(object_id_1, object_id_2)
+
+    http_request_1 = HttpRequest(params=data["params_1"])
+
+    response_1 = use_case.handle(http_request_1)
+
+    assert response_1.status_code == 204
+
+    http_request_2 = HttpRequest(params=data['params_2'])
+
+    response_2 = use_case.handle(http_request_2)
+
+    assert response_2.status_code == 204
+
+    obj_1_is_in_database = repository.check_if_variant_exists("10", object_id_1)
+
+    obj_2_is_in_database = repository.check_if_variant_exists("10", object_id_2)
+
+    assert obj_1_is_in_database == False
+    assert obj_2_is_in_database == False
+
+
 
 
 def test_remove_variant_that_not_exists(setup_use_case):
