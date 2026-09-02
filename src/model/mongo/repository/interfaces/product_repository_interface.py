@@ -61,3 +61,7 @@ class ProductRepositoryMongoInterface(ABC):
     @abstractmethod
     def search_by_text(self, pipeline: list) -> list:
         pass
+    
+    @abstractmethod
+    def get_variant_count(self, code: str) -> int:
+        pass

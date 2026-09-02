@@ -198,3 +198,12 @@ def test_search_product_by_text(setup_repository):
 
     for product in response:
         print(response)
+
+@pytest.mark.skip()
+def test_get_variant_count(setup_repository):
+
+    repository = setup_repository
+
+    response = repository.get_variant_count(code="15")
+
+    assert response == 2

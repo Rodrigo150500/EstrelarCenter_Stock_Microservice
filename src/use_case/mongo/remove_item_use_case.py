@@ -58,7 +58,15 @@ class RemoveItemMongoUseCase(RemoveItemMongoUseCaseInterface):
 
         try:
 
-            self.__repository.remove_variant_by_object_id(code, object_id)
+            variantsCount = self.__repository.get_variant_count(code)
+
+            if(variantsCount == 1):
+
+                self.__repository.delete_product_by_code(code)
+
+            else:
+
+                self.__repository.remove_variant_by_object_id(code, object_id)
 
         except HttpUnavailableService:
             raise

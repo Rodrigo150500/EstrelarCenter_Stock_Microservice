@@ -226,3 +226,8 @@ def test_search_by_text(setup_repository):
     assert(isinstance(response, list))
 
     collection.aggregate.assert_called_once_with(pipeline)
+
+
+def test_get_variants_count(setup_repository):
+
+    pass
