@@ -85,3 +85,16 @@ def test_fill_the_fields_with_wrong_type_return_error():
     with pytest.raises(HttpUnprocessableEntity):
 
         insert_product_validator_request(body_request)      
+
+def test_filling_with_warehouse_data():
+
+    body_request = {
+        "code": "10",
+        "description": "Chocolate Suflair 1kg",
+        "brand": "Nestle",
+        "reference": "SF-001",
+        "location": ["CX01", "CX02"],
+        "image": "image string",
+        "measure": "Caixa",
+        "quantity_change":
+    }
