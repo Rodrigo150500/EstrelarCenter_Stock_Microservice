@@ -1,47 +1,21 @@
-Realizar:
-    - Fazer revisão dos use case
-        OK DeleteProductUseCase
-        OK GetProductBySearchUseCase
-        OK GetProductUseCase
-        OK InsertNewVariantUseCase
-        OK InserProductUseCase
-        OK RemoveItemUseCase
-        OK UpdateProductUseCase
+Atualizar as validaçoes de schema
+- delete product
+- delete unique product
+- update product
+- create product
+- create new variant
 
-    - Fazer os testes esperados em caso de sucesso
-        - Testes Unitários
-            OK DeleteProductUseCase
-            OK GetProductBySearchUseCase
-            OK GetProductUseCase
-            OK InsertNewVariantUseCase
-            OK InserProductUseCase
-            OK RemoveItemUseCase
-            OK UpdateProductUseCase
-        - Testes de Integração
-            OK DeleteProductUseCase
-            OK GetProductBySearchUseCase
-            OK GetProductUseCase
-            OK InsertNewVariantUseCase
-            OK InserProductUseCase
-            OK RemoveItemUseCase
-            OK UpdateProductUseCase
+Atualizar Use case
+- delete product
+- delete unique product
+- update product
+- create product
+- create new variant
 
-    - Documentar as rotas do swagger
-        OK DeleteProductUseCase
-        OK GetProductBySearchUseCase
-        OK GetProductUseCase
-        OK InsertNewVariantUseCase
-        OK InserProductUseCase
-        OK RemoveItemUseCase
-        OK UpdateProductUseCase
+Realizar testes unitarios e integração
+- delete product
+- delete unique product
+- update product
+- create product
+- create new variant
 
-    - Testar cada rota individualmente
-        OK DeleteProductUseCase
-        OK GetProductBySearchUseCase
-        OK GetProductUseCase
-        OK InsertNewVariantUseCase
-        OK InserProductUseCase
-        OK RemoveItemUseCase
-        OK UpdateProductUseCase
-
-- Inserir um exception 500
