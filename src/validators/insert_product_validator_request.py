@@ -5,16 +5,26 @@ from cerberus import Validator
 def insert_product_validator_request(body: dict):
 
   body_validate = Validator({         
-            'code':{'type': 'string', 'required': True, "empty": False},
-            "description": {"type": "string", "required": True},
-            "stock": {"type": "integer", "required": True},
-            "image": {"type": "string", "required": True},
+            "code":{'type': 'string', 'required': True, "empty": False},
+            "description": {"type": "string", "required": True, "empty": False},
             "brand": {"type": "string", "required": False},
             "reference": {"type": "string", "required": False},
             "location": {"type": "list", "required": False},
-            "measure": {"type": "string", "required": True},
+            "image": {"type": "string", "required": True},
+            "measure": {"type": "string", "required": True, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"]},
+            "quantity_change":{"type": "integer", "required": True},
+            "stock": {"type": "integer", "required": True, "min": 0, "empty": False},
             "keepBuying": {"type": "boolean", "required": True},
-            "quantity_change":{"type": "integer", "required": True}
+            "warehouse": {
+              "type": "dict",
+              "required": False,
+              "schema":{
+                "quantity_change": {"type": "integer", "required": True, 'empty': False},
+                "stock": {"type": "integer", "required": True, "min": 0},
+                "measure": {"type": "string", "required": True, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"]}
+              
+              }
+            }
             })
 
   response = body_validate.validate(body)
