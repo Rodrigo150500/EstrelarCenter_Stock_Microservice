@@ -19,10 +19,10 @@ def insert_product_validator_request(body: dict):
               "type": "dict",
               "required": False,
               "schema":{
-                "quantity_change": {"type": "integer", "required": True, 'empty': False},
-                "stock": {"type": "integer", "required": True, "min": 0},
-                "measure": {"type": "string", "required": True, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"]},
-                "location": {"type": "list", "required": False}
+                "quantity_change": {"type": "integer", "required": True, 'empty': False,    "dependencies": "^warehouse"},
+                "stock": {"type": "integer", "required": True, "min": 0, "dependencies": "^warehouse"},
+                "measure": {"type": "string", "required": True, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"], "dependencies": "^warehouse"},
+                "location": {"type": "list", "required": False, "dependencies": "^warehouse"}
               }
             }
             })

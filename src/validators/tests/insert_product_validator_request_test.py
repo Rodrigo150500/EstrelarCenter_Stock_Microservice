@@ -1,7 +1,5 @@
 import pytest
 
-from datetime import datetime
-
 from src.validators.insert_product_validator_request import insert_product_validator_request
 
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
@@ -123,3 +121,57 @@ def test_fill_the_fields_with_wrong_type_return_error():
     assert "keepBuying" in error.message
     assert "location" in error.message["warehouse"][0]
     assert "stock" in error.message["warehouse"][0]
+
+
+def test_missing_required_fields_return_error():
+
+    body_request = valid_setup_request()
+
+    del body_request["code"]
+    del body_request["description"]
+    del body_request["image"]
+    del body_request["measure"]
+    del body_request["quantity_change"]
+    del body_request["stock"]
+    del body_request["keepBuying"]
+    del body_request["warehouse"]["quantity_change"]
+    del body_request["warehouse"]["stock"]
+    del body_request["warehouse"]["measure"]
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+
+        insert_product_validator_request(body_request)
+
+    error = exec_info.value
+
+    assert "code" in error.message
+    assert "description" in error.message
+    assert "image" in error.message
+    assert "measure" in error.message
+    assert "quantity_change" in error.message
+    assert "stock" in error.message
+    assert "keepBuying" in error.message
+    assert "quantity_change" in error.message["warehouse"][0]
+    assert "stock" in error.message["warehouse"][0]
+    assert "measure" in error.message["warehouse"][0]
+
+
+def test_required_field_from_warehouse():
+
+    body_request = valid_setup_request()
+
+    del body_request["warehouse"]["quantity_change"]
+    del body_request["warehouse"]["stock"]
+    del body_request["warehouse"]["measure"]
+
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+        insert_product_validator_request(body_request)
+
+    error = exec_info.value
+    total_errors = len(error.message["warehouse"][0].keys())
+
+    assert "quantity_change" in error.message["warehouse"][0]    
+    assert "stock" in error.message["warehouse"][0]    
+    assert "measure" in error.message["warehouse"][0]  
+    assert total_errors == 3
