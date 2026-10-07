@@ -23,11 +23,17 @@ def valid_setup_request():
                 "quantity_change": 5,
                 "stock": 3,
                 "measure": "Caixa",
-                "location": ["CX33"]
+                "location": ["CX33", "P01"]
             }
         }
 
     return body_request
+
+def test_validator_schema_return_successfully():
+
+    body_request = valid_setup_request()
+
+    insert_product_validator_request(body_request)
 
 
 def test_validator_schema_without_warehouse_insert_return_sucessfully():
@@ -39,21 +45,52 @@ def test_validator_schema_without_warehouse_insert_return_sucessfully():
     insert_product_validator_request(body_request)
 
 
+def test_empty_fields_for_warehouse_return_error():
+
+    body_request = valid_setup_request()
+
+    body_request["warehouse"]["quantity_change"] = ""
+    body_request["warehouse"]["stock"] = ""
+    body_request["warehouse"]["measure"] = ""
+    body_request["warehouse"]["location"] = ""
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+        insert_product_validator_request(body_request)
+
+    error = exec_info.value
+
+    assert "quantity_change" in error.message["warehouse"][0]
+    assert "stock" in error.message["warehouse"][0]
+    assert "measure" in error.message["warehouse"][0]
+    assert "location" in error.message["warehouse"][0]
+
+
 def test_empty_fields_without_warehouse_return_error():
 
     body_request = valid_setup_request()
 
     del body_request["warehouse"]
 
-    for key, value in body_request.items():
+    for key, _ in body_request.items():
         body_request[key] = ""
 
-    with pytest.raises(HttpUnprocessableEntity):
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
-        insert_product_validator_request(body_request)      
+        insert_product_validator_request(body_request) 
+    
+    error = exec_info.value
+
+    assert "code" in error.message
+    assert "description" in error.message
+    assert "brand" not in error.message
+    assert "reference" not in error.message
+    assert "location" in error.message
+    assert "image" not in error.message
+    assert "stock" in error.message
+    assert "keepBuying" in error.message
 
 
-def test_just_the_required_fields():
+def test_just_the_required_fields_return_successfully():
 
     body_request = valid_setup_request()
 
@@ -72,12 +109,17 @@ def test_fill_the_fields_with_wrong_type_return_error():
     body_request["code"] = 10 #Should be string
     body_request["stock"] = "15" #Should be integer
     body_request["keepBuying"] = "False" #Should be boolean
+    body_request["warehouse"]["location"] = False #Should be a list
+    body_request["warehouse"]["stock"] = "44" #"Should be integer"
 
-
-    with pytest.raises(HttpUnprocessableEntity):
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
         insert_product_validator_request(body_request)      
 
-def test_insert_product_with_warehouse_data():
-    pass
-    
+    error = exec_info.value
+
+    assert "code" in error.message
+    assert "stock" in error.message
+    assert "keepBuying" in error.message
+    assert "location" in error.message["warehouse"][0]
+    assert "stock" in error.message["warehouse"][0]
