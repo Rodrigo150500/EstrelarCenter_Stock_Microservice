@@ -2,7 +2,7 @@ Atualizar as validaçoes de schema
 - delete product
 - delete unique product
 - update product
-- create product
+OK create product
 - create new variant
 
 Atualizar Use case
