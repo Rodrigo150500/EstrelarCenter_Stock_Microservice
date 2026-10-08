@@ -1,5 +1,8 @@
 from datetime import datetime
+
 from bson.objectid import ObjectId
+
+from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
 class ProductEntity:
 
@@ -19,14 +22,50 @@ class ProductEntity:
         self.stock = stock
         self.warehouse = warehouse
 
+
     @classmethod
     def create(cls, data):
 
+        required_fields = ["code", "description", "image", "measure", "quantity_change", "stock", "keepBuying"]
+        warehouse_required_fields = ["quantity_change", "stock", "measure"]
 
-        if
+        measure_allowed = ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"]
+
+        #Produto validação
+        #Verificação de campos obrigatórios
+        for field in required_fields:
+            if field not in data:    
+                raise HttpUnprocessableEntity(message=f"Campo obrigatório: [{field}] não encontrado")
+
+            if data[field] == "":
+                raise HttpUnprocessableEntity(message=f"O campo {field} não pode estar vazio")
 
 
-    
+        if data["measure"] not in measure_allowed:
+            raise HttpUnprocessableEntity(message=f"O campo Medida deve ser apenas: Unidade, Caixa, Pacote, Fardo, Saco, Rolo, Cartela, Bloco ou Pote")
+            
+
+        if data["stock"] < 0:
+            raise HttpUnprocessableEntity(message=f"O campo: Estoque não pode ser negativo")
+
+
+        #Warehouse validação
+        #Verificação de campos obrigatórios em warehouse
+        if "warehouse" in data:
+            for field in warehouse_required_fields:
+                if field not in data["warehouse"]:
+                    raise HttpUnprocessableEntity(message=f"Campo obrigatório: [{field}] não encontrado")
+                
+                if data[field] == "":
+                    raise HttpUnprocessableEntity(message=f"O campo {field} não pode estar vazio")
+            
+            if data["warehouse"]["stock"] < 0:
+                raise HttpUnprocessableEntity(message=f"O campo: Stock não pode ser negativo")
+
+            if data["warehouse"]["measure"] not in measure_allowed:
+                        raise HttpUnprocessableEntity(message=f"O campo Medida do Galpão deve ser apenas: Unidade, Caixa, Pacote, Fardo, Saco, Rolo, Cartela, Bloco ou Pote")
+
+
         return cls(
             code = data["code"],
             description = data["description"],
