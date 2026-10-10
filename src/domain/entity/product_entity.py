@@ -46,7 +46,7 @@ class ProductEntity:
             
 
         if data["stock"] < 0:
-            raise HttpUnprocessableEntity(message=f"O campo: Estoque não pode ser negativo")
+            raise HttpUnprocessableEntity(message=f"O campo Estoque não pode ser negativo")
 
 
         #Warehouse validação
@@ -60,7 +60,7 @@ class ProductEntity:
                     raise HttpUnprocessableEntity(message=f"O campo {field} não pode estar vazio")
             
             if data["warehouse"]["stock"] < 0:
-                raise HttpUnprocessableEntity(message=f"O campo: Stock não pode ser negativo")
+                raise HttpUnprocessableEntity(message=f"O campo Estoque não pode ser negativo")
 
             if data["warehouse"]["measure"] not in measure_allowed:
                         raise HttpUnprocessableEntity(message=f"O campo Medida do Galpão deve ser apenas: Unidade, Caixa, Pacote, Fardo, Saco, Rolo, Cartela, Bloco ou Pote")

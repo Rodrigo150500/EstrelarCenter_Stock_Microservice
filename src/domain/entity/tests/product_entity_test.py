@@ -128,14 +128,57 @@ def test_missing_required_fields_for_warehouse_expect_error():
 
 
 def test_empty_fields_product_in_required_fields_expect_error():
-    pass
+
+    data_product = valid_setup_data()["product"]
+
+    data_product["code"] = ""
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+        ProductEntity.create(data_product)
+
+    error = exec_info.value.message
+
+    assert error == "O campo code não pode estar vazio"
+    
 
 def test_empty_fields_warehouse_in_required_fields_expect_error():
-    pass
+
+    data_warehouse= valid_setup_data()["warehouse"]
+
+    data_warehouse["stock"] = ""
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+        ProductEntity.create(data_warehouse)
+
+    error = exec_info.value.message
+
+    assert error == "O campo stock não pode estar vazio"
+    
 
 def test_negative_stock_in_product_expect_error():
-    pass
+
+    data_product = valid_setup_data()["product"]
+
+    data_product["stock"] = -1
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+        ProductEntity.create(data_product)
+
+    error = exec_info.value.message
+
+    assert error == "O campo Estoque não pode ser negativo"
+    
 
 def test_negative_stock_in_warehouse_expect_error():
-    pass
+
+    data_warehouse = valid_setup_data()["warehouse"]
+
+    data_warehouse["warehouse"]["stock"] = -1
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+        ProductEntity.create(data_warehouse)
+
+    error = exec_info.value.message
+    
+    assert error == "O campo Estoque não pode ser negativo"
 
