@@ -67,6 +67,7 @@ class ProductEntity:
 
 
         return cls(
+            _id = ObjectId(),
             code = data["code"],
             description = data["description"],
             image = data["image"],
@@ -74,7 +75,6 @@ class ProductEntity:
             measure = data["measure"],
             quantity_change = data["quantity_change"],
             stock = data["stock"],
-            _id = ObjectId(),
             last_change = datetime.now(),
             warehouse = data.get("warehouse"),
             location = data.get("location"),
@@ -82,9 +82,26 @@ class ProductEntity:
         )
         
          
+    @classmethod
+    def restore_variant(cls, code, data):
+        return cls(
+            _id = data["_id"],
+            code = code,
+            description = data["description"],
+            brand = data.get("brand"),
+            reference = data.get("reference"),
+            location = data.get("location"),
+            image = data["image"],
+            measure = data["measure"],
+            quantity_change = data["quantity_change"],
+            stock = data["stock"],
+            keepBuying = data["keepBuying"],
+            last_change = data["last_change"],
+            warehouse = data.get("warehouse")
+        )
 
-    def restore():
-        pass
+    def restore_all_variants(self, data):
+        self.variants = data         
 
     def udpate():
         pass
