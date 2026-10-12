@@ -96,6 +96,7 @@ def valid_setup_data_restore():
             "quantity_change": 1,
             "stock": 4,
             "measure": "Caixa",
+            "location": ["CX01"],
             "last_change": datetime.now()
         }
     }
@@ -105,6 +106,68 @@ def valid_setup_data_restore():
         "product": data_product,
         "warehouse": data_warehouse
     }
+
+def valid_setup_data_restore_all_variants():
+
+    data_product = {
+        "_id": ObjectId(),
+        "code": "ABC123",
+        "variants":[{
+            "_id": ObjectId(),
+            "description": "Parafusadeira e Furadeira Impacto 18V Brushless",
+            "brand": "Makita",
+            "reference": "DHP485RTJ",
+            "location": [
+                "CX01",
+                "P03",
+                "CX04"
+            ],
+            "image": "https://images.example.com/products/dhp485rtj.jpg",
+            "measure": "Unidade",
+            "last_change": datetime.now(),
+            "quantity_change": 5,
+            "stock": 42,
+            "keepBuying": True,
+            "warehouse": {
+                "quantity_change": 1,
+                "stock": 4,
+                "measure": "Caixa",
+                "location": ["CX01"],
+                "last_change": datetime.now()
+            }
+        },
+        {
+            "_id": ObjectId(),
+            "description": "Parafusadeira e Furadeira Impacto 18V Brushless",
+            "brand": "Makita",
+            "reference": "DHP485RTJ",
+            "location": [
+                "CX01",
+                "P03",
+                "CX04"
+            ],
+            "image": "https://images.example.com/products/dhp485rtj.jpg",
+            "measure": "Unidade",
+            "last_change": datetime.now(),
+            "quantity_change": 5,
+            "stock": 42,
+            "keepBuying": True,
+            "warehouse": {
+                "quantity_change": 1,
+                "stock": 4,
+                "measure": "Caixa",
+                "location": ["CX01"],
+                "last_change": datetime.now()
+            }
+        }
+        
+        ]
+    }
+
+    return {
+        "product": data_product
+    }
+
  
 #-------------------------CREATE---------------------------
 def test_business_rules_create_with_warehouse_successfully():
@@ -260,13 +323,42 @@ def test_restore_warehouse_successfully():
     assert product_entity is not None
 
 
-def test_required_fields_successfully():
+def test_only_required_fields_successfully():
 
     data_product = valid_setup_data_restore()["product"]
+    code = valid_setup_data_restore()["code"]
 
-    
+    del data_product["brand"]
+    del data_product["reference"]
+    del data_product["location"]
+
+    product_entity = ProductEntity.restore_variant(code, data_product)
+
+    assert product_entity is not None
 
 
-def test_required_fields_with_warehouse_successfully():
-    pass
+def test_only_required_fields_with_warehouse_successfully():
+
+    data_warehouse = valid_setup_data_restore()["warehouse"]
+    code = valid_setup_data_restore()["code"]
+
+    del data_warehouse["warehouse"]["location"]
+
+    product_entity = ProductEntity.restore_variant(code, data_warehouse)
+
+    assert product_entity is not None
+
+#---------------------RESTORE ALL VARIANTS-----------------
+
+def test_restore_all_variants():
+
+    data_product = valid_setup_data_restore_all_variants()["product"]
+
+    variants = data_product["variants"]
+
+    product_entity = ProductEntity.restore_all_variants(data=variants)
+
+    print(product_entity.variants)
+
+
 

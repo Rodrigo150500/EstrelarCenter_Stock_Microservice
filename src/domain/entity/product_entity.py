@@ -100,8 +100,14 @@ class ProductEntity:
             warehouse = data.get("warehouse")
         )
 
-    def restore_all_variants(self, data):
-        self.variants = data         
+    @classmethod
+    def restore_all_variants(cls, data: list):
+        
+        product = cls.__new__
+
+        product.var
+
+
 
     def udpate():
         pass
