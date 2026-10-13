@@ -6,7 +6,7 @@ from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
 class ProductEntity:
 
-    def __init__(self, code, description, image, keepBuying, measure, quantity_change, stock, _id = None, brand = None, last_change = None, warehouse = None, location = None, reference = None ):
+    def __init__(self, code, description, image, keepBuying, measure, quantity_change, stock, _id = None, brand = None, last_change = None, warehouse = None, location = None, reference = None):
 
         self._id = _id
         self.code = code
@@ -23,8 +23,7 @@ class ProductEntity:
         self.warehouse = warehouse
 
 
-    @classmethod
-    def create(cls, data):
+    def create(self, data):
 
         required_fields = ["code", "description", "image", "measure", "quantity_change", "stock", "keepBuying"]
         warehouse_required_fields = ["quantity_change", "stock", "measure"]
@@ -66,48 +65,33 @@ class ProductEntity:
                         raise HttpUnprocessableEntity(message=f"O campo Medida do Galpão deve ser apenas: Unidade, Caixa, Pacote, Fardo, Saco, Rolo, Cartela, Bloco ou Pote")
 
 
-        return cls(
-            _id = ObjectId(),
-            code = data["code"],
-            description = data["description"],
-            image = data["image"],
-            keepBuying = data["keepBuying"],
-            measure = data["measure"],
-            quantity_change = data["quantity_change"],
-            stock = data["stock"],
-            last_change = datetime.now(),
-            warehouse = data.get("warehouse"),
-            location = data.get("location"),
-            reference = data.get("reference")
-        )
+        return {
+            "_id": self._id,
+            "code": self.code,
+            "brand": self.brand,
+            "description": self.description
+            self.image = image
+            self.keepBuying = keepBuying
+            self.last_change = last_change
+            self.location = location
+            self.measure = measure
+            self.quantity_change = quantity_change
+            self.reference = reference
+            self.stock = stock
+            self.warehouse = warehouse
+        }
+
+
+    def update(cls, old_data: dict, new_data: dict):
+
+
+
+
+
+
+
+
         
-         
-    @classmethod
-    def restore_variant(cls, code, data):
-        return cls(
-            _id = data["_id"],
-            code = code,
-            description = data["description"],
-            brand = data.get("brand"),
-            reference = data.get("reference"),
-            location = data.get("location"),
-            image = data["image"],
-            measure = data["measure"],
-            quantity_change = data["quantity_change"],
-            stock = data["stock"],
-            keepBuying = data["keepBuying"],
-            last_change = data["last_change"],
-            warehouse = data.get("warehouse")
-        )
-
-    @classmethod
-    def restore_all_variants(cls, data: list):
-        
-        product = cls.__new__
-
-        product.var
+        return cls()
 
 
-
-    def udpate():
-        pass
