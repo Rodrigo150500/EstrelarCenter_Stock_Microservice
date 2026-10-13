@@ -1,5 +1,7 @@
 import pytest
 
+from unittest.mock import ANY
+
 from datetime import datetime
 
 from src.domain.entity.product_entity import ProductEntity
@@ -54,7 +56,6 @@ def valid_setup_data_create():
         "product": data_product
     }
 
-def valid_setup_data_restore():
 
     code = "ABC123"
 
@@ -107,7 +108,6 @@ def valid_setup_data_restore():
         "warehouse": data_warehouse
     }
 
-def valid_setup_data_restore_all_variants():
 
     data_product = {
         "_id": ObjectId(),
@@ -168,18 +168,56 @@ def valid_setup_data_restore_all_variants():
         "product": data_product
     }
 
- 
+def valid_setup_data_update():
+
+    data_product = {
+        "description": "new description",
+        "brand": "new brand",
+        "reference": "new reference",
+        "location": ["P15"],
+        "image": "image string",
+        "measure": "Pacote",
+        "quantity_change": 10,
+        "stock": 10,
+        "keepBuying": False
+    }
+
+    data_warehouse = {
+        "description": "new description",
+        "brand": "new brand",
+        "reference": "new reference",
+        "location": ["P15"],
+        "image": "image string",
+        "measure": "Pacote",
+        "quantity_change": 10,
+        "stock": 10,
+        "keepBuying": False,
+        "warehouse": {
+            "quantity_change": 5,
+            "stock": 5,
+            "measure": "Caixa"
+        }
+    }
+
+    return {
+        "warehouse": data_warehouse,
+        "product": data_product
+    }
+
+
 #-------------------------CREATE---------------------------
 def test_business_rules_create_with_warehouse_successfully():
 
     data_warehouse = valid_setup_data_create()["warehouse"]
+    expect_warehouse = {**data_warehouse, "_id": ANY, "last_change": ANY}
 
     product_entity = ProductEntity.create(data_warehouse)
 
     assert product_entity is not None
+    assert product_entity == expect_warehouse
 
 
-def test_business_rules_create_product_entity_successfully():
+def test_business_rules_create_product_successfully():
 
     data_product = valid_setup_data_create()["product"]
 
@@ -300,65 +338,73 @@ def test_negative_stock_in_warehouse_expect_error():
 
     error = exec_info.value.message
     
-    assert error == "O campo Estoque não pode ser negativo"
+    assert error == "O campo Estoque do Galpão não pode ser negativo"
 
-#----------------------RESTORE------------------------
-def test_restore_product_data_successfully():
 
-    data_product = valid_setup_data_restore()["product"]
-    code = valid_setup_data_restore()["code"]
+#-------------------------UPDATE---------------------------
 
-    product_entity = ProductEntity.restore_variant(code=code, data= data_product )
+def test_bussiness_rules_update_with_warehouse_successfully():
 
-    assert product_entity is not None    
-    
+    data_warehouse = valid_setup_data_update()["warehouse"]
+    expect_warehouse = {**data_warehouse, "last_change": ANY}
 
-def test_restore_warehouse_successfully():
-
-    data_warehouse = valid_setup_data_restore()["warehouse"]
-    code = valid_setup_data_restore()["code"]
-
-    product_entity = ProductEntity.restore_variant(code = code, data= data_warehouse)
+    product_entity = ProductEntity().update(data_warehouse)
 
     assert product_entity is not None
+    assert "last_change" in product_entity
+    assert product_entity == expect_warehouse
 
+def test_bussiness_rules_update_product_successfully():
 
-def test_only_required_fields_successfully():
+    data_product = valid_setup_data_update()["product"]
+    expect_product = {**data_product, "last_change": ANY}
 
-    data_product = valid_setup_data_restore()["product"]
-    code = valid_setup_data_restore()["code"]
-
-    del data_product["brand"]
-    del data_product["reference"]
-    del data_product["location"]
-
-    product_entity = ProductEntity.restore_variant(code, data_product)
+    product_entity = ProductEntity().update(data_product)
 
     assert product_entity is not None
+    assert "last_change" in product_entity
+
+    assert product_entity == expect_product
 
 
-def test_only_required_fields_with_warehouse_successfully():
+def test_empty_values_for_required_field_product_expect_error():
 
-    data_warehouse = valid_setup_data_restore()["warehouse"]
-    code = valid_setup_data_restore()["code"]
+    data_product = valid_setup_data_update()["product"]
 
-    del data_warehouse["warehouse"]["location"]
+    data_product["description"] = ""
 
-    product_entity = ProductEntity.restore_variant(code, data_warehouse)
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
-    assert product_entity is not None
+        ProductEntity().update(data_product)
 
-#---------------------RESTORE ALL VARIANTS-----------------
+    error = exec_info.value
 
-def test_restore_all_variants():
-
-    data_product = valid_setup_data_restore_all_variants()["product"]
-
-    variants = data_product["variants"]
-
-    product_entity = ProductEntity.restore_all_variants(data=variants)
-
-    print(product_entity.variants)
+    assert error.message == "O campo description não pode estar vazio"
 
 
+def test_empty_values_for_required_field_warehouse_expect_error():
 
+    data_product = valid_setup_data_update()["warehouse"]
+
+    data_product["warehouse"]["measure"] = ""
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+
+        ProductEntity().update(data_product)
+
+    error = exec_info.value
+
+    assert error.message == "O campo measure não pode estar vazio"
+
+
+def test_measure_allowed_in_update_product_expect_error():
+    pass
+
+def test_measure_allowed_in_update_warehouse_expect_error():
+    pass
+
+def test_negative_stock_in_update_product_expect_error():
+    pass
+
+def test_measure_allowed_in_update_warehouse_expect_error():
+    pass
