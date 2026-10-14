@@ -168,6 +168,7 @@ def valid_setup_data_create():
         "product": data_product
     }
 
+
 def valid_setup_data_update():
 
     data_product = {
@@ -208,10 +209,14 @@ def valid_setup_data_update():
 #-------------------------CREATE---------------------------
 def test_business_rules_create_with_warehouse_successfully():
 
-    data_warehouse = valid_setup_data_create()["warehouse"]
-    expect_warehouse = {**data_warehouse, "_id": ANY, "last_change": ANY}
+    data_create = valid_setup_data_create()["warehouse"]
 
-    product_entity = ProductEntity.create(data_warehouse)
+    data_warehouse = {**data_create["warehouse"]}
+    data_warehouse["last_change"] = ANY
+
+    expect_warehouse = {**data_create,"_id": ANY, "last_change": ANY, "warehouse": data_warehouse}
+
+    product_entity = ProductEntity.create(data_create)
 
     assert product_entity is not None
     assert product_entity == expect_warehouse
@@ -367,6 +372,38 @@ def test_bussiness_rules_update_product_successfully():
     assert product_entity == expect_product
 
 
+def test_partial_data_for_update_product_successfully():
+
+    data_product = valid_setup_data_update()["product"]
+
+    del data_product["description"]
+    del data_product["reference"]
+    del data_product["stock"]
+
+    expect_product = {**data_product, "last_change": ANY}
+
+    product_entity = ProductEntity().update(data_product)
+
+    assert product_entity == expect_product
+
+
+def test_partial_data_for_update_warehouse_successfully():
+
+    data_update = valid_setup_data_update()["warehouse"]
+
+    del data_update["description"]
+    del data_update["reference"]
+    del data_update["stock"]
+    del data_update["warehouse"]["stock"]
+
+    data_warehouse = {**data_update["warehouse"], "last_change": ANY}
+    expect_product = {**data_update, "last_change": ANY, "warehouse": data_warehouse}
+
+    product_entity = ProductEntity().update(data_update)
+
+    assert product_entity == expect_product
+
+
 def test_empty_values_for_required_field_product_expect_error():
 
     data_product = valid_setup_data_update()["product"]
@@ -398,13 +435,58 @@ def test_empty_values_for_required_field_warehouse_expect_error():
 
 
 def test_measure_allowed_in_update_product_expect_error():
-    pass
+
+    data_product = valid_setup_data_update()["product"]
+
+    data_product["measure"] = "Kg"
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+        ProductEntity().update(data_product)
+
+    error = exec_info.value
+
+    assert error.message == "O campo Medida deve ser apenas: Unidade, Caixa, Pacote, Fardo, Saco, Rolo, Cartela, Bloco ou Pote"
+
 
 def test_measure_allowed_in_update_warehouse_expect_error():
-    pass
+
+    data_warehouse = valid_setup_data_update()["warehouse"]
+
+    data_warehouse["warehouse"]["measure"] = "Kg"
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+
+        ProductEntity().update(data_warehouse)
+
+    error = exec_info.value
+
+    assert error.message == "O campo Medida do Galpão deve ser apenas: Unidade, Caixa, Pacote, Fardo, Saco, Rolo, Cartela, Bloco ou Pote"
+
 
 def test_negative_stock_in_update_product_expect_error():
-    pass
+
+    data_product = valid_setup_data_update()["product"]
+
+    data_product["stock"] = -1
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+        ProductEntity().update(data_product)
+
+    error = exec_info.value
+
+    assert error.message == "O campo Estoque não pode ser negativo"
+    
 
 def test_measure_allowed_in_update_warehouse_expect_error():
-    pass
+
+    data_warehouse = valid_setup_data_update()["warehouse"]
+
+    data_warehouse["warehouse"]["stock"] = -1
+
+    with pytest.raises(HttpUnprocessableEntity) as exec_info:
+
+        ProductEntity().update(data_warehouse)
+
+    error = exec_info.value
+
+    assert error.message == "O campo Estoque não pode ser negativo"

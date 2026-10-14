@@ -48,23 +48,30 @@ class ProductEntity:
             if data["warehouse"]["measure"] not in measure_allowed:
                         raise HttpUnprocessableEntity(message=f"O campo Medida do Galpão deve ser apenas: Unidade, Caixa, Pacote, Fardo, Saco, Rolo, Cartela, Bloco ou Pote")
 
-        _id = ObjectId()
-        last_change = datetime.now()
+
+            data_warehouse = {**data["warehouse"], "last_change": datetime.now()}
+
+            return {
+                "_id": ObjectId(),
+                **data,
+                "last_change": datetime.now(),
+                "warehouse": data_warehouse
+            }
+            
 
         return {
-            "_id": _id,
+            "_id": ObjectId(),
             "code": data["code"],
             "brand": data.get("brand"),
             "description": data["description"],
             "image": data["image"],
             "keepBuying": data["keepBuying"],
-            "last_change": last_change,
+            "last_change": datetime.now(),
             "location": data.get("location"),
             "measure": data["measure"],
             "quantity_change": data["quantity_change"],
             "reference": data["reference"],
             "stock": data["stock"],
-            "warehouse": data.get("warehouse")
         }
 
     @staticmethod
@@ -74,6 +81,8 @@ class ProductEntity:
         warehouse_required_fields = ["quantity_change", "stock", "measure"]
 
         measure_allowed = ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"]
+        if "code" in new_data:
+            raise HttpUnprocessableEntity(message=f"O campo Code não pode ser atualizado")
 
         #Produto validação
         #Verificação de campos obrigatórios
@@ -97,16 +106,24 @@ class ProductEntity:
                 if key in warehouse_required_fields and value == "":
                     raise HttpUnprocessableEntity(message=f"O campo {key} não pode estar vazio")
 
-            if "stock" in new_data["warehouse"] and new_data["stock"] < 0:
+            if "stock" in new_data["warehouse"] and new_data['warehouse']["stock"] < 0:
                 raise HttpUnprocessableEntity(message=f"O campo Estoque não pode ser negativo")
 
             if "measure" in new_data["warehouse"] and new_data["measure"] not in measure_allowed:
                 raise HttpUnprocessableEntity(message=f"O campo Medida do Galpão deve ser apenas: Unidade, Caixa, Pacote, Fardo, Saco, Rolo, Cartela, Bloco ou Pote")
 
-        if "code" in new_data:
-            raise HttpUnprocessableEntity(message=f"O campo Code não pode ser atualizado")
 
+            data_warehouse = new_data["warehouse"]
+            data_warehouse["last_change"] = datetime.now()
+
+            return {
+                **new_data,
+                "warehouse": data_warehouse,
+                "last_change": datetime.now()
+            }
+                   
         return {
             **new_data,
             "last_change": datetime.now()
         }
+       
