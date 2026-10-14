@@ -29,8 +29,6 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
         body = http_request.body
         host = http_request.header
-
-        insert_product_validator_request(body)
     
         self.__verify_if_product_exists(body)
 

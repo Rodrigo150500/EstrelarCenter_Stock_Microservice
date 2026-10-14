@@ -12,6 +12,8 @@ from src.main.composer.mongo.get_product_by_search_composer import get_product_b
 from src.main.composer.mongo.remove_item_composer import remove_item_composer
 from src.main.composer.mongo.insert_new_variant_composer import insert_new_variant_composer
 
+from src.validators.insert_product_validator_request import insert_product_validator_request
+
 from src.errors.error_handler import error_handler
 
 product_routes_bp = Blueprint("product_bp", __name__)
@@ -42,6 +44,8 @@ def get_product_by_code(code: str):
 def insert_product():
 
     try:
+
+        insert_product_validator_request(request.json)
 
         http_request = HttpRequest(body=request.json, header=request.host)
 
