@@ -46,7 +46,7 @@ def insert_product():
     try:
 
         insert_product_validator_request(request.json)
-
+            
         http_request = HttpRequest(body=request.json, header=request.host)
 
         use_case = insert_product_composer()

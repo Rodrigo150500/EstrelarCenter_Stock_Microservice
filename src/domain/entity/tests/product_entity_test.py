@@ -8,8 +8,6 @@ from src.domain.entity.product_entity import ProductEntity
 
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
-from bson import ObjectId
-
 def valid_setup_data_create():
 
     data_product = {
@@ -53,118 +51,6 @@ def valid_setup_data_create():
 
     return {
         "warehouse": data_warehouse,
-        "product": data_product
-    }
-
-
-    code = "ABC123"
-
-    data_product = {
-        "_id": ObjectId(),
-        "description": "Parafusadeira e Furadeira Impacto 18V Brushless",
-        "brand": "Makita",
-        "reference": "DHP485RTJ",
-        "location": [
-            "CX01",
-            "P03",
-            "CX04"
-        ],
-        "image": "https://images.example.com/products/dhp485rtj.jpg",
-        "measure": "Unidade",
-        "quantity_change": 5,
-        "last_change": datetime.now(),
-        "stock": 42,
-        "keepBuying": True,
-    }
-
-    data_warehouse = {
-        "_id": ObjectId(),
-        "description": "Parafusadeira e Furadeira Impacto 18V Brushless",
-        "brand": "Makita",
-        "reference": "DHP485RTJ",
-        "location": [
-            "CX01",
-            "P03",
-            "CX04"
-        ],
-        "image": "https://images.example.com/products/dhp485rtj.jpg",
-        "measure": "Unidade",
-        "last_change": datetime.now(),
-        "quantity_change": 5,
-        "stock": 42,
-        "keepBuying": True,
-        "warehouse": {
-            "quantity_change": 1,
-            "stock": 4,
-            "measure": "Caixa",
-            "location": ["CX01"],
-            "last_change": datetime.now()
-        }
-    }
-
-    return {
-        "code": code,
-        "product": data_product,
-        "warehouse": data_warehouse
-    }
-
-
-    data_product = {
-        "_id": ObjectId(),
-        "code": "ABC123",
-        "variants":[{
-            "_id": ObjectId(),
-            "description": "Parafusadeira e Furadeira Impacto 18V Brushless",
-            "brand": "Makita",
-            "reference": "DHP485RTJ",
-            "location": [
-                "CX01",
-                "P03",
-                "CX04"
-            ],
-            "image": "https://images.example.com/products/dhp485rtj.jpg",
-            "measure": "Unidade",
-            "last_change": datetime.now(),
-            "quantity_change": 5,
-            "stock": 42,
-            "keepBuying": True,
-            "warehouse": {
-                "quantity_change": 1,
-                "stock": 4,
-                "measure": "Caixa",
-                "location": ["CX01"],
-                "last_change": datetime.now()
-            }
-        },
-        {
-            "_id": ObjectId(),
-            "description": "Parafusadeira e Furadeira Impacto 18V Brushless",
-            "brand": "Makita",
-            "reference": "DHP485RTJ",
-            "location": [
-                "CX01",
-                "P03",
-                "CX04"
-            ],
-            "image": "https://images.example.com/products/dhp485rtj.jpg",
-            "measure": "Unidade",
-            "last_change": datetime.now(),
-            "quantity_change": 5,
-            "stock": 42,
-            "keepBuying": True,
-            "warehouse": {
-                "quantity_change": 1,
-                "stock": 4,
-                "measure": "Caixa",
-                "location": ["CX01"],
-                "last_change": datetime.now()
-            }
-        }
-        
-        ]
-    }
-
-    return {
         "product": data_product
     }
 
