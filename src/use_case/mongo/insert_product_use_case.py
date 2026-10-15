@@ -3,6 +3,7 @@ from bson import Binary
 from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryMongoInterface
 from .interfaces.insert_product_use_case import InserProductMongoUseCaseInterface
 from src.model.mongo.repository.interfaces.insert_product_interface import InsertProductInterface
+from src.domain.entity.interfaces.product_entity_interface import ProductEntityInterface
 
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
@@ -20,9 +21,10 @@ from datetime import datetime
 
 class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
-    def __init__(self, repository: ProductRepositoryMongoInterface):
+    def __init__(self, repository: ProductRepositoryMongoInterface, product_entity: ProductEntityInterface):
         
         self.__repository = repository
+        self.__product_entity = product_entity
     
 
     def handle(self, http_request: HttpRequest) -> HttpResponse:
@@ -32,9 +34,11 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     
         self.__verify_if_product_exists(body)
 
+        product_to_save = self.__product_entity.create(body)
+
         image = self.__export_image_to_binary(body["image"], host)
         
-        body_formatted_request = self.__format_body(body, image)
+        body_formatted_request = self.__format_body(product_to_save, image)
     
         self.__insert_in_database(body_formatted_request)
 
@@ -79,19 +83,11 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
             "_id": ObjectId(),
             "code": body["code"],
             "variants":[{
-                "_id": ObjectId(),
-                "description": body["description"],
-                "stock": body["stock"],
-                "image": image,
-                "brand": body["brand"],
-                "reference": body["reference"],
-                "location": body["location"],
-                "measure": body["measure"],
-                "keepBuying": body["keepBuying"],
-                "last_change": datetime.now(),
-                "quantity_change": body["quantity_change"]          
+                **body,
+                "image": image
             }]
         }
+        
         return body
 
 
