@@ -11,6 +11,7 @@ from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 def valid_setup_data_create():
 
     data_product = {
+        "code": "ABC123",
         "description": "Parafusadeira e Furadeira Impacto 18V Brushless",
         "brand": "Makita",
         "reference": "DHP485RTJ",
@@ -27,6 +28,7 @@ def valid_setup_data_create():
     }
 
     data_warehouse = {
+        "code": "ABC",
         "description": "Parafusadeira e Furadeira Impacto 18V Brushless",
         "brand": "Makita",
         "reference": "DHP485RTJ",
