@@ -5,11 +5,12 @@ from bson.objectid import ObjectId
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
 from src.domain.entity.interfaces.product_entity_interface import ProductEntityInterface
+from src.domain.entity.DTO.product_entity_DTO import ProductCreateDTO
 
 class ProductEntity(ProductEntityInterface):
 
     @staticmethod
-    def create(data: dict):
+    def create(data: ProductCreateDTO):
 
         product_fields_allowed = ["code", "description", "brand", "reference", "location", "image", "measure", "quantity_change", "stock", "keepBuying", "warehouse"]
         warehouse_fields_allowed = ["quantity_change", "stock", "measure", "location"]
@@ -61,7 +62,6 @@ class ProductEntity(ProductEntityInterface):
             if data["warehouse"]["measure"] not in measure_allowed:
                 raise HttpUnprocessableEntity(message=f"O campo Medida do Galpão deve ser apenas: Unidade, Caixa, Pacote, Fardo, Saco, Rolo, Cartela, Bloco ou Pote")
 
-
             data_warehouse = {**data["warehouse"], "last_change": datetime.now()}
 
             return {
@@ -83,7 +83,7 @@ class ProductEntity(ProductEntityInterface):
             "measure": data["measure"],
             "quantity_change": data["quantity_change"],
             "reference": data["reference"],
-            "stock": data["stock"],
+            "stock": data["stock"]
         }
 
     @staticmethod
