@@ -14,15 +14,25 @@ def update_product_validator_request(body: dict, params: dict):
   })
 
   body_validate = Validator({         
-    "description": {"type": "string", "required": False},
-    "stock": {"type": "integer", "required": False},
-    "image": {"type": "string", "required": False},
-    "brand": {"type": "string", "required": False},
-    "reference": {"type": "string", "required": False},
-    "location": {"type": "list", "required": False},
-    "measure": {"type": "string", "required": False},
-    "keepBuying": {"type": "boolean", "required": False},
-    "quantity_change":{"type": "integer", "required": False}     
+            "description": {"type": "string", "required": False, "empty": False},
+            "brand": {"type": "string", "required": False, "empty": False},
+            "reference": {"type": "string", "required": False, "empty": False},
+            "location": {"type": "list", "required": False, "empty": False},
+            "image": {"type": "string", "required": False, "empty": False},
+            "measure": {"type": "string", "required": False, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"], "empty": False},
+            "quantity_change":{"type": "integer", "required": False, "empty": False, "dependencies": "stock"},
+            "stock": {"type": "integer", "required": False, "min": 0, "empty": False, "dependencies": "quantity_change"},
+            "keepBuying": {"type": "boolean", "required": False},
+            "warehouse": {
+              "type": "dict",
+              "required": False,
+              "schema":{
+                "quantity_change": {"type": "integer", "required": False, 'empty': False, "dependencies": ["^warehouse", "stock"]},
+                "stock": {"type": "integer", "required": False, "min": 0, "dependencies": ["^warehouse", "stock"], "empty": False},
+                "measure": {"type": "string", "required": False, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"], "dependencies": "^warehouse", "empty": False},
+                "location": {"type": "list", "required": False, "dependencies": "^warehouse", "empty": False}
+              }
+            }    
   })
 
   try:
@@ -30,8 +40,6 @@ def update_product_validator_request(body: dict, params: dict):
     ObjectId(params["_id"])
   
   except (InvalidId) as exception:
-
-    print(f"Error:[UpdateProductValidatorRequest][_id]: {str(exception)}")
     
     raise HttpUnprocessableEntity(f"Error: {str(exception)}")
 
@@ -39,29 +47,18 @@ def update_product_validator_request(body: dict, params: dict):
   response_params = params_validate.validate(params)
 
   if response_body is False:
+
     error = body_validate.errors
-    error_key_message = list(error.keys())[0]
-    error_message = error[error_key_message]
-
-    formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
-
-    print(f"Error:[UpdateProductValidator][Body]: {formatted_error_message}")
-
     raise HttpUnprocessableEntity(
-      message=formatted_error_message
+      message=error
     )
   
   if response_params is False:
+
     error = params_validate.errors
-    error_key_message = list(error.keys())[0]
-    error_message = error[error_key_message]
-
-    formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
-
-    print(f"Error:[UpdateProductValidator][Params]: {formatted_error_message}")
 
     raise HttpUnprocessableEntity(
-      message=formatted_error_message
+      message=error
     )
   
 

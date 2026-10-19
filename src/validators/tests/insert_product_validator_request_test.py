@@ -258,6 +258,7 @@ def test_product_dependencies_fields_return_error():
     with pytest.raises(HttpUnprocessableEntity):
         insert_product_validator_request(body_request)
 
+
 def test_warehouse_dependencies_fields_return_error():
 
     body_request = valid_setup_request()
