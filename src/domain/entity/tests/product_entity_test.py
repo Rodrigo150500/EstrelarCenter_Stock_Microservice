@@ -111,7 +111,6 @@ def test_business_rules_create_product_successfully():
     data_product = valid_setup_data_create()["product"]
 
     expect_product = {**data_product, "_id": ANY, "last_change": ANY}
-    del expect_product["code"]
     
     product_entity = ProductEntity.create(data_product)
 

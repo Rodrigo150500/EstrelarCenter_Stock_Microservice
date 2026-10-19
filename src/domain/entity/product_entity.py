@@ -74,6 +74,7 @@ class ProductEntity(ProductEntityInterface):
 
         return {
             "_id": ObjectId(),
+            "code": data["code"],
             "brand": data.get("brand"),
             "description": data["description"],
             "image": data["image"],
