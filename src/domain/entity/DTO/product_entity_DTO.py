@@ -40,3 +40,33 @@ class ProductCreateDTOResponse(TypedDict):
     stock: int
     warehouse: NotRequired[WarehouseDTO]
 
+
+class ProductUpdateDTO(TypedDict):
+
+    brand: NotRequired["str"]
+    description: NotRequired["str"]
+    image: NotRequired["str"]
+    keepBuying: NotRequired["bool"]
+    last_change: NotRequired["str"]
+    location: NotRequired[list["str"]]
+    measure: NotRequired["str"]
+    quantity_change: NotRequired["int"]
+    reference: NotRequired["str"]
+    stock: NotRequired["int"]
+    warehouse: NotRequired[WarehouseDTO]
+
+
+class ProductUpdateDTOResponse(TypedDict):
+
+    brand: NotRequired["str"]
+    description: NotRequired["str"]
+    image: NotRequired["str"]
+    keepBuying: NotRequired["bool"]
+    last_change: NotRequired["str"]
+    location: NotRequired[list["str"]]
+    measure: NotRequired["str"]
+    quantity_change: NotRequired["int"]
+    reference: NotRequired["str"]
+    stock: NotRequired["int"]
+    warehouse: NotRequired[WarehouseDTO]
+    last_change: str

@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
 from src.domain.entity.interfaces.product_entity_interface import ProductEntityInterface
-from src.domain.entity.DTO.product_entity_DTO import ProductCreateDTO, ProductCreateDTOResponse
+from src.domain.entity.DTO.product_entity_DTO import ProductCreateDTO, ProductCreateDTOResponse, ProductUpdateDTO, ProductUpdateDTOResponse
 
 class ProductEntity(ProductEntityInterface):
 
@@ -87,7 +87,7 @@ class ProductEntity(ProductEntityInterface):
         }
 
     @staticmethod
-    def update(new_data: dict):
+    def update(new_data: ProductUpdateDTO) -> ProductUpdateDTOResponse:
 
         product_fields_allowed = ["code", "description", "brand", "reference", "location", "image", "measure", "quantity_change", "stock", "keepBuying", "warehouse"]
         warehouse_fields_allowed = ["quantity_change", "stock", "measure", "location"]
