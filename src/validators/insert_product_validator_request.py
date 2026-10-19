@@ -12,8 +12,8 @@ def insert_product_validator_request(body: dict):
             "location": {"type": "list", "required": False},
             "image": {"type": "string", "required": True},
             "measure": {"type": "string", "required": True, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"]},
-            "quantity_change":{"type": "integer", "required": True},
-            "stock": {"type": "integer", "required": True, "min": 0, "empty": False},
+            "quantity_change":{"type": "integer", "required": True, "dependencies": "stock"},
+            "stock": {"type": "integer", "required": True, "min": 0, "empty": False,"dependencies": "quantity_change"},
             "keepBuying": {"type": "boolean", "required": True},
             "warehouse": {
               "type": "dict",

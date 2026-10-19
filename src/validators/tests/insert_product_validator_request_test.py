@@ -27,6 +27,7 @@ def valid_setup_request():
 
     return body_request
 
+
 def test_validator_schema_return_successfully():
 
     body_request = valid_setup_request()
@@ -94,6 +95,7 @@ def test_empty_fields_without_warehouse_return_error():
     assert "keepBuying" in error.message
     
     assert expect_total_errors == 7
+
 
 def test_just_the_required_fields_return_successfully():
 
@@ -175,7 +177,7 @@ def test_missing_required_fields_return_error():
     assert expect_total_errors == 10
 
 
-def test_required_field_from_warehouse():
+def test_required_field_from_warehouse_return_error():
 
     body_request = valid_setup_request()
 
@@ -245,3 +247,22 @@ def test_stock_less_than_zero_return_error():
     assert "stock" in error.message
 
     assert expect_total_errors == 1
+
+
+def test_product_dependencies_fields_return_error():
+
+    body_request = valid_setup_request()
+
+    del body_request["quantity_change"]
+
+    with pytest.raises(HttpUnprocessableEntity):
+        insert_product_validator_request(body_request)
+
+def test_warehouse_dependencies_fields_return_error():
+
+    body_request = valid_setup_request()
+
+    del body_request["warehouse"]["stock"]
+
+    with pytest.raises(HttpUnprocessableEntity):
+        insert_product_validator_request(body_request)
