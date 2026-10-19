@@ -5,8 +5,8 @@ from src.main.http_types.http_response import HttpResponse
 
 from src.use_case.mongo.interfaces.update_product_use_case_interface import UpdateProductMongoUseCaseInterface
 from src.model.mongo.repository.product_repository import ProductRepositoryMongoInterface
-
-from src.validators.update_product_validator_request import update_product_validator_request
+from src.domain.entity.interfaces.product_entity_interface import ProductEntityInterface
+from bson import Binary
 
 from src.errors.types.http_not_found import HttpNotFound
 from src.errors.types.http_unavailable_service import HttpUnavailableService
@@ -16,24 +16,26 @@ from src.utils.export_image_string64_to_binary import export_image_string64_to_b
 
 class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
-    def __init__(self, repository: ProductRepositoryMongoInterface):
+    def __init__(self, repository: ProductRepositoryMongoInterface, product_entity: ProductEntityInterface):
         
         self.__repository = repository
-
+        self.__product_entity = product_entity
     
     def handle(self, http_request: HttpRequest) -> HttpResponse:
         
         params = http_request.params
         body = http_request.body
         host = http_request.header
-
-        update_product_validator_request(body, params)
-        
+      
         self.__verify_if_exists_in_database(params)
-    
-        product_with_image_string = self.__transform_image_to_binary(body, host)
 
-        product_last_change_updated = self.__update_last_change_field(product_with_image_string)
+        old_data = self.__get_product_from_database(params)
+    
+        image = self.__transform_image_to_binary(body, host)
+
+        product_validated = self.__product_entity.update(body)
+
+        
 
         product_formatted_to_update = self.__format_product_to_update(product_last_change_updated)
 
@@ -63,13 +65,16 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         except HttpUnavailableService:
             raise  
 
-        
-    def __update_last_change_field(self, product: dict) -> dict:
+    def __get_product_from_database(self, params: dict) -> dict:
 
-        product["last_change"] = datetime.now()
+        code = params["code"]
+
+        product = self.__repository.get_product_by_code(code)
 
         return product
 
+
+ 
 
     def __format_product_to_update(self, body: dict) -> dict:
 
@@ -82,7 +87,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         return body_formatted
 
 
-    def __transform_image_to_binary(self, body: dict, host: str) -> dict:
+    def __transform_image_to_binary(self, body: dict, host: str) -> Binary | str:
 
         if "image" in body:
 
@@ -90,9 +95,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
             image_binary = export_image_string64_to_binary(image_string, host)
 
-            body["image"] = image_binary
-
-        return body
+        return image_binary
 
     
     def __update_product(self, product: dict, params: dict) -> None:
