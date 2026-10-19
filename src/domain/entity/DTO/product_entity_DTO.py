@@ -21,9 +21,11 @@ class WarehouseDTO(TypedDict):
     quantity_change: int
     stock: int
     measure: str
+    last_change: str
+    location: list["str"]
 
 
-class ProductCreateDTOProductResponse(TypedDict):
+class ProductCreateDTOResponse(TypedDict):
 
     _id: str
     brand: str
@@ -36,7 +38,5 @@ class ProductCreateDTOProductResponse(TypedDict):
     quantity_change: int
     reference: str
     stock: int
+    warehouse: NotRequired[WarehouseDTO]
 
-class ProductCreateDTOWarehouseResponse(TypedDict):
-
-    

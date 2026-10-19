@@ -2,8 +2,6 @@ import pytest
 
 from unittest.mock import ANY
 
-from datetime import datetime
-
 from src.domain.entity.product_entity import ProductEntity
 
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
@@ -24,7 +22,7 @@ def valid_setup_data_create():
         "measure": "Unidade",
         "quantity_change": 5,
         "stock": 42,
-        "keepBuying": True,
+        "keepBuying": True
     }
 
     data_warehouse = {
@@ -112,9 +110,13 @@ def test_business_rules_create_product_successfully():
 
     data_product = valid_setup_data_create()["product"]
 
+    expect_product = {**data_product, "_id": ANY, "last_change": ANY}
+    del expect_product["code"]
+    
     product_entity = ProductEntity.create(data_product)
 
     assert product_entity is not None
+    assert product_entity == expect_product
 
 
 def test_measure_allowed_in_product_expect_error():

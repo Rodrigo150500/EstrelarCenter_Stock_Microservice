@@ -5,12 +5,12 @@ from bson.objectid import ObjectId
 from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
 from src.domain.entity.interfaces.product_entity_interface import ProductEntityInterface
-from src.domain.entity.DTO.product_entity_DTO import ProductCreateDTO
+from src.domain.entity.DTO.product_entity_DTO import ProductCreateDTO, ProductCreateDTOResponse
 
 class ProductEntity(ProductEntityInterface):
 
     @staticmethod
-    def create(data: ProductCreateDTO):
+    def create(data: ProductCreateDTO) -> ProductCreateDTOResponse:
 
         product_fields_allowed = ["code", "description", "brand", "reference", "location", "image", "measure", "quantity_change", "stock", "keepBuying", "warehouse"]
         warehouse_fields_allowed = ["quantity_change", "stock", "measure", "location"]
@@ -69,8 +69,8 @@ class ProductEntity(ProductEntityInterface):
                 **data,
                 "last_change": datetime.now(),
                 "warehouse": data_warehouse
-            }
-            
+            } 
+
 
         return {
             "_id": ObjectId(),
