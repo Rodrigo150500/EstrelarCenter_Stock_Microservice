@@ -8,8 +8,6 @@ from src.domain.entity.interfaces.product_entity_interface import ProductEntityI
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
 
-from src.validators.insert_product_validator_request import insert_product_validator_request
-
 from src.utils.export_image_string64_to_binary import export_image_string64_to_binary
 
 from src.errors.types.http_conflict import HttpConflict
@@ -17,7 +15,6 @@ from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from bson.objectid import ObjectId
 
-from datetime import datetime
 
 class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
@@ -38,11 +35,11 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
 
         image = self.__export_image_to_binary(body["image"], host)
         
-        body_formatted_request = self.__format_body(product_to_save, image)
+        body_formatted_to_save = self.__format_body(product_to_save, image)
     
-        self.__insert_in_database(body_formatted_request)
+        self.__insert_in_database(body_formatted_to_save)
 
-        formatted_response = self.__format_response(body_formatted_request)
+        formatted_response = self.__format_response(body_formatted_to_save)
 
         return formatted_response 
 
@@ -87,6 +84,8 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
                 "image": image
             }]
         }
+
+        del body["variants"][0]["code"]
         
         return body
 

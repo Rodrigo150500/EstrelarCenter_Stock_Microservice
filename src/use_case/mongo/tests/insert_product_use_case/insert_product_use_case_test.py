@@ -49,7 +49,8 @@ def valid_setup_data():
         "warehouse": {
             "quantity_change": 1,
             "stock": 4,
-            "measure": "Caixa"
+            "measure": "Caixa",
+            "location": ["CX01", "CX02"]
         }
     }
 
@@ -100,6 +101,8 @@ def valid_setup_data():
 
     del expect_response_product["data"]["attributes"]["image"]
     del expect_response_warehouse["data"]["attributes"]["image"]
+    del expect_response_product["data"]["attributes"]["code"]
+    del expect_response_warehouse["data"]["attributes"]["code"]
 
     return {
         "warehouse": data_warehouse,
