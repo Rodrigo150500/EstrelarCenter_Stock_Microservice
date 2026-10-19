@@ -1,5 +1,12 @@
 from typing import TypedDict, NotRequired
 
+class WarehouseDTO(TypedDict):
+
+    quantity_change: int
+    stock: int
+    measure: str
+    last_change: str
+    location: list["str"]
 
 class ProductCreateDTO(TypedDict):
 
@@ -14,15 +21,6 @@ class ProductCreateDTO(TypedDict):
     stock: int
     keepBuying: bool
     warehouse: NotRequired[WarehouseDTO]
-
-
-class WarehouseDTO(TypedDict):
-
-    quantity_change: int
-    stock: int
-    measure: str
-    last_change: str
-    location: list["str"]
 
 
 class ProductCreateDTOResponse(TypedDict):
