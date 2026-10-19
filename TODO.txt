@@ -9,13 +9,13 @@ Atualizar Use case
 - delete product
 - delete unique product
 - update product
-- create product
+Ok create product
 - create new variant
 
 Realizar testes unitarios e integração
 - delete product
 - delete unique product
 - update product
-- create product
+OK create product
 - create new variant
 
