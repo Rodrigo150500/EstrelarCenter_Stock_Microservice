@@ -35,11 +35,13 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         product_validated = self.__product_entity.update(body)
 
+        product_to_save = self.__get_changed_fields_only(old_data, product_validated, image)
+
         
 
-        product_formatted_to_update = self.__format_product_to_update(product_last_change_updated)
+        product_to_save = self.__format_product_to_update(product_last_change_updated)
 
-        self.__update_product(product_formatted_to_update, params)
+        self.__update_product(product_to_save, params)
         
         response = self.__formatted_response(body, params)
 
@@ -68,8 +70,9 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
     def __get_product_from_database(self, params: dict) -> dict:
 
         code = params["code"]
+        _id = params["_id"]
 
-        product = self.__repository.get_product_by_code(code)
+        product = self.__repository.get_variant_by_code_and_id(code, _id)
 
         return product
 
@@ -96,6 +99,15 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
             image_binary = export_image_string64_to_binary(image_string, host)
 
         return image_binary
+
+
+    def __get_changed_fields_only(self, old_data: dict, new_data: dict, image: str | Binary):
+
+        new_data["image"] = image
+
+        
+
+
 
     
     def __update_product(self, product: dict, params: dict) -> None:

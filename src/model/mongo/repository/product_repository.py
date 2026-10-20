@@ -251,3 +251,27 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
             print(f"Error: [ProductRepositoryMongo][GetVarintCount]: {str(exception)}")
 
             raise HttpUnavailableService("Error: Database unavailable")
+
+
+    def get_variant_by_code_and_id(self, code: str, object_id: str) -> dict:
+
+        try:
+
+            product = self.__collection.find_one(
+                {"code": code, "variants._id": ObjectId(object_id) },
+                {   "_id":0,
+                    "variants.$": 1}
+            )
+            
+            if not product: raise HttpNotFound("Error: Product not found")
+            
+            return product["variants"][0]
+
+        except HttpNotFound:
+            raise
+
+        except Exception as exception:
+
+            print(f"Error: [ProductRepositoryMongo][CheckIfVariantExists]: {str(exception)}")
+
+            raise HttpUnavailableService("Error: Database unavailable")

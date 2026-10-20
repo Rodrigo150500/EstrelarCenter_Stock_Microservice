@@ -65,3 +65,7 @@ class ProductRepositoryMongoInterface(ABC):
     @abstractmethod
     def get_variant_count(self, code: str) -> int:
         pass
+
+    @abstractmethod
+    def get_variant_by_code_and_id(self, code: str, object_id: str) -> dict:
+        pass

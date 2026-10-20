@@ -207,3 +207,12 @@ def test_get_variant_count(setup_repository):
     response = repository.get_variant_count(code="10")
 
     assert response == 1
+
+@pytest.mark.skip()
+def test_get_variant_by_code_and_id(setup_repository):
+
+    repository = setup_repository
+
+    response = repository.get_variant_by_code_and_id(code="10", object_id="6ad7d059760d7b32b02ccb6f")
+    print(response)
+    assert response is not None
