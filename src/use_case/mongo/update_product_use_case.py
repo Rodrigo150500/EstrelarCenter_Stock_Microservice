@@ -37,11 +37,9 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         product_to_save = self.__get_changed_fields_only(old_data, product_validated, image)
 
-        
+        product_to_save_formatted = self.__format_product_to_update(product_to_save)
 
-        product_to_save = self.__format_product_to_update(product_last_change_updated)
-
-        self.__update_product(product_to_save, params)
+        self.__update_product(product_to_save_formatted, params)
         
         response = self.__formatted_response(body, params)
 
@@ -66,6 +64,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         except HttpUnavailableService:
             raise  
+        
 
     def __get_product_from_database(self, params: dict) -> dict:
 
@@ -76,8 +75,6 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         return product
 
-
- 
 
     def __format_product_to_update(self, body: dict) -> dict:
 
@@ -101,13 +98,27 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         return image_binary
 
 
-    def __get_changed_fields_only(self, old_data: dict, new_data: dict, image: str | Binary):
+    def __get_changed_fields_only(self, old_data: dict, new_data: dict, image: str | Binary) -> dict:
 
-        new_data["image"] = image
+        new_data["image"] = image     
 
-        
+        data_to_save = {}
 
+        for key, value in new_data.items():
 
+            if isinstance(key, dict):
+
+                for key_warehouse, value_warehouse in key.items():
+
+                    if key_warehouse not in old_data.get(key) or value_warehouse != old_data.get(key)[key_warehouse]:
+
+                        data_to_save[key][key_warehouse] = value_warehouse
+
+            if key not in old_data or value != old_data.get(key):
+
+                data_to_save[key] = value
+
+        return data_to_save
 
     
     def __update_product(self, product: dict, params: dict) -> None:
