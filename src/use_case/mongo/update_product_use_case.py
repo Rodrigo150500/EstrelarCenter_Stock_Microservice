@@ -30,13 +30,11 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         self.__verify_if_exists_in_database(params)
 
         old_data = self.__get_product_from_database(params)
-    
-        image = self.__transform_image_to_binary(body, host)
 
         product_validated = self.__product_entity.update(body)
 
-        product_to_save = self.__get_changed_fields_only(old_data, product_validated, image)
-
+        product_to_save = self.__get_changed_fields_only(old_data, product_validated, body, host)
+    
         product_to_save_formatted = self.__format_product_to_update(product_to_save)
 
         self.__update_product(product_to_save_formatted, params)
@@ -95,13 +93,11 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
             image_binary = export_image_string64_to_binary(image_string, host)
 
-        return image_binary
+            return image_binary
 
 
-    def __get_changed_fields_only(self, old_data: dict, new_data: dict, image: str | Binary) -> dict:
-
-        new_data["image"] = image     
-
+    def __get_changed_fields_only(self, old_data: dict, new_data: dict, body:dict, host: str) -> dict:
+                
         data_to_save = {}
 
         for key, value in new_data.items():
@@ -117,6 +113,10 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
             if key not in old_data or value != old_data.get(key):
 
                 data_to_save[key] = value
+
+        if "image" in body:
+
+            data_to_save["image"] = self.__transform_image_to_binary(body, host)
 
         return data_to_save
 

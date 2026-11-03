@@ -213,6 +213,6 @@ def test_get_variant_by_code_and_id(setup_repository):
 
     repository = setup_repository
 
-    response = repository.get_variant_by_code_and_id(code="10", object_id="6ad7d059760d7b32b02ccb6f")
+    response = repository.get_variant_by_code_and_id(code="10", object_id="6ae2346bbac0f284def2e7f9")
     print(response)
     assert response is not None
