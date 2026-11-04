@@ -11,7 +11,7 @@ from src.utils.image_type import image_string_splitted
 HOST = os.getenv("HOST")
 PORT = os.getenv("PORT")
 
-def update_product_sucessfully_data():
+def valid_setup():
 
     get_variant_by_code_and_id = {
        '_id': ObjectId('6ae2346bbac0f284def2e7f9'), 
@@ -76,103 +76,71 @@ def update_product_sucessfully_data():
         'variants.$.keepBuying': False, 
         'variants.$.last_change': ANY}
 
-    return {
-        "get_variant_by_code_and_id": get_variant_by_code_and_id,
-        "body": body,
-        "params": params,
-        "entity_update": entity_update,
-        "expect_response": expect_response,
-        "assert_called_product_repository_update":assert_called_product_repository_update
+    return get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update
+    
+
+
+def update_without_image_successfully_data():
+
+    get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update = valid_setup()
+
+    del body["image"]
+    del entity_update["image"]
+    del assert_called_product_repository_update["variants.$.image"]
+
+    return get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update
+
+
+def update_with_warehouse_successfully_data():
+
+    get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update = valid_setup()
+
+    body["warehouse"] = {
+        "quantity_change": 0,
+        "stock": 0,
+        "measure": "Caixa",
     }
 
-
-
-def missing_required_fields_for_body_return_HttpUnprocessableEntity_data():
-
-    params = {
-        "code": "10",
-        "_id": "" #must be not empty 
+    entity_update["warehouse"] = {
+        **body["warehouse"],
+        "last_change": datetime.now()
     }
+
+    
+    expect_response["data"]["attributes"]["warehouse"] = {**body['warehouse']}
+
+    assert_called_product_repository_update["variants.$.warehouse"] = {
+            **body["warehouse"],
+            "last_change": ANY
+    }
+
+    return  get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update
+
+
+def nothing_to_update_successfully_data():
+
+    get_variant_by_code_and_id, _, params, _, expect_response, assert_called_product_repository_update = valid_setup()
 
     body = {
-            'description': "New Product A"
+            'description': 'Product A', 
+            'stock': 10, 
+            'brand': 'Kit-Kat',  
+            'reference': 'Kit1030', 
+            'location': 'A10', 
+            'measure': 'Unidade', 
+            'keepBuying': True,
+            'warehouse':{
+                "quantity_change": 10,
+                "stock": 10,
+                "measure": "Unidade",
+            }
     }
 
-    data = {
-        "params": params,
-        "body": body
+    entity_update = {
+        **body,
+        "last_change": datetime.now()
     }
 
-    return data
+    entity_update['warehouse']['last_change'] = datetime.now()
 
-
-def product_not_in_database_return_HttpNotFound_data():
-
-    params = {
-        "code": "10",
-        "_id": "6953c87972d481a4b87b65d3" 
-    }
-
-    body = {
-        'description': "New Product A" ,
-    }
-
-    data = {
-        "params": params,
-        "body": body
-    }
-
-    return data
-
-
-def database_unavailable_return_HttpUnavailableService_data():
-
-    params = {
-        "code": "10",
-        "_id": "6953c87972d481a4b87b65d3" 
-    }
-
-    body = {
-        'description': "New Product A" ,
-    }
-
-    body_to_update = {
-        'variants.$.code': '10',
-        'variants.$.description': 'New Product A',
-        'variants.$.last_change': ANY
-        
-        }
-
-    data = {
-        "params": params,
-        "body": body,
-        "body_to_update": body_to_update
-    }
-
-    return data
-
-
-def update_product_raise_HttpInternalServerError_data():
-
-    params = {
-        "code": "10",
-        "_id": "6953c87972d481a4b87b65d3" 
-    }
-
-    body = {
-        'description': "New Product A" ,
-    }
-
-    body_to_update = {
-        'variants.$.code': '10',
-        'variants.$.description': 'New Product A',
-        'variants.$.last_change': ANY
-        }
-
-    data = {
-        "params": params,
-        "body": body,
-        "body_to_update": body_to_update
-    }
-
-    return data
+    return get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update 

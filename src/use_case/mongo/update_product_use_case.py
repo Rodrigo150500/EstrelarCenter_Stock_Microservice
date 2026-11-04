@@ -81,7 +81,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         for key, value in body.items():
 
             body_formatted[f"variants.$.{key}"] = value
-        
+
         return body_formatted
 
 
@@ -100,18 +100,24 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
                 
         data_to_save = {}
 
+
         for key, value in new_data.items():
 
-            if isinstance(key, dict):
+            old_value = old_data.get(key)
 
-                for key_warehouse, value_warehouse in key.items():
+            if isinstance(value, dict) and isinstance(old_value, dict):
 
-                    if key_warehouse not in old_data.get(key) or value_warehouse != old_data.get(key)[key_warehouse]:
+                changed_fields = {}
 
-                        data_to_save[key][key_warehouse] = value_warehouse
+                for nested_key, nested_value in value.items():
 
-            if key not in old_data or value != old_data.get(key):
+                    if nested_key not in old_value or nested_value != old_value[nested_key]:
+                        changed_fields[nested_key] = nested_value
 
+                if changed_fields:
+                    data_to_save[key] = changed_fields
+
+            elif key not in old_data or value != old_value:
                 data_to_save[key] = value
 
         if "image" in body:

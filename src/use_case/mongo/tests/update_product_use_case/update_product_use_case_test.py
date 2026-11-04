@@ -17,7 +17,7 @@ from src.errors.types.http_internal_server_error import HttpInternalServerError
 
 from src.use_case.mongo.update_product_use_case import UpdateProductMongoUseCase
 
-from src.use_case.mongo.tests.update_product_use_case.update_product_use_case_test_data import update_product_sucessfully_data
+from src.use_case.mongo.tests.update_product_use_case.update_product_use_case_test_data import valid_setup, update_without_image_successfully_data, update_with_warehouse_successfully_data, nothing_to_update_successfully_data
 
 PORT = os.getenv("PORT")
 HOST = os.getenv("HOST")
@@ -36,12 +36,9 @@ def setup_use_case():
 def test_update_product_sucessfully(setup_use_case):
 
     #Arrange
-    data = update_product_sucessfully_data()
+    get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update = valid_setup()
 
     repository, product_entity, use_case = setup_use_case
-
-    params = data["params"]
-    body = data["body"]
 
     code = params["code"]
     _id = params["_id"]
@@ -49,63 +46,142 @@ def test_update_product_sucessfully(setup_use_case):
     http_request = HttpRequest(params=params, body=body, header=f"{HOST}:{PORT}")
 
     repository.check_if_variant_exists.return_value = True
-    repository.get_variant_by_code_and_id.return_value = data["get_variant_by_code_and_id"]
+    repository.get_variant_by_code_and_id.return_value = get_variant_by_code_and_id
 
-    product_entity.update.return_value = data["entity_update"]
+    product_entity.update.return_value = entity_update
 
     #Act
     response = use_case.handle(http_request)
 
     #Assert
     assert response.status_code == 200
-    assert response.body == data["expect_response"]
+    assert response.body == expect_response
 
     repository.check_if_variant_exists.assert_called_once_with(code, _id)
     repository.get_variant_by_code_and_id.assert_called_once_with(code, _id)
-    repository.update_product_variant_by_object_id.assert_called_once_with(code, _id, data["assert_called_product_repository_update"])
+    repository.update_product_variant_by_object_id.assert_called_once_with(code, _id, assert_called_product_repository_update)
 
     product_entity.update.assert_called_once_with(body)
-    
+
 
 def test_update_without_image_successfully(setup_use_case):
-    pass
-    #Arrange
     
-    # data = valid_setup()
+    #Arrange    
+    get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update = update_without_image_successfully_data()
 
-    # repository, product_entity, use_case = setup_use_case
+    repository, product_entity, use_case = setup_use_case
 
-    # params = data["params"]
-    # body = data["body"]
+    code = params["code"]
+    _id = params["_id"]
 
-    # del body["image"]
+    http_request = HttpRequest(params=params, body=body, header=f"{HOST}:{PORT}")
 
-    # code = params["code"]
-    # _id = params["_id"]
+    repository.check_if_variant_exists.return_value = True
+    repository.get_variant_by_code_and_id.return_value = get_variant_by_code_and_id
 
-    # http_request = HttpRequest(params=params, body=body, header=f"{HOST}:{PORT}")
+    product_entity.update.return_value = entity_update
 
-    # repository.check_if_variant_exists.return_value = True
-    # repository.get_variant_by_code_and_id.return_value = data["get_variant_by_code_and_id"]
+    #Act
+    response = use_case.handle(http_request)
 
-    # product_entity.update.return_value = data["entity_update"]
+    # #Assert
+    assert response.status_code == 200
+    assert response.body == expect_response
 
-    # #Act
-    # response = use_case.handle(http_request)
+    repository.check_if_variant_exists.assert_called_once_with(code, _id)
+    repository.get_variant_by_code_and_id.assert_called_once_with(code, _id)
+    repository.update_product_variant_by_object_id.assert_called_once_with(code, _id, assert_called_product_repository_update)
 
-
-
-
-def test_update_with_warehouse_successfully():
-    pass
-
-
-def test_error_product_not_found_return_error():
-    pass
+    product_entity.update.assert_called_once_with(body)
 
 
-def test_nothing_to_update_successfully():
-    pass
+def test_update_with_warehouse_successfully(setup_use_case):
+
+    #Arrange
+    get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update = update_with_warehouse_successfully_data()
+
+    repository, product_entity, use_case = setup_use_case
+    
+    code = params["code"]
+    _id = params["_id"]
+
+    http_request = HttpRequest(params=params, body=body, header=f"{HOST}:{PORT}")
+
+    repository.check_if_variant_exists.return_value = True
+    repository.get_variant_by_code_and_id.return_value = get_variant_by_code_and_id
+
+    product_entity.update.return_value = entity_update
+
+    #Act
+    response = use_case.handle(http_request)
+
+    # #Assert
+    assert response.status_code == 200
+    assert response.body == expect_response
+
+    repository.check_if_variant_exists.assert_called_once_with(code, _id)
+    repository.get_variant_by_code_and_id.assert_called_once_with(code, _id)
+    repository.update_product_variant_by_object_id.assert_called_once_with(code, _id, assert_called_product_repository_update)
+
+    product_entity.update.assert_called_once_with(body)
+
+
+def test_error_product_not_found_return_error(setup_use_case):
+
+    #Arrange
+    _, body, params, _, _, _ = valid_setup()
+
+    repository, product_entity, use_case = setup_use_case
+    
+    code = params["code"]
+    _id = params["_id"]
+
+    http_request = HttpRequest(params=params, body=body, header=f"{HOST}:{PORT}")
+
+    repository.check_if_variant_exists.return_value = False
+
+    #Act
+    with pytest.raises(HttpNotFound) as exec_info:
+        use_case.handle(http_request)
+
+    assert exec_info.value.message == "Error: product not found"
+
+    # #Assert
+    repository.check_if_variant_exists.assert_called_once_with(code, _id)
+    repository.get_variant_by_code_and_id.assert_not_called()
+    repository.update_product_variant_by_object_id.assert_not_called()
+    product_entity.update.assert_not_called()
+
+
+def test_nothing_to_update_successfully(setup_use_case):
+
+    #Arrange
+    get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update = nothing_to_update_successfully_data()
+
+    repository, product_entity, use_case = setup_use_case
+    
+    code = params["code"]
+    _id = params["_id"]
+
+    http_request = HttpRequest(params=params, body=body, header=f"{HOST}:{PORT}")
+
+    repository.check_if_variant_exists.return_value = True
+    repository.get_variant_by_code_and_id.return_value = get_variant_by_code_and_id
+
+    product_entity.update.return_value = entity_update
+
+    #Act
+    response = use_case.handle(http_request)
+
+    # #Assert
+    # assert response.status_code == 200
+    # assert response.body == expect_response
+
+    # repository.check_if_variant_exists.assert_called_once_with(code, _id)
+    # repository.get_variant_by_code_and_id.assert_called_once_with(code, _id)
+    # repository.update_product_variant_by_object_id.assert_called_once_with(code, _id, assert_called_product_repository_update)
+
+    # product_entity.update.assert_called_once_with(body)
 
 
 def test_unavailable_database_return_error():
