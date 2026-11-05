@@ -8,6 +8,7 @@ from src.errors.types.http_unprocessable_entity import HttpUnprocessableEntity
 
 def valid_setup_data_create():
 
+
     data_product = {
         "code": "ABC123",
         "description": "Parafusadeira e Furadeira Impacto 18V Brushless",
@@ -55,6 +56,24 @@ def valid_setup_data_create():
 
 def valid_setup_data_update():
 
+    old_data = {
+        "code": "ABC123",
+        "description": "Chocolate KitKat 45g",
+        "brand": "kitKat",
+        "reference": "UMJ485",
+        "location": ["CX01"],
+        "image": "https://images.example.com/products/dhp485rtj.jpg",
+        "measure": "Caixa",
+        "quantity_change": 10,
+        "stock": 10,
+        "keepBuying": False,
+        "warehouse":{
+            "quantity_change": 10,
+            "stock": 10,
+            "measure": "Caixa"
+        }
+    }
+
     data_product = {
         "description": "new description",
         "brand": "new brand",
@@ -85,6 +104,7 @@ def valid_setup_data_update():
     }
 
     return {
+        "old_data": old_data,
         "warehouse": data_warehouse,
         "product": data_product
     }
@@ -238,9 +258,10 @@ def test_negative_stock_in_warehouse_expect_error():
 def test_bussiness_rules_update_with_warehouse_successfully():
 
     data_warehouse = valid_setup_data_update()["warehouse"]
+    old_data = valid_setup_data_update()["old_data"]
     expect_warehouse = {**data_warehouse, "last_change": ANY}
 
-    product_entity = ProductEntity().update(data_warehouse)
+    product_entity = ProductEntity().update(data_warehouse, old_data)
 
     assert product_entity is not None
     assert "last_change" in product_entity
@@ -249,9 +270,10 @@ def test_bussiness_rules_update_with_warehouse_successfully():
 def test_bussiness_rules_update_product_successfully():
 
     data_product = valid_setup_data_update()["product"]
+    old_data = valid_setup_data_update()["old_data"]
     expect_product = {**data_product, "last_change": ANY}
 
-    product_entity = ProductEntity().update(data_product)
+    product_entity = ProductEntity().update(data_product, old_data)
 
     assert product_entity is not None
     assert "last_change" in product_entity
