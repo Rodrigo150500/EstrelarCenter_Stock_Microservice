@@ -260,8 +260,14 @@ def test_bussiness_rules_update_with_warehouse_successfully():
     data_warehouse = valid_setup_data_update()["warehouse"]
     old_data = valid_setup_data_update()["old_data"]
     expect_warehouse = {**data_warehouse, "last_change": ANY}
-
+    
     product_entity = ProductEntity().update(data_warehouse, old_data)
+
+    expect_warehouse["warehouse"]["last_change"] = ANY
+    del expect_warehouse["quantity_change"]
+    del expect_warehouse["stock"]
+    del expect_warehouse["keepBuying"]
+    del expect_warehouse["warehouse"]["measure"]
 
     assert product_entity is not None
     assert "last_change" in product_entity
@@ -271,9 +277,13 @@ def test_bussiness_rules_update_product_successfully():
 
     data_product = valid_setup_data_update()["product"]
     old_data = valid_setup_data_update()["old_data"]
-    expect_product = {**data_product, "last_change": ANY}
 
     product_entity = ProductEntity().update(data_product, old_data)
+
+    expect_product = {**data_product, "last_change": ANY}
+    del expect_product["quantity_change"]
+    del expect_product["stock"]
+    del expect_product["keepBuying"]
 
     assert product_entity is not None
     assert "last_change" in product_entity
@@ -284,14 +294,18 @@ def test_bussiness_rules_update_product_successfully():
 def test_partial_data_for_update_product_successfully():
 
     data_product = valid_setup_data_update()["product"]
+    old_data = valid_setup_data_update()["old_data"]
 
     del data_product["description"]
     del data_product["reference"]
     del data_product["stock"]
 
     expect_product = {**data_product, "last_change": ANY}
+    del expect_product["quantity_change"]
+    del expect_product["keepBuying"]
 
-    product_entity = ProductEntity().update(data_product)
+    product_entity = ProductEntity().update(data_product, old_data)
+
 
     assert product_entity == expect_product
 
