@@ -41,7 +41,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         self.__update_product(product_to_save_formatted, params)
         
-        response = self.__formatted_response(body, params)
+        response = self.__formatted_response(product_validated, params)
 
         return response
 
@@ -100,19 +100,19 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
             raise 
                 
 
-    def __formatted_response(self, body: dict, params: dict) -> HttpResponse:
+    def __formatted_response(self, product_validated: dict, params: dict) -> HttpResponse:
 
-        if "image" in body:
-            del body["image"]
+        if "image" in product_validated:
+            del product_validated["image"]
 
-        body["_id"] = params["_id"]
+        product_validated["_id"] = params["_id"]
 
         return HttpResponse(
             body={
                 "data":{
                     "operation": "Update",
                     "count": 1,
-                    "attributes": body
+                    "attributes": "Nothing to update" if len(product_validated) == 1 else product_validated
                 }
             },
             status_code=200

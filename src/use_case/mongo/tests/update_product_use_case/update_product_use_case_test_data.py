@@ -58,8 +58,6 @@ def valid_setup():
         "last_change": datetime.now()
     }
 
-
-
     expect_response = {
         'data': {
             'operation': 'Update', 
@@ -69,9 +67,8 @@ def valid_setup():
                 'stock': 0, 
                 'brand': 'Lacta', 
                 'reference': 'Lacta22', 
-                'location': ['A10'], 
-                'measure': 'Unidade', 
-                'keepBuying': False, 
+                'keepBuying': False,
+                "last_change": ANY,
                 '_id': ObjectId('6ae2346bbac0f284def2e7f9')}
         }}
 
@@ -112,9 +109,12 @@ def update_with_warehouse_successfully_data():
         **body["warehouse"],
         "last_change": datetime.now()
     }
-
     
     expect_response["data"]["attributes"]["warehouse"] = {**body['warehouse']}
+
+    expect_response["data"]["attributes"]["warehouse"]["last_change"] = ANY
+    expect_response["data"]["attributes"]["_id"] = ANY
+
 
     assert_called_product_repository_update["variants.$.warehouse"] = {
             **body["warehouse"],
@@ -133,7 +133,7 @@ def nothing_to_update_successfully_data():
             'stock': 10, 
             'brand': 'Kit-Kat',  
             'reference': 'Kit1030', 
-            'location': 'A10', 
+            'location': ['A10'], 
             'measure': 'Unidade', 
             'keepBuying': True,
             'warehouse':{
@@ -143,11 +143,8 @@ def nothing_to_update_successfully_data():
             }
     }
 
-    entity_update = {
-        **body,
-        "last_change": datetime.now()
-    }
+    entity_update = {}
 
-    entity_update['warehouse']['last_change'] = datetime.now()
+    expect_response['data']['attributes'] = "Nothing to update"
 
     return get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update 
