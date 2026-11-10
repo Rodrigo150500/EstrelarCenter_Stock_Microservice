@@ -8,5 +8,5 @@ class ProductEntityInterface(ABC):
 
 
     @abstractmethod
-    def update(new_data: dict):
+    def update(new_data: dict, old_data: dict):
         pass

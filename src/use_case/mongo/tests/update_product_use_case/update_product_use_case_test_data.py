@@ -21,7 +21,7 @@ def valid_setup():
        'brand': 'Kit-Kat', 
        'reference': 'Kit1030', 
        'last_change': datetime(2026, 10, 28, 14, 44, 11, 140000), 
-       'location': 'A10', 
+       'location': ['A10'], 
        'measure': 'Unidade', 
        'keepBuying': True,
        'warehouse':{
@@ -38,7 +38,7 @@ def valid_setup():
         'brand': 'Lacta', 
         'image': image_string_splitted,
         'reference': 'Lacta22', 
-        'location': 'A10', 
+        'location': ['A10'], 
         'measure': 'Unidade', 
         'keepBuying': False,
     }
@@ -49,9 +49,16 @@ def valid_setup():
     }
 
     entity_update = {
-        **body,
+        'description': 'Update Product A', 
+        'stock': 0, 
+        'brand': 'Lacta', 
+        'image': image_string_splitted,
+        'reference': 'Lacta22', 
+        'keepBuying': False,
         "last_change": datetime.now()
     }
+
+
 
     expect_response = {
         'data': {
@@ -62,7 +69,7 @@ def valid_setup():
                 'stock': 0, 
                 'brand': 'Lacta', 
                 'reference': 'Lacta22', 
-                'location': 'A10', 
+                'location': ['A10'], 
                 'measure': 'Unidade', 
                 'keepBuying': False, 
                 '_id': ObjectId('6ae2346bbac0f284def2e7f9')}

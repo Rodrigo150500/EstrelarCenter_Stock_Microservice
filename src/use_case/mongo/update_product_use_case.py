@@ -31,11 +31,13 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         old_data = self.__get_product_from_database(params)
 
-        product_validated = self.__product_entity.update(body)
+        product_validated = self.__product_entity.update(body, old_data)
 
-        product_to_save = self.__get_changed_fields_only(old_data, product_validated, body, host)
-    
-        product_to_save_formatted = self.__format_product_to_update(product_to_save)
+        if "image" in product_validated:
+            
+            product_validated["image"] = export_image_string64_to_binary(product_validated["image"], host)
+
+        product_to_save_formatted = self.__format_product_to_update(product_validated)
 
         self.__update_product(product_to_save_formatted, params)
         
@@ -85,48 +87,6 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
         return body_formatted
 
 
-    def __transform_image_to_binary(self, body: dict, host: str) -> Binary | str:
-
-        if "image" in body:
-
-            image_string = body["image"]
-
-            image_binary = export_image_string64_to_binary(image_string, host)
-
-            return image_binary
-
-
-    def __get_changed_fields_only(self, old_data: dict, new_data: dict, body:dict, host: str) -> dict:
-                
-        data_to_save = {}
-
-
-        for key, value in new_data.items():
-
-            old_value = old_data.get(key)
-
-            if isinstance(value, dict) and isinstance(old_value, dict):
-
-                changed_fields = {}
-
-                for nested_key, nested_value in value.items():
-
-                    if nested_key not in old_value or nested_value != old_value[nested_key]:
-                        changed_fields[nested_key] = nested_value
-
-                if changed_fields:
-                    data_to_save[key] = changed_fields
-
-            elif key not in old_data or value != old_value:
-                data_to_save[key] = value
-
-        if "image" in body:
-
-            data_to_save["image"] = self.__transform_image_to_binary(body, host)
-
-        return data_to_save
-
-    
     def __update_product(self, product: dict, params: dict) -> None:
 
         try:
