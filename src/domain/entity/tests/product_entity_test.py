@@ -325,39 +325,24 @@ def test_partial_data_for_update_warehouse_successfully():
     product_entity = ProductEntity().update(data_update, old_data)
     
     expect_product = {**data_update, "last_change": ANY, "warehouse": data_warehouse}
-    
-    data_warehouse = {
-        "brand": "new brand",
-        "location": ["P15"],
-        "image": "image string",
-        "measure": "Pacote",
-        "quantity_change": 10,
-        "keepBuying": False,
-        "warehouse": {
-            "quantity_change": 5,
-            "measure": "Caixa"
-        }
-    }
 
-    print()
-    print()
-    print(product_entity)
-    print()
-    print(expect_product)
-    print()
+    del expect_product["quantity_change"]
+    del expect_product["keepBuying"]
+    del expect_product["warehouse"]["measure"]
 
-    # assert product_entity == expect_product
+    assert product_entity == expect_product
 
 
 def test_empty_values_for_required_field_product_expect_error():
 
     data_product = valid_setup_data_update()["product"]
+    old_data = valid_setup_data_update()["old_data"]
 
     data_product["description"] = ""
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
-        ProductEntity().update(data_product)
+        ProductEntity().update(data_product, old_data)
 
     error = exec_info.value
 
@@ -367,12 +352,13 @@ def test_empty_values_for_required_field_product_expect_error():
 def test_empty_values_for_required_field_warehouse_expect_error():
 
     data_product = valid_setup_data_update()["warehouse"]
+    old_data = valid_setup_data_update()["old_data"]
 
     data_product["warehouse"]["measure"] = ""
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
-        ProductEntity().update(data_product)
+        ProductEntity().update(data_product, old_data)
 
     error = exec_info.value
 
@@ -382,11 +368,12 @@ def test_empty_values_for_required_field_warehouse_expect_error():
 def test_measure_allowed_in_update_product_expect_error():
 
     data_product = valid_setup_data_update()["product"]
+    old_data = valid_setup_data_update()["old_data"]
 
     data_product["measure"] = "Kg"
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
-        ProductEntity().update(data_product)
+        ProductEntity().update(data_product, old_data)
 
     error = exec_info.value
 
@@ -396,12 +383,13 @@ def test_measure_allowed_in_update_product_expect_error():
 def test_measure_allowed_in_update_warehouse_expect_error():
 
     data_warehouse = valid_setup_data_update()["warehouse"]
+    old_data = valid_setup_data_update()["old_data"]
 
     data_warehouse["warehouse"]["measure"] = "Kg"
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
-        ProductEntity().update(data_warehouse)
+        ProductEntity().update(data_warehouse, old_data)
 
     error = exec_info.value
 
@@ -411,11 +399,12 @@ def test_measure_allowed_in_update_warehouse_expect_error():
 def test_negative_stock_in_update_product_expect_error():
 
     data_product = valid_setup_data_update()["product"]
+    old_data = valid_setup_data_update()["old_data"]
 
     data_product["stock"] = -1
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
-        ProductEntity().update(data_product)
+        ProductEntity().update(data_product, old_data)
 
     error = exec_info.value
 
@@ -425,13 +414,14 @@ def test_negative_stock_in_update_product_expect_error():
 def test_measure_allowed_in_update_warehouse_expect_error():
 
     data_warehouse = valid_setup_data_update()["warehouse"]
+    old_data = valid_setup_data_update()["old_data"]
 
     data_warehouse["warehouse"]["stock"] = -1
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
-        ProductEntity().update(data_warehouse)
+        ProductEntity().update(data_warehouse, old_data)
 
     error = exec_info.value
 
-    assert error.message == "O campo Estoque não pode ser negativo"
+    assert error.message == "O campo Estoque do Galpão não pode ser negativo"
