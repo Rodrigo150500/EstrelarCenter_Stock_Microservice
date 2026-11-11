@@ -18,7 +18,14 @@ def setup_use_case_data():
                 "measure": "Caixa",
                 "keepBuying": True,
                 "last_change": datetime.now(),
-                "quantity_change": 5
+                "quantity_change": 5,
+                "warehouse":{
+                    "quantity_change": 5,
+                    "stock":5,
+                    "measure": "Unidade",
+                    "location": ["CX01"],
+                    "last_change": datetime.now()
+                }
                 },{
                     "_id": ObjectId(),
                     "description": "Product B",
@@ -30,7 +37,14 @@ def setup_use_case_data():
                     "measure": "Unidade",
                     "keepBuying": False,
                     "last_change": datetime.now(),
-                    "quantity_change": -10
+                    "quantity_change": -10,
+                    "warehouse":{
+                        "quantity_change": 5,
+                        "stock":5,
+                        "measure": "Unidade",
+                        "location": ["CX15"],
+                        "last_change": datetime.now()
+                    }
                 }
             ]
         }
