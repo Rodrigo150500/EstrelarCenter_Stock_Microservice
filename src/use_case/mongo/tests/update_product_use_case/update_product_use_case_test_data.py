@@ -147,4 +147,5 @@ def nothing_to_update_successfully_data():
 
     expect_response['data']['attributes'] = "Nothing to update"
 
+    assert_called_product_repository_update = {}
     return get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update 

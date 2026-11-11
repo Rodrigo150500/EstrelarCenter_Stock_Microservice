@@ -175,20 +175,43 @@ def test_nothing_to_update_successfully(setup_use_case):
 
     #Act
     response = use_case.handle(http_request)
-    print(response.body)
 
     #Assert
-    # assert response.status_code == 200
-    # assert response.body == expect_response
+    assert response.status_code == 200
+    assert response.body == expect_response
 
 
-    # repository.check_if_variant_exists.assert_called_once_with(code, _id)
-    # repository.get_variant_by_code_and_id.assert_called_once_with(code, _id)
-    # repository.update_product_variant_by_object_id.assert_called_once_with(code, _id, assert_called_product_repository_update)
+    repository.check_if_variant_exists.assert_called_once_with(code, _id)
+    repository.get_variant_by_code_and_id.assert_called_once_with(code, _id)
+    repository.update_product_variant_by_object_id.assert_called_once_with(code, _id, assert_called_product_repository_update)
 
-    # old_data = get_variant_by_code_and_id
-    # product_entity.update.assert_called_once_with(body, old_data)
+    old_data = get_variant_by_code_and_id
+    product_entity.update.assert_called_once_with(body, old_data)
 
 
-def test_unavailable_database_return_error():
-    assert 1 == 2
+def test_unavailable_database_return_error(setup_use_case):
+
+    #Arrange
+    get_variant_by_code_and_id, body, params, entity_update, expect_response, assert_called_product_repository_update = nothing_to_update_successfully_data()
+
+    code = params["code"]
+    _id = params["_id"]
+    
+    repository, product_entity, use_case = setup_use_case
+
+    repository.check_if_variant_exists.side_effect = HttpUnavailableService("Error: Database unavailable")
+
+    http_request = HttpRequest(params=params, body=body, header=f"{HOST}:{PORT}")
+
+    with pytest.raises(HttpUnavailableService) as exec_info:
+        use_case.handle(http_request)
+
+    error = exec_info.value.message
+
+    assert error == "Error: Database unavailable"
+
+    repository.check_if_variant_exists.assert_called_once_with(code, _id)
+    repository.get_variant_by_code_and_id.assert_not_called()
+    repository.update_product_variant_by_object_id.assert_not_called()
+
+    product_entity.update.assert_not_called()
