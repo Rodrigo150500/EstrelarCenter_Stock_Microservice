@@ -130,6 +130,52 @@ def update_with_image_successfully_data(object_id: str):
 
     return data
 
+
+def update_with_warehouse_successfully_data(object_id: str):
+     
+    params = {
+        "code": "10",
+        "_id": object_id
+    }
+    
+    body = {
+        "warehouse":{
+            "stock": 1000,
+            "quantity_change": -5,
+            "location": ["CX01", "CX02"]
+        }
+    }
+
+
+    body_response = {
+        **body,
+        "_id": object_id,
+        "last_change": ANY
+    }
+
+
+    expected_response = {
+        "data":{
+            "operation":"Update",
+            "count": 1,
+            "attributes": body_response
+        }
+    }
+
+    expected_response["data"]["attributes"]["warehouse"]["last_change"] = ANY
+
+
+
+    data = {
+        "body": body,
+        "params": params,
+        "expected_response": expected_response,
+    }
+
+    return data
+
+
+
 def update_second_variant_sucessfully_data(object_id: str):
 
     params = {

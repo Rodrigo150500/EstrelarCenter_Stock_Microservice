@@ -3,7 +3,7 @@ load_dotenv("dev.env")
 
 import pytest
 
-from update_product_use_case_integration_data import update_product_sucessfully_data, update_with_image_successfully_data, update_second_variant_sucessfully_data, update_product_not_found_data
+from update_product_use_case_integration_data import update_product_sucessfully_data, update_with_image_successfully_data, update_with_warehouse_successfully_data ,update_second_variant_sucessfully_data, update_product_not_found_data
 
 from src.use_case.mongo.update_product_use_case import UpdateProductMongoUseCase
 from src.domain.entity.product_entity import ProductEntity
@@ -93,9 +93,26 @@ def test_update_with_image_successfully(setup_use_case):
     assert product["image"] == data["image"]
 
 
-@pytest.mark.skip()
 def test_update_with_warehouse_successfully(setup_use_case):
-    pass
+
+    use_case, object_id_1, _, repository = setup_use_case
+
+    data = update_with_warehouse_successfully_data(object_id_1)
+
+    params = data["params"]
+    body = data["body"]
+
+    http_request = HttpRequest(body=body, params=params)
+
+    response = use_case.handle(http_request)
+
+    assert response.status_code == 200
+    print()
+    print(response.body)
+    print()
+    print(data["expected_response"])
+    assert response.body == data["expected_response"]
+
 
 @pytest.mark.skip()
 def test_error_product_not_found_return_error(setup_use_case):
