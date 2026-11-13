@@ -37,7 +37,7 @@ def setup_use_case():
         
         object_id_1 = str(product["variants"][0]["_id"])
         object_id_2 = str(product["variants"][1]["_id"])
-
+        print(object_id_1, object_id_2)
         yield use_case, object_id_1, object_id_2, repository
 
     finally:
@@ -107,16 +107,34 @@ def test_update_with_warehouse_successfully(setup_use_case):
     response = use_case.handle(http_request)
 
     assert response.status_code == 200
-    print()
-    print(response.body)
-    print()
-    print(data["expected_response"])
     assert response.body == data["expected_response"]
 
+    code = params['code']
 
-@pytest.mark.skip()
+    product = repository.get_variant_by_code_and_id(code, object_id_1)
+
+    assert product["warehouse"]["stock"] == data["body"]["warehouse"]["stock"]
+    assert product["warehouse"]["quantity_change"] == data["body"]["warehouse"]["quantity_change"]
+    assert product["warehouse"]["location"] == data["body"]["warehouse"]["location"]
+
+
+
+
 def test_error_product_not_found_return_error(setup_use_case):
-    pass
+
+    use_case, object_id_1, _, repository = setup_use_case
+    print(object_id_1)
+    data = update_with_warehouse_successfully_data(object_id_1)
+
+    params = data["params"]
+    body = data["body"]
+
+    http_request = HttpRequest(body=body, params=params)
+
+    with pytest.raises(HttpNotFound):
+        use_case.handle(http_request)
+    
+
 
 @pytest.mark.skip()
 def test_nothing_to_update_successfully(setup_use_case):

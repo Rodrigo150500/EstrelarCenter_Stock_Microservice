@@ -3,6 +3,8 @@ from datetime import datetime
 from src.utils.image_type import imagem_bytes, image_string_splitted
 from unittest.mock import ANY
 
+from copy import deepcopy
+
 def setup_use_case_data():
 
     product = {
@@ -148,7 +150,7 @@ def update_with_warehouse_successfully_data(object_id: str):
 
 
     body_response = {
-        **body,
+        **deepcopy(body),
         "_id": object_id,
         "last_change": ANY
     }
@@ -173,6 +175,23 @@ def update_with_warehouse_successfully_data(object_id: str):
     }
 
     return data
+
+
+def error_product_not_found_return_error_data(object_id: str):
+
+    params = {
+        "code": "45",
+        "_id": object_id
+    }
+
+    body = {
+        "description": "New product A"
+    }
+
+    return {
+        "params": params,
+        "body": body
+    }
 
 
 
