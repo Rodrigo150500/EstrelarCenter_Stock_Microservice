@@ -1,6 +1,6 @@
 from bson.objectid import ObjectId
 from datetime import datetime
-from src.utils.image_type import imagem_bytes
+from src.utils.image_type import imagem_bytes, image_string_splitted
 from unittest.mock import ANY
 
 def setup_use_case_data():
@@ -55,6 +55,7 @@ def setup_use_case_data():
 
     return data
 
+
 def update_product_sucessfully_data(object_id: str):
 
     params = {
@@ -89,6 +90,45 @@ def update_product_sucessfully_data(object_id: str):
 
     return data
 
+
+def update_with_image_successfully_data(object_id: str):
+
+    params = {
+        "code": "10",
+        "_id": object_id
+    }
+
+    body = {
+        "description": "New Description for Update",
+        "stock":1000,
+        "image": image_string_splitted
+    }
+
+
+    body_response = {
+        **body,
+        "_id": object_id,
+        "last_change": ANY
+    }
+
+    del body_response["image"]
+
+    expected_response = {
+        "data":{
+            "operation":"Update",
+            "count": 1,
+            "attributes": body_response
+        }
+    }
+
+    data = {
+        "body": body,
+        "params": params,
+        "expected_response": expected_response,
+        "image": imagem_bytes
+    }
+
+    return data
 
 def update_second_variant_sucessfully_data(object_id: str):
 

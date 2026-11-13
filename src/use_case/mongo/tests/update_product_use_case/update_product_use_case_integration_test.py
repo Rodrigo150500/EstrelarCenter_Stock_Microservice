@@ -3,7 +3,7 @@ load_dotenv("dev.env")
 
 import pytest
 
-from update_product_use_case_integration_data import update_product_sucessfully_data, update_second_variant_sucessfully_data, update_product_not_found_data
+from update_product_use_case_integration_data import update_product_sucessfully_data, update_with_image_successfully_data, update_second_variant_sucessfully_data, update_product_not_found_data
 
 from src.use_case.mongo.update_product_use_case import UpdateProductMongoUseCase
 from src.domain.entity.product_entity import ProductEntity
@@ -19,7 +19,7 @@ from src.main.http_types.http_request import HttpRequest
 
 @pytest.fixture
 def setup_use_case():
-    print("ola")
+
     data = setup_use_case_data()
 
     mongo_db_connection.connect()
@@ -41,14 +41,14 @@ def setup_use_case():
         yield use_case, object_id_1, object_id_2, repository
 
     finally:
-        pass
-        # repository.delete_product_by_code(code="10")
+        
+        repository.delete_product_by_code(code="10")
 
 def test_update_product_sucessfully(setup_use_case):
-    return
-    use_case, object_id, _, repository = setup_use_case
+    
+    use_case, object_id_1, _, repository = setup_use_case
 
-    data = update_product_sucessfully_data(object_id)
+    data = update_product_sucessfully_data(object_id_1)
 
     params = data["params"]
     body = data["body"]
@@ -60,13 +60,38 @@ def test_update_product_sucessfully(setup_use_case):
     assert response.body == data["expected_response"]
     assert response.status_code == 200
 
-    product = repository.get_product_by_code(params["code"])
+    code = params["code"]
 
-    assert product["variants"][0]["description"] == body["description"]
+    product = repository.get_variant_by_code_and_id(code, object_id_1)
 
-@pytest.mark.skip()
-def test_update_without_image_successfully(setup_use_case):
-    pass
+    assert product["description"] == body["description"]
+    assert product["stock"] == body["stock"]
+
+
+def test_update_with_image_successfully(setup_use_case):
+
+    use_case, object_id_1, _, repository = setup_use_case
+
+    data = update_with_image_successfully_data(object_id_1)
+
+    params = data["params"]
+    body = data["body"]
+
+    http_request = HttpRequest(body=body, params=params)
+
+    response = use_case.handle(http_request)
+
+    assert response.status_code == 200
+    assert response.body == data["expected_response"]
+
+    code = params["code"]
+
+    product = repository.get_variant_by_code_and_id(code, object_id_1)
+
+    assert product["description"] == body["description"]
+    assert product["stock"] == body["stock"]
+    assert product["image"] == data["image"]
+
 
 @pytest.mark.skip()
 def test_update_with_warehouse_successfully(setup_use_case):
