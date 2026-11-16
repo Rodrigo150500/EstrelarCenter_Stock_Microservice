@@ -3,7 +3,7 @@ load_dotenv("dev.env")
 
 import pytest
 
-from update_product_use_case_integration_data import update_product_sucessfully_data, update_with_image_successfully_data, update_with_warehouse_successfully_data ,update_second_variant_sucessfully_data, update_product_not_found_data
+from update_product_use_case_integration_data import update_product_sucessfully_data, update_with_image_successfully_data, update_with_warehouse_successfully_data,error_product_not_found_return_error_data
 
 from src.use_case.mongo.update_product_use_case import UpdateProductMongoUseCase
 from src.domain.entity.product_entity import ProductEntity
@@ -37,12 +37,13 @@ def setup_use_case():
         
         object_id_1 = str(product["variants"][0]["_id"])
         object_id_2 = str(product["variants"][1]["_id"])
-        print(object_id_1, object_id_2)
+        
         yield use_case, object_id_1, object_id_2, repository
 
     finally:
         
         repository.delete_product_by_code(code="10")
+
 
 def test_update_product_sucessfully(setup_use_case):
     
@@ -118,22 +119,29 @@ def test_update_with_warehouse_successfully(setup_use_case):
     assert product["warehouse"]["location"] == data["body"]["warehouse"]["location"]
 
 
-
-
 def test_error_product_not_found_return_error(setup_use_case):
 
     use_case, object_id_1, _, repository = setup_use_case
-    print(object_id_1)
-    data = update_with_warehouse_successfully_data(object_id_1)
+
+    data = error_product_not_found_return_error_data(object_id_1)
 
     params = data["params"]
     body = data["body"]
 
     http_request = HttpRequest(body=body, params=params)
 
-    with pytest.raises(HttpNotFound):
+    with pytest.raises(HttpNotFound) as exec_info:
         use_case.handle(http_request)
-    
+
+    error = exec_info.value.message
+
+    assert error == "Error: product not found"
+
+    code = "10"
+
+    product = repository.get_variant_by_code_and_id(code, object_id_1)
+
+    assert product["description"] == "Product A"  
 
 
 @pytest.mark.skip()
