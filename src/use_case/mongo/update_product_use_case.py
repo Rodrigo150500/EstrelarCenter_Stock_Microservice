@@ -111,7 +111,7 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
             body={
                 "data":{
                     "operation": "Update",
-                    "count": 1,
+                    "count": 0 if len(product_validated) == 1 else 1 ,
                     "attributes": "Nothing to update" if len(product_validated) == 1 else product_validated
                 }
             },

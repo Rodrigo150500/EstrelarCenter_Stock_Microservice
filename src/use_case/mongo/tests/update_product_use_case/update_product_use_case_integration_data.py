@@ -195,7 +195,7 @@ def error_product_not_found_return_error_data(object_id: str):
 
 
 
-def update_second_variant_sucessfully_data(object_id: str):
+def nothing_to_update_successfully_data(object_id: str):
 
     params = {
         "code": "10",
@@ -203,22 +203,16 @@ def update_second_variant_sucessfully_data(object_id: str):
     }
 
     body = {
-        "description": "New product for B",
-        "stock":1500,
-        "reference": "Lacta"
+        "description": "Product A",
+        "stock":25,
+        "reference": "kat 500"
     }
-
-    body_response = {
-        **body,
-        "_id": object_id,
-        "last_change": ANY
-    }
-
+    
     expected_response = {
         "data":{
             "operation":"Update",
-            "count": 1,
-            "attributes": body_response
+            "count": 0,
+            "attributes": "Nothing to update"
         }
     }
 
@@ -229,6 +223,7 @@ def update_second_variant_sucessfully_data(object_id: str):
     }
 
     return data
+
 
 
 def update_product_not_found_data(object_id: str):
