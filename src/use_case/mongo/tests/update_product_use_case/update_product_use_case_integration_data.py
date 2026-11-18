@@ -254,3 +254,21 @@ def update_product_not_found_data(object_id: str):
     }
 
     return data
+
+def unavailable_database_return_error_data():
+
+    params = {
+            "code": "1500",
+            "_id": str(ObjectId())
+        }
+
+    body = {
+            "description": "New product for B",
+            "stock":1500,
+            "reference": "Lacta"
+        }
+
+    return {
+        "params": params,
+        "body": body
+    }

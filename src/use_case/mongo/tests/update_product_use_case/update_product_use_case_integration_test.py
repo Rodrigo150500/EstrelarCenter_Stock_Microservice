@@ -3,7 +3,7 @@ load_dotenv("dev.env")
 
 import pytest
 
-from update_product_use_case_integration_data import update_product_sucessfully_data, update_with_image_successfully_data, update_with_warehouse_successfully_data,error_product_not_found_return_error_data, nothing_to_update_successfully_data
+from update_product_use_case_integration_data import update_product_sucessfully_data, update_with_image_successfully_data, update_with_warehouse_successfully_data,error_product_not_found_return_error_data, nothing_to_update_successfully_data,unavailable_database_return_error_data
 
 from src.use_case.mongo.update_product_use_case import UpdateProductMongoUseCase
 from src.domain.entity.product_entity import ProductEntity
@@ -14,6 +14,7 @@ from src.model.mongo.settings.mongo_db_connection import mongo_db_connection
 from update_product_use_case_integration_data import setup_use_case_data
 
 from src.errors.types.http_not_found import HttpNotFound
+from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from src.main.http_types.http_request import HttpRequest
 
@@ -167,7 +168,23 @@ def test_nothing_to_update_successfully(setup_use_case):
     assert product["description"] == "Product A"
     
 
+@pytest.mark.skip(reason="Need to disable database container")
+def test_unavailable_database_return_error():
 
-@pytest.mark.skip()
-def test_unavailable_database_return_error(setup_use_case):
-    pass
+    #Disable datatabase container
+    mongo_db_connection.connect()
+        
+    connection = mongo_db_connection.get_db_connection()
+    product_entity = ProductEntity()
+    repository = ProductRepositoryMongo(connection)
+    use_case = UpdateProductMongoUseCase(repository, product_entity)
+
+    data = unavailable_database_return_error_data()
+
+    params = data["params"]
+    body = data["body"]
+
+    http_request = HttpRequest(body=body, params=params)
+
+    with pytest.raises(HttpUnavailableService):
+        use_case.handle(http_request)
