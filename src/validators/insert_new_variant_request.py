@@ -9,15 +9,25 @@ def insert_new_variant_request(params: dict, body: dict) -> None:
     })
 
     body_validate = Validator({         
-            "description": {"type": "string", "required": True, "empty": False},
-            "stock": {"type": "integer", "required": True, "empty": False},
-            "image": {"type": "string", "required": True},
-            "brand": {"type": "string", "required": False},
-            "reference": {"type": "string", "required": False},
-            "location": {"type": "list", "required": False},
-            "measure": {"type": "string", "required": True, "empty": False},
-            "keepBuying": {"type": "boolean", "required": True, "empty": False},
-            "quantity_change":{"type": "integer", "required": True, "empty": False}
+        "description": {"type": "string", "required": True, "empty": False},
+        "brand": {"type": "string", "required": False},
+        "reference": {"type": "string", "required": False},
+        "location": {"type": "list", "required": False},
+        "image": {"type": "string", "required": True},
+        "measure": {"type": "string", "required": True, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"]},
+        "quantity_change":{"type": "integer", "required": True, "dependencies": "stock"},
+        "stock": {"type": "integer", "required": True, "min": 0, "empty": False,"dependencies": "quantity_change"},
+        "keepBuying": {"type": "boolean", "required": True},
+        "warehouse": {
+            "type": "dict",
+            "required": False,
+            "schema":{
+            "quantity_change": {"type": "integer", "required": True, 'empty': False,    "dependencies": "^warehouse"},
+            "stock": {"type": "integer", "required": True, "min": 0, "dependencies": "^warehouse"},
+            "measure": {"type": "string", "required": True, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"], "dependencies": "^warehouse"},
+            "location": {"type": "list", "required": False, "dependencies": "^warehouse"}
+            }
+        }
     })
     
     response_body = body_validate.validate(body)
@@ -25,26 +35,14 @@ def insert_new_variant_request(params: dict, body: dict) -> None:
 
     if response_body is False:
         error = body_validate.errors
-        error_key_message = list(error.keys())[0]
-        error_message = error[error_key_message]
-
-        formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
-
-        print(f"Error:[InsertNewVariantRequest][Body]: {formatted_error_message}")
 
         raise HttpUnprocessableEntity(
-        message=formatted_error_message
+        message=error
         )
     
     if response_params is False:
         error = params_validate.errors
-        error_key_message = list(error.keys())[0]
-        error_message = error[error_key_message]
-
-        formatted_error_message = f"Erro no campo {error_key_message}\n{error_message}"
-
-        print(f"Error:[InsertNewVariantRequest][Params]: {formatted_error_message}")
 
         raise HttpUnprocessableEntity(
-        message=formatted_error_message
+        message=error
         )
