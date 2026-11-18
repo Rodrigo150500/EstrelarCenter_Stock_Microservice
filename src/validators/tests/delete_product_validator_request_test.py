@@ -21,3 +21,24 @@ def test_wrong_input_type():
 
     with pytest.raises(HttpUnprocessableEntity):
         delete_product_validator_request(params)
+
+
+def test_empty_input():
+
+    params = {
+        "code": ""
+    }
+
+    with pytest.raises(HttpUnprocessableEntity):
+        delete_product_validator_request(params)
+
+
+def test_with_other_fields():
+
+    params = {
+        "code": "123",
+        "_id": "1458786"
+    }
+
+    with pytest.raises(HttpUnprocessableEntity):
+        delete_product_validator_request(params)
