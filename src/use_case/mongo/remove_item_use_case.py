@@ -6,7 +6,7 @@ from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryMongoInterface
 
-from src.validators.remove_item_validator_request import remove_item_validator_request
+from src.validators.delete_variant_validator_request import remove_item_validator_request
 
 from .interfaces.remove_item_use_case_interface import RemoveItemMongoUseCaseInterface
 
