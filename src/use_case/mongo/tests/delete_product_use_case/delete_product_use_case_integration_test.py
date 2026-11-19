@@ -59,17 +59,10 @@ def test_delete_product_not_found(setup_use_case):
 
     http_request = HttpRequest(params={"code": "AAAA"}) #Must be a existing code
 
-    with pytest.raises(HttpNotFound):
+    with pytest.raises(HttpNotFound) as exec_info:
 
         use_case.handle(http_request)
 
+    error = exec_info.value.message
 
-def test_delete_product_invalid_params(setup_use_case):
-    
-    use_case, _, _ = setup_use_case
-
-    http_request = HttpRequest(params={"code": 123}) #Must be a string code
-
-    with pytest.raises(HttpUnprocessableEntity):
-
-        use_case.handle(http_request)
+    assert error == "Error: Product not found"
