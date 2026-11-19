@@ -20,8 +20,6 @@ class DeleteProductMongoUseCase(DeleteProductUseCaseInterface):
 
         params = http_request.params
 
-        delete_product_validator_request(params)
-
         self.__verify_if_exists_in_database(params)
 
         self.__delete_product_in_database(params)

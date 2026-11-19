@@ -48,16 +48,3 @@ def test_delete_product_use_case_product_not_found(setup_use_case):
     repository.check_if_product_exists.assert_called_once_with("16")
     repository.delete_product_by_code.assert_not_called()
 
-
-def test_delete_product_use_case_invalid_params(setup_use_case):
-    
-    repository, use_case = setup_use_case
-
-    http_request = HttpRequest(params={"code": 123}) #Must be a string code
-
-    with pytest.raises(HttpUnprocessableEntity):
-
-        use_case.handle(http_request)
-        
-    repository.check_if_product_exists.assert_not_called()
-    repository.delete_product_by_code.assert_not_called()
