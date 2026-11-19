@@ -5,14 +5,14 @@ load_dotenv("dev.env")
 
 from src.model.mongo.settings.mongo_db_connection import mongo_db_connection
 from src.model.mongo.repository.product_repository import ProductRepositoryMongo
-from src.use_case.mongo.remove_item_use_case import RemoveItemMongoUseCase
+from src.use_case.mongo.delete_variant_use_case import DeleteVariantUseCase
 
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
 
 from src.errors.types.http_not_found import HttpNotFound
 
-from remove_item_use_case_integration_data import setup_use_case_data, remove_variant_succesfully_data, delete_product_with_one_variant_data
+from src.use_case.mongo.tests.delete_variant_use_case.delete_variant_use_case_integration_data import setup_use_case_data, remove_variant_succesfully_data, delete_product_with_one_variant_data
 
 mongo_db_connection.connect()
 
@@ -25,7 +25,7 @@ def setup_use_case():
 
         connection = mongo_db_connection.get_db_connection()
         repository = ProductRepositoryMongo(connection)
-        use_case = RemoveItemMongoUseCase(repository)
+        use_case = DeleteVariantUseCase(repository)
 
         repository.insert_product(data["product"])
 

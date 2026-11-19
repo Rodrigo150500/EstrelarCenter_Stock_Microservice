@@ -6,11 +6,9 @@ from src.errors.types.http_unavailable_service import HttpUnavailableService
 
 from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryMongoInterface
 
-from src.validators.delete_variant_validator_request import remove_item_validator_request
-
 from .interfaces.remove_item_use_case_interface import RemoveItemMongoUseCaseInterface
 
-class RemoveItemMongoUseCase(RemoveItemMongoUseCaseInterface):
+class DeleteVariantUseCase(RemoveItemMongoUseCaseInterface):
 
     def __init__(self, repository: ProductRepositoryMongoInterface):
         
@@ -21,9 +19,7 @@ class RemoveItemMongoUseCase(RemoveItemMongoUseCaseInterface):
 
         params = http_request.params
 
-        remove_item_validator_request(params)
-
-        self.__verify_if_exists(params)
+        self.__verify_if_exists_in_database(params)
 
         self.__remove_in_database(params)
 
@@ -32,7 +28,7 @@ class RemoveItemMongoUseCase(RemoveItemMongoUseCaseInterface):
         return formatted_response
     
     
-    def __verify_if_exists(self, params: dict) -> None:
+    def __verify_if_exists_in_database(self, params: dict) -> None:
         
         code = params["code"]
 

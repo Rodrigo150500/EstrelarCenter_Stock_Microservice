@@ -1,6 +1,6 @@
 from src.model.mongo.settings.mongo_db_connection import mongo_db_connection
 from src.model.mongo.repository.product_repository import ProductRepositoryMongo
-from src.use_case.mongo.remove_item_use_case import RemoveItemMongoUseCase
+from src.use_case.mongo.delete_variant_use_case import RemoveItemMongoUseCase
 
 def remove_item_composer():
 

@@ -1,5 +1,3 @@
-
-
 def remove_item_succesfully_data(): 
 
     params = {
@@ -30,6 +28,19 @@ def delete_product_with_one_variant_data():
         "params": params
     }
 
+
+def removing_one_variant_data():
+
+    params = {
+        "code": "10",
+        "_id": "68b70ef826423e500863c1c7"
+    }
+
+    return {
+        "params": params,
+        "exists": True,
+        "get_variant_count": 2
+    }
 
 
 def remove_item_that_not_exists_data():
