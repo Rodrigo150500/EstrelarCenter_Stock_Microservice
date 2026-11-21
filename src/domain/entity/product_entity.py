@@ -130,11 +130,16 @@ class ProductEntity(ProductEntityInterface):
         return data_to_save
 
     @staticmethod
-    def create(data: ProductCreateDTO) -> ProductCreateDTOResponse:
+    def create(data: ProductCreateDTO, isVariant: bool) -> ProductCreateDTOResponse:
 
         data = deepcopy(data)
 
-        ProductEntity._validate_product(data, creating=True)
+        if isVariant:
+
+            
+            
+        else:
+            ProductEntity._validate_product(data, creating=True)
 
         if "warehouse" in data:
             ProductEntity._validate_warehouse(

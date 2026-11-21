@@ -1,3 +1,5 @@
+import copy
+
 from datetime import datetime
 
 from unittest.mock import ANY
@@ -21,7 +23,14 @@ def setup_use_case_data():
             "measure": "Caixa",
             "keepBuying": True,
             "last_change": datetime.now(),
-            "quantity_change": 5
+            "quantity_change": 5,
+            "warehouse":{
+                "stock": 15,
+                "quantity_change": 15,
+                "location": ["CX10", "CX11"],
+                "measure": "Unidade",
+                "last_change": datetime.now()
+            }
             },{
                 "_id": ObjectId(),
                 "description": "Product B",
@@ -65,7 +74,7 @@ def insert_variant_succesfully_data():
 
     attribute_response = {
         "_id": ANY,
-        **product
+        **copy.deepcopy(product)
     }  
     attribute_response["last_change"] = ANY
 
