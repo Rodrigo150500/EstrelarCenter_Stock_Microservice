@@ -1,4 +1,5 @@
 from src.model.mongo.repository.product_repository import ProductRepositoryMongoInterface
+from src.domain.entity.interfaces.product_entity_interface import ProductEntityInterface
 
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
@@ -12,15 +13,15 @@ from src.utils.export_image_string64_to_binary import export_image_string64_to_b
 
 from .interfaces.insert_new_variant_use_case_interface import InsertNewVariantMongoUseCaseInterface
 
-from datetime import datetime
 
-from bson.objectid import ObjectId
+from bson import Binary
 
 class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
 
-    def __init__(self, repository: ProductRepositoryMongoInterface):
+    def __init__(self, repository: ProductRepositoryMongoInterface, entity: ProductEntityInterface):
         
         self.__repository = repository
+        self.__entity = entity
 
     def handle(self, http_request: HttpRequest) -> HttpResponse:
         
@@ -28,17 +29,17 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
         body = http_request.body
         host = http_request.header
 
-        insert_new_variant_request(params, body)
-        
         self.__verify_if_product_exists(params)
 
-        body_image_formatted = self.__export_image_in_binary(body, host)
+        product_validated = self.__entity.create(body)
+        
+        image = self.__export_image_to_binary(body["image"], host)
 
-        body_last_change_formatted = self.__add_metadata_fields(body_image_formatted)
+        product_to_save = self.__format_body(product_validated, image)
 
-        self.__insert_in_database(params, body_last_change_formatted)
+        self.__insert_in_database(params, product_to_save)
 
-        formatted_response = self.__format_response(body_image_formatted)
+        formatted_response = self.__format_response(product_to_save)
 
         return formatted_response
     
@@ -62,24 +63,25 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
             raise
 
 
-    def __export_image_in_binary(self, body: dict, host: str) -> dict:
+    def __export_image_to_binary(self, image: str, host: str) -> dict:
         
-        image_string = body["image"]
+        if (isinstance(image, str) and "erro.jpg" not in image):
 
-        image = export_image_string64_to_binary(image_string, host)
+            if image.startswith("data:image"):
 
+                image = image.split(",", 1)[1]  # remove o "data:image/png;base64,"
+
+            image_exported = export_image_string64_to_binary(image, host)
+    
+        return image_exported
+
+
+    def __format_body(self, body: dict, image: Binary):
+        
         body["image"] = image
 
-        return body        
-
-
-    def __add_metadata_fields(self, body: dict) -> dict:
-
-        body["last_change"] = datetime.now()
-        body["_id"] = ObjectId()
-
         return body
-
+    
 
     def __insert_in_database(self, params: dict, body: dict) -> None:
 
