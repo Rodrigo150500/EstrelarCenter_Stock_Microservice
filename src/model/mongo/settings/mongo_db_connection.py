@@ -23,7 +23,7 @@ class MongoDBConnetion:
     self.__db_connection = None
 
   def connect(self):
-
+    
     self.__client = MongoClient(self.__connection_string)
 
     self.__db_connection = self.__client[self.__database_name]
