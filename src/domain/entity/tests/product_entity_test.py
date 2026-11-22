@@ -120,7 +120,7 @@ def test_business_rules_create_with_warehouse_successfully():
 
     expect_warehouse = {**data_create,"_id": ANY, "last_change": ANY, "warehouse": data_warehouse}
 
-    product_entity = ProductEntity.create(data_create)
+    product_entity = ProductEntity.create(data_create, False)
 
     assert product_entity is not None
     assert product_entity == expect_warehouse
@@ -132,7 +132,7 @@ def test_business_rules_create_product_successfully():
 
     expect_product = {**data_product, "_id": ANY, "last_change": ANY}
     
-    product_entity = ProductEntity.create(data_product)
+    product_entity = ProductEntity.create(data_product, False)
 
     assert product_entity is not None
     assert product_entity == expect_product
@@ -146,7 +146,7 @@ def test_measure_allowed_in_product_expect_error():
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
-        ProductEntity.create(data_product)
+        ProductEntity.create(data_product, False)
 
     error = exec_info.value.message
 
@@ -161,7 +161,7 @@ def test_measure_allowed_in_warehouse_expect_error():
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
-        ProductEntity.create(data_warehouse)
+        ProductEntity.create(data_warehouse, False)
 
     error = exec_info.value.message
 
@@ -175,7 +175,7 @@ def test_missing_required_fields_for_product_expect_error():
     del data_product["code"]
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
-        ProductEntity.create(data_product)
+        ProductEntity.create(data_product, False)
 
     error = exec_info.value.message
 
@@ -190,7 +190,7 @@ def test_missing_required_fields_for_warehouse_expect_error():
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
 
-        ProductEntity.create(data_wahouse)
+        ProductEntity.create(data_wahouse, False)
 
     error = exec_info.value.message
 
@@ -204,7 +204,7 @@ def test_empty_fields_product_in_required_fields_expect_error():
     data_product["code"] = ""
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
-        ProductEntity.create(data_product)
+        ProductEntity.create(data_product, False)
 
     error = exec_info.value.message
 
@@ -218,7 +218,7 @@ def test_empty_fields_warehouse_in_required_fields_expect_error():
     data_warehouse["stock"] = ""
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
-        ProductEntity.create(data_warehouse)
+        ProductEntity.create(data_warehouse, False)
 
     error = exec_info.value.message
 
@@ -232,7 +232,7 @@ def test_negative_stock_in_product_expect_error():
     data_product["stock"] = -1
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
-        ProductEntity.create(data_product)
+        ProductEntity.create(data_product, False)
 
     error = exec_info.value.message
 
@@ -246,7 +246,7 @@ def test_negative_stock_in_warehouse_expect_error():
     data_warehouse["warehouse"]["stock"] = -1
 
     with pytest.raises(HttpUnprocessableEntity) as exec_info:
-        ProductEntity.create(data_warehouse)
+        ProductEntity.create(data_warehouse, False)
 
     error = exec_info.value.message
     

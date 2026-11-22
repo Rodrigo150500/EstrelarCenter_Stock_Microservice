@@ -32,6 +32,12 @@ class ProductEntity(ProductEntityInterface):
         "quantity_change", "stock", "keepBuying"
     ]
 
+    PRODUCT_REQUIRED_FIELDS_FOR_VARIANT = [
+        "description", "image", "measure",
+        "quantity_change", "stock", "keepBuying"
+    ]
+
+
     WAREHOUSE_REQUIRED_FIELDS = [
         "quantity_change", "stock", "measure"
     ]
@@ -42,7 +48,7 @@ class ProductEntity(ProductEntityInterface):
     ]
 
     @staticmethod
-    def _validate_product(data: dict, creating: bool = False):
+    def _validate_product(data: dict, isVariant: bool, creating: bool = False):
 
         for field in data:
 
@@ -57,11 +63,20 @@ class ProductEntity(ProductEntityInterface):
                 )
 
         if creating:
-            for field in ProductEntity.PRODUCT_REQUIRED_FIELDS:
-                if field not in data:
-                    raise HttpUnprocessableEntity(
-                        message=f"Campo obrigatório: [{field}] não encontrado"
-                    )
+
+            if isVariant:
+                for field in ProductEntity.PRODUCT_REQUIRED_FIELDS_FOR_VARIANT:
+                    if field not in data:
+                        raise HttpUnprocessableEntity(
+                            message=f"Campo obrigatório: [{field}] não encontrado"
+                        )
+            else:
+
+                for field in ProductEntity.PRODUCT_REQUIRED_FIELDS:
+                    if field not in data:
+                        raise HttpUnprocessableEntity(
+                            message=f"Campo obrigatório: [{field}] não encontrado"
+                        )
 
         if "measure" in data and data["measure"] not in ProductEntity.MEASURE_ALLOWED:
             raise HttpUnprocessableEntity(
@@ -136,10 +151,11 @@ class ProductEntity(ProductEntityInterface):
 
         if isVariant:
 
-            
+            ProductEntity._validate_product(data, creating=True, isVariant=True)
+
             
         else:
-            ProductEntity._validate_product(data, creating=True)
+            ProductEntity._validate_product(data, creating=True, isVariant=False)
 
         if "warehouse" in data:
             ProductEntity._validate_warehouse(
@@ -174,7 +190,7 @@ class ProductEntity(ProductEntityInterface):
             )
 
         # Produto validação
-        ProductEntity._validate_product(new_data)
+        ProductEntity._validate_product(new_data, False)
 
         # Warehouse validação
         if "warehouse" in new_data:
