@@ -51,30 +51,26 @@ def test_insert_variant_succesfully(setup_use_case):
 
     http_request = HttpRequest(params=params, body=body)
 
-    with pytest.raises(HttpUnprocessableEntity) as exec_info:
-       use_case.handle(http_request)
+    response = use_case.handle(http_request)
 
-    print(exec_info.value.message)
+    assert response.body == data["expected_response"]
+    assert response.status_code == 201
 
+    products = repository.get_product_by_code(data["params"]["code"])["variants"]
 
-    # assert isinstance(response, HttpResponse)
-    # assert response.body == data["expected_response"]
+    assert len(products) == 3
 
-    # products = repository.get_product_by_code(data["params"]["code"])["variants"]
+def test_insert_variant_in_a_product_that_not_exists(setup_use_case):
 
-    # assert len(products) == 3
+    data = insert_variant_in_a_product_that_not_exists_data()
 
-# def test_insert_variant_in_a_product_that_not_exists(setup_use_case):
+    _, use_case = setup_use_case
 
-#     data = insert_variant_in_a_product_that_not_exists_data()
+    params = data["params"]
+    body = data["product"]
 
-#     _, use_case = setup_use_case
+    http_request = HttpRequest(params=params, body=body)
 
-#     params = data["params"]
-#     body = data["product"]
-
-#     http_request = HttpRequest(params=params, body=body)
-
-#     with pytest.raises(HttpNotFound):
-#         use_case.handle(http_request)
+    with pytest.raises(HttpNotFound):
+        use_case.handle(http_request)
 

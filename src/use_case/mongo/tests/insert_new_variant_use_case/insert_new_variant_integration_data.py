@@ -67,7 +67,7 @@ def insert_variant_succesfully_data():
         "brand": "Lacta",
         "reference": "Lac 500",
         "location": ["C01"],
-        "measure": "Unidate",
+        "measure": "Unidade",
         "keepBuying": False,
         "quantity_change": 50,
     }

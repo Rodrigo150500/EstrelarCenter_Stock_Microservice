@@ -31,7 +31,7 @@ class InsertNewVariantMongoUseCase(InsertNewVariantMongoUseCaseInterface):
 
         self.__verify_if_product_exists(params)
 
-        product_validated = self.__entity.create(body)
+        product_validated = self.__entity.create(body, True)
         
         image = self.__export_image_to_binary(body["image"], host)
 
