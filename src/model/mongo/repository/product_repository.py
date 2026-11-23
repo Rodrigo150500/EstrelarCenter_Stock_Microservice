@@ -29,6 +29,8 @@ class ProductRepositoryMongo(ProductRepositoryMongoInterface):
                 {"code": code}
             )
 
+            print(response)
+
             if not response: raise HttpNotFound("Error: Product not found")
 
             return response

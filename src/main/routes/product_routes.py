@@ -68,7 +68,7 @@ def insert_product():
         return jsonify(response.body),response.status_code
 
     except Exception as exception:
-
+        print(exception)
         response = error_handler(exception)
 
         return jsonify(response.body), response.status_code
@@ -159,7 +159,7 @@ def get_product_by_search():
 
 @product_routes_bp.route("/product/<code>/variant/<variant_id>", methods=["DELETE"])
 @swag_from("../../docs/remove_item_doc.yml")
-def remove_item_variant(code: str, variant_id: str):
+def delete_variant(code: str, variant_id: str):
 
     try:
 

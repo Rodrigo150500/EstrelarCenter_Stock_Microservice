@@ -31,7 +31,7 @@ class InsertProductMongoUseCase(InserProductMongoUseCaseInterface):
     
         self.__verify_if_product_exists(body)
 
-        product_to_save = self.__product_entity.create(body)
+        product_to_save = self.__product_entity.create(body, False)
 
         image = self.__export_image_to_binary(body["image"], host)
         

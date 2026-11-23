@@ -1,11 +1,7 @@
-import os
-
 from src.model.mongo.repository.interfaces.product_repository_interface import ProductRepositoryMongoInterface
 
 from src.main.http_types.http_request import HttpRequest
 from src.main.http_types.http_response import HttpResponse
-
-from src.validators.get_product_validator_request import get_product_validator_request
 
 from src.errors.types.http_not_found import HttpNotFound
 from src.errors.types.http_unavailable_service import HttpUnavailableService
@@ -26,8 +22,6 @@ class GetProductMongoUseCase(GetProductMongoUseCaseInterface):
 
         params = http_request.params
         host = http_request.header
-
-        get_product_validator_request(params)
 
         product = self.__get_product_from_database(params)
 
