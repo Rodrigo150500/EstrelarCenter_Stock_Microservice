@@ -9,7 +9,7 @@ from src.main.composer.mongo.insert_product_composer import insert_product_compo
 from src.main.composer.mongo.delete_product_composer import delete_product_composer
 from src.main.composer.mongo.update_product_composer import update_product_composer
 from src.main.composer.mongo.get_product_by_search_composer import get_product_by_search_composer
-from src.main.composer.mongo.remove_item_composer import remove_item_composer
+from src.main.composer.mongo.delete_variant_composer import remove_item_composer
 from src.main.composer.mongo.insert_new_variant_composer import insert_new_variant_composer
 
 from src.validators.insert_product_validator_request import insert_product_validator_request
