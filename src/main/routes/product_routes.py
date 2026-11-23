@@ -13,6 +13,12 @@ from src.main.composer.mongo.delete_variant_composer import delete_variant_compo
 from src.main.composer.mongo.insert_new_variant_composer import insert_new_variant_composer
 
 from src.validators.insert_product_validator_request import insert_product_validator_request
+from src.validators.get_product_validator_request import get_product_validator_request
+from src.validators.insert_product_validator_request import insert_product_validator_request
+from src.validators.delete_product_validator_request import delete_product_validator_request
+from src.validators.update_product_validator_request import update_product_validator_request
+from src.validators.delete_variant_validator_request import delete_variant_validator_request
+from src.validators.insert_new_variant_request import insert_new_variant_request
 
 from src.errors.error_handler import error_handler
 
@@ -22,9 +28,13 @@ product_routes_bp = Blueprint("product_bp", __name__)
 @swag_from("../../docs/get_product_by_code_doc.yml")
 def get_product_by_code(code: str):
 
-    try:
+    try:        
 
-        http_request = HttpRequest(params={"code": code}, header=request.host)
+        params = {"code": code}
+
+        get_product_validator_request(params)
+
+        http_request = HttpRequest(params=params, header=request.host)
 
         use_case = get_product_composer()
 
@@ -45,9 +55,11 @@ def insert_product():
 
     try:
 
-        insert_product_validator_request(request.json)
+        body = request.json
+
+        insert_product_validator_request(body)
             
-        http_request = HttpRequest(body=request.json, header=request.host)
+        http_request = HttpRequest(body=body, header=request.host)
 
         use_case = insert_product_composer()
 
@@ -67,6 +79,10 @@ def insert_product():
 def delete_product_by_code(code: str):
 
     try:
+
+        params = {"code": code}
+
+        delete_product_validator_request(params)
 
         http_request = HttpRequest(params={"code": code})
 
@@ -88,6 +104,11 @@ def delete_product_by_code(code: str):
 def update_product_variant(code: str, variant_id: str):
 
     try:
+
+        params = {"code": code, "_id": variant_id}
+        body = request.json
+
+        update_product_validator_request(body, params)
 
         http_request = HttpRequest(params={"code": code, "_id": variant_id}, body=request.json, header=request.host)
         
@@ -142,6 +163,10 @@ def remove_item_variant(code: str, variant_id: str):
 
     try:
 
+        params = {"code": code, "_id": variant_id}
+
+        delete_variant_validator_request(params)
+
         http_request = HttpRequest(params={"code": code, "_id": variant_id})
 
         use_case = delete_variant_composer()
@@ -164,6 +189,8 @@ def insert_product_variant(code: str):
     try:
         params = {"code": code}
         body = request.json
+
+        insert_new_variant_request(params, body)
 
         http_request = HttpRequest(body=body, params=params, header=request.host)
 
