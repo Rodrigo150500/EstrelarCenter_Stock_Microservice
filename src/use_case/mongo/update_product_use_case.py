@@ -82,8 +82,19 @@ class UpdateProductMongoUseCase(UpdateProductMongoUseCaseInterface):
 
         for key, value in body.items():
 
-            body_formatted[f"variants.$.{key}"] = value
 
+            if key == 'warehouse':
+
+                for ware_key, ware_val in body["warehouse"].items():
+
+                    body_formatted[f"variants.$.warehouse.{ware_key}"] = ware_val
+            else:
+                body_formatted[f"variants.$.{key}"] = value
+
+        print("---------------------------")
+    
+        print(body_formatted)
+        print("---------------------------")
         return body_formatted
 
 

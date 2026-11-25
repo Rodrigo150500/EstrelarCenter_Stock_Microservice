@@ -28,7 +28,7 @@ def update_product_validator_request(body: dict, params: dict):
               "required": False,
               "schema":{
                 "quantity_change": {"type": "integer", "required": False, 'empty': False, "dependencies": ["^warehouse", "stock"]},
-                "stock": {"type": "integer", "required": False, "min": 0, "dependencies": ["^warehouse", "stock"], "empty": False},
+                "stock": {"type": "integer", "required": False, "min": 0, "dependencies": ["^warehouse", "quantity_change"], "empty": False},
                 "measure": {"type": "string", "required": False, "allowed": ["Unidade", "Caixa", "Pacote", "Fardo", "Saco", "Rolo", "Cartela", "Bloco", "Pote"], "dependencies": "^warehouse", "empty": False},
                 "location": {"type": "list", "required": False, "dependencies": "^warehouse", "empty": False}
               }
